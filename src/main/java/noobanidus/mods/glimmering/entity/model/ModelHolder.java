@@ -12,7 +12,7 @@ public class ModelHolder implements ISelectiveResourceReloadListener {
   public static GlimmerModel glimmerModel;
 
   public static void init() {
-
+    glimmerModel = new GlimmerModel();
   }
 
   @Override

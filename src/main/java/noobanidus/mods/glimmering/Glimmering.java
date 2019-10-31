@@ -42,10 +42,9 @@ public class Glimmering {
     ModBlocks.load();
     ModEntities.load();
 
-    modBus.addGenericListener(EntityType.class, EventPriority.LOWEST, ModEntities::registerEntities);
-    modBus.addGenericListener(Item.class, EventPriority.LOWEST, ModItems::registerItems);
+    modBus.addGenericListener(EntityType.class, ModEntities::registerEntities);
 
-    ConfigManager.loadConfig(ConfigManager.COMMON_CONFIG, FMLPaths.CONFIGDIR.get().resolve(MODID + "-common.toml"));
+    //ConfigManager.loadConfig(ConfigManager.COMMON_CONFIG, FMLPaths.CONFIGDIR.get().resolve(MODID + "-common.toml"));
     REGISTRY.registerEventBus(modBus);
   }
 }
