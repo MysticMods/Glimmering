@@ -2,18 +2,17 @@ package noobanidus.mods.glimmering;
 
 import epicsquid.mysticallib.registry.ModRegistry;
 import net.minecraft.entity.EntityType;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.eventbus.api.EventPriority;
+import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.fml.loading.FMLPaths;
-import noobanidus.mods.glimmering.config.ConfigManager;
 import noobanidus.mods.glimmering.init.ModBlocks;
 import noobanidus.mods.glimmering.init.ModEntities;
 import noobanidus.mods.glimmering.init.ModItems;
+import noobanidus.mods.glimmering.setup.ClientSetup;
 import noobanidus.mods.glimmering.setup.ModSetup;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -26,7 +25,7 @@ public class Glimmering {
   public static final ItemGroup ITEM_GROUP = new ItemGroup("glimmering") {
     @Override
     public ItemStack createIcon() {
-      return new ItemStack(ModItems.GLIMMER.get());
+      return new ItemStack(ModEntities.SPAWN_GLIMMER.get());
     }
   };
 
@@ -38,6 +37,8 @@ public class Glimmering {
     IEventBus modBus = FMLJavaModLoadingContext.get().getModEventBus();
 
     modBus.addListener(setup::init);
+    DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> modBus.addListener(ClientSetup::init));
+
     ModItems.load();
     ModBlocks.load();
     ModEntities.load();

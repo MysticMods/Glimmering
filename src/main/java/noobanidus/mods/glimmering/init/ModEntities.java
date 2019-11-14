@@ -19,7 +19,7 @@ public class ModEntities {
 
   public static Supplier<EntityType<GlimmerEntity>> GLIMMER = () -> GLIMMER_TYPE;
 
-  public static RegistryObject<SpawnEggItem> SPAWN_GLIMMER = Glimmering.REGISTRY.registerItem(GLIMMER_ID + "_spawn_egg", () -> new SpawnEggItem(GLIMMER_TYPE, 0x418594, 0x211D15, ModRegistries.SIG.get()));
+  public static RegistryObject<SpawnEggItem> SPAWN_GLIMMER = Glimmering.REGISTRY.registerItem(GLIMMER_ID, () -> new SpawnEggItem(GLIMMER_TYPE, 0x418594, 0x211D15, ModRegistries.SIG.get()));
 
   public static void load() {
   }

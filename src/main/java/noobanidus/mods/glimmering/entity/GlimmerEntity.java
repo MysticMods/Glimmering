@@ -1,14 +1,9 @@
 package noobanidus.mods.glimmering.entity;
 
-import com.google.common.collect.Lists;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.IPacket;
 import net.minecraft.util.HandSide;
 import net.minecraft.world.World;
 
