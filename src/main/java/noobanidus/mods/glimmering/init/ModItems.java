@@ -1,13 +1,19 @@
 package noobanidus.mods.glimmering.init;
 
 import net.minecraft.item.Item;
+import net.minecraft.item.Items;
+import net.minecraft.item.crafting.Ingredient;
+import net.minecraft.tags.ItemTags;
+import net.minecraftforge.common.Tags;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.RegistryObject;
 import noobanidus.mods.glimmering.Glimmering;
 
+import java.util.function.Supplier;
+
 @SuppressWarnings("unused")
 public class ModItems {
-  public static RegistryObject<Item> GLIMMERING_DUST = Glimmering.REGISTRY.registerItem("glimmering_dust", Glimmering.REGISTRY.item(Item::new, ModRegistries.SIG));
+  public static Supplier<Item.Properties> PROPS = () -> new Item.Properties().group(Glimmering.ITEM_GROUP);
 
   public static void load() {
   }

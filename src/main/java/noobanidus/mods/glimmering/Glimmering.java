@@ -37,6 +37,7 @@ public class Glimmering {
     IEventBus modBus = FMLJavaModLoadingContext.get().getModEventBus();
 
     modBus.addListener(setup::init);
+    modBus.addListener(setup::gatherData);
     DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> modBus.addListener(ClientSetup::init));
 
     ModItems.load();

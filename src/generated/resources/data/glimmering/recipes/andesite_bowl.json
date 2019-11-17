@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "P P",
+    "SSS",
+    " X "
+  ],
+  "key": {
+    "X": {
+      "item": "glimmering:polished_andesite_brick_wall"
+    },
+    "S": {
+      "item": "glimmering:polished_andesite_brick_slab"
+    },
+    "P": {
+      "item": "minecraft:polished_andesite_slab"
+    }
+  },
+  "result": {
+    "item": "glimmering:andesite_bowl"
+  }
+}

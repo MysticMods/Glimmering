@@ -2,10 +2,10 @@
 	"credit": "Made with Blockbench",
     "parent": "block/block",
 	"textures": {
-		"1": "glimmering:blocks/polished_andesite_slab",
+		"1": "glimmering:block/polished_andesite_slab",
 		"2": "block/polished_andesite",
-		"wall": "glimmering:blocks/polished_andesite_bricks",
-		"particle": "glimmering:blocks/polished_andesite_bricks"
+		"wall": "glimmering:block/polished_andesite_bricks",
+		"particle": "glimmering:block/polished_andesite_bricks"
 	},
 	"elements": [
 		{
@@ -17,8 +17,8 @@
 				"east": {"uv": [4, 7, 12, 16], "texture": "#wall"},
 				"south": {"uv": [4, 7, 12, 16], "texture": "#wall"},
 				"west": {"uv": [4, 7, 12, 16], "texture": "#wall"},
-				"up": {"uv": [4, 4, 12, 12], "texture": "#wall", "cullface": "up"},
-				"down": {"uv": [4, 4, 12, 12], "texture": "#wall", "cullface": "down"}
+				"up": {"uv": [4, 4, 12, 12], "texture": "#wall"},
+				"down": {"uv": [4, 4, 12, 12], "texture": "#wall"}
 			}
 		},
 		{

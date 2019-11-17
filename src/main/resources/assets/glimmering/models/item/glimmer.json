@@ -33,8 +33,8 @@
         }
     },
 	"textures": {
-		"0": "glimmering:blocks/glimmer",
-		"particle": "glimmering:blocks/glimmer"
+		"0": "glimmering:block/glimmer",
+		"particle": "glimmering:block/glimmer"
 	},
 	"elements": [
 		{
