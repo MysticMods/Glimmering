@@ -1,5 +1,6 @@
 package noobanidus.mods.glimmering.client.data;
 
+import epicsquid.mysticallib.MysticalLib;
 import epicsquid.mysticallib.client.data.DeferredBlockStateProvider;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.util.ResourceLocation;
@@ -16,7 +17,8 @@ public class GLBlockStateProvider extends DeferredBlockStateProvider {
 
   @Override
   protected void registerStatesAndModels() {
-    getVariantBuilder(ModBlocks.ANDESITE_BOWL.get()).partialState().addModels(new ConfiguredModel(getExistingFile(new ResourceLocation(Glimmering.MODID, "block/andesite_bowl"))));
+    getVariantBuilder(ModBlocks.ANDESITE_BOWL.get()).partialState().setModels(new ConfiguredModel(getExistingFile(new ResourceLocation(Glimmering.MODID, "block/andesite_bowl"))));
+
     getVariantBuilder(ModBlocks.RUNE.get()).partialState().addModels(new ConfiguredModel(cubeTop(name(ModBlocks.RUNE), new ResourceLocation("minecraft", "block/polished_andesite"), new ResourceLocation(Glimmering.MODID, "block/andesite_rune"))));
 
     simpleBlock(ModBlocks.BRICKS);
