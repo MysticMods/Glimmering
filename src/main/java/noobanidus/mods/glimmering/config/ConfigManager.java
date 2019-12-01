@@ -13,14 +13,7 @@ public class ConfigManager {
   public static ForgeConfigSpec COMMON_CONFIG;
 
   static {
-    /*COMMON_BUILDER.comment("Ore Generation").push("oregen");
-    registerOreGeneration();
-    COMMON_BUILDER.pop();
-    COMMON_BUILDER.comment("Mob Spawn Configuration").push("mob_spawns");
-    registerMobConfigs();
-    COMMON_BUILDER.pop();
-
-    COMMON_CONFIG = COMMON_BUILDER.build();*/
+    COMMON_CONFIG = COMMON_BUILDER.build();
   }
 
   public static void loadConfig(ForgeConfigSpec spec, Path path) {

@@ -2,10 +2,8 @@ package noobanidus.mods.glimmering.init;
 
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
-import net.minecraft.item.Item;
 import net.minecraftforge.common.ToolType;
 import net.minecraftforge.fml.RegistryObject;
-import noobanidus.mods.glimmering.Glimmering;
 import noobanidus.mods.glimmering.blocks.AndesiteBowl;
 
 import java.util.function.Supplier;

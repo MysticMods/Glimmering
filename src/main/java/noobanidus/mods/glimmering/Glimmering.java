@@ -9,6 +9,8 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.fml.loading.FMLPaths;
+import noobanidus.mods.glimmering.config.ConfigManager;
 import noobanidus.mods.glimmering.init.ModBlocks;
 import noobanidus.mods.glimmering.init.ModEntities;
 import noobanidus.mods.glimmering.init.ModItems;
@@ -46,7 +48,7 @@ public class Glimmering {
 
     modBus.addGenericListener(EntityType.class, ModEntities::registerEntities);
 
-    //ConfigManager.loadConfig(ConfigManager.COMMON_CONFIG, FMLPaths.CONFIGDIR.get().resolve(MODID + "-common.toml"));
+    ConfigManager.loadConfig(ConfigManager.COMMON_CONFIG, FMLPaths.CONFIGDIR.get().resolve(MODID + "-common.toml"));
     REGISTRY.registerEventBus(modBus);
   }
 }

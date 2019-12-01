@@ -4,6 +4,7 @@ import epicsquid.mysticallib.client.data.DeferredLanguageProvider;
 import net.minecraft.data.DataGenerator;
 import noobanidus.mods.glimmering.Glimmering;
 import noobanidus.mods.glimmering.init.ModBlocks;
+import noobanidus.mods.glimmering.init.ModItems;
 
 public class GLLangProvider extends DeferredLanguageProvider {
   public GLLangProvider(DataGenerator gen) {
@@ -21,6 +22,8 @@ public class GLLangProvider extends DeferredLanguageProvider {
     addBlock(ModBlocks.BRICK_SLAB);
     addBlock(ModBlocks.BRICK_STAIRS);
     addBlock(ModBlocks.BRICKS);
+
+    addItem(ModItems.RITUAL_KNIFE);
 
     // TODO: Containers
   }

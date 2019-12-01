@@ -5,6 +5,7 @@ import net.minecraft.data.DataGenerator;
 import net.minecraftforge.client.model.generators.ExistingFileHelper;
 import noobanidus.mods.glimmering.Glimmering;
 import noobanidus.mods.glimmering.init.ModBlocks;
+import noobanidus.mods.glimmering.init.ModItems;
 
 public class GLItemModelProvider extends DeferredItemModelProvider {
   public GLItemModelProvider(DataGenerator generator, ExistingFileHelper existingFileHelper) {
@@ -19,5 +20,6 @@ public class GLItemModelProvider extends DeferredItemModelProvider {
     blockItem(ModBlocks.BRICK_SLAB);
     blockItem(ModBlocks.BRICK_STAIRS);
     blockItem(ModBlocks.BRICKS);
+    handheld(ModItems.RITUAL_KNIFE);
   }
 }

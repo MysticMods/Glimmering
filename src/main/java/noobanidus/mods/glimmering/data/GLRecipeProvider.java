@@ -5,11 +5,14 @@ import net.minecraft.block.Blocks;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.IFinishedRecipe;
 import net.minecraft.data.ShapedRecipeBuilder;
+import net.minecraft.data.ShapelessRecipeBuilder;
 import net.minecraft.item.Items;
 import net.minecraft.item.crafting.Ingredient;
+import net.minecraftforge.common.Tags;
 import noobanidus.mods.glimmering.GLTags;
 import noobanidus.mods.glimmering.Glimmering;
 import noobanidus.mods.glimmering.init.ModBlocks;
+import noobanidus.mods.glimmering.init.ModItems;
 
 import java.util.function.Consumer;
 
@@ -29,7 +32,7 @@ public class GLRecipeProvider extends DeferredRecipeProvider {
         .patternLine("P P")
         .patternLine("SSS")
         .patternLine(" X ")
-        .key('X', ModBlocks.BRICK_WALL.get())
+        .key('X', ModBlocks.BRICKS.get())
         .key('S', ModBlocks.BRICK_SLAB.get())
         .key('P', Blocks.POLISHED_ANDESITE_SLAB)
         .addCriterion("has_bricks", this.hasItem(ModBlocks.BRICKS.get()))
@@ -43,6 +46,12 @@ public class GLRecipeProvider extends DeferredRecipeProvider {
         .key('X', ModBlocks.BRICKS.get())
         .key('D', Ingredient.fromTag(GLTags.Items.ELIGIBLE_DUSTS))
         .addCriterion("has_bricks", this.hasItem(ModBlocks.BRICKS.get()))
+        .build(consumer);
+
+    ShapelessRecipeBuilder.shapelessRecipe(ModItems.RITUAL_KNIFE.get(), 1)
+        .addIngredient(Tags.Items.RODS_WOODEN)
+        .addIngredient(Tags.Items.INGOTS_GOLD)
+        .addCriterion("has_gold", this.hasItem(Tags.Items.INGOTS_GOLD))
         .build(consumer);
   }
 }
