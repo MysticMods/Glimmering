@@ -21,7 +21,6 @@ public class ModelHolder implements ISelectiveResourceReloadListener {
 
   @Override
   public void onResourceManagerReload(IResourceManager resourceManager, Predicate<IResourceType> resourcePredicate) {
-    // TODO make this work selectively
     init();
   }
 }

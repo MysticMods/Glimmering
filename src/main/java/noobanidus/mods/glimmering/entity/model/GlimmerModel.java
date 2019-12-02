@@ -13,29 +13,29 @@ public class GlimmerModel extends EntityModel<GlimmerEntity> {
 
   public RendererModel shape1;
   public RendererModel shape2;
-  public RendererModel shape2_1;
+  public RendererModel shape3;
 
   public GlimmerModel() {
-    this.textureWidth = 16;
-    this.textureHeight = 16;
-    this.shape2 = new RendererModel(this, 3, 5);
-    this.shape2.setRotationPoint(0.0F, 0.0F, 0.0F);
-    this.shape2.addBox(-2.5F, -0.5F, -0.5F, 5, 1, 1, 0.0F);
-    this.shape2_1 = new RendererModel(this, 0, 7);
-    this.shape2_1.setRotationPoint(0.0F, 0.0F, 0.0F);
-    this.shape2_1.addBox(-0.5F, -0.5F, -2.5F, 1, 1, 5, 0.0F);
+    this.textureWidth = 64;
+    this.textureHeight = 64;
     this.shape1 = new RendererModel(this, 0, 0);
-    this.shape1.setRotationPoint(0.0F, 21.0F, 0.0F);
-    this.shape1.addBox(-0.5F, -2.5F, -0.5F, 1, 5, 1, 0.0F);
+    this.shape1.setRotationPoint(0.0F, 10.0F, 0.0F);
+    this.shape1.addBox(-1.5F, -7.5F, -1.5F, 3, 16, 3, 0.0F);
+    this.shape3 = new RendererModel(this, 0, 6);
+    this.shape3.setRotationPoint(0.0F, 0.0F, 0.0F);
+    this.shape3.addBox(-1.5F, -1.5F, -8.0F, 3, 3, 16, 0.0F);
+    this.shape2 = new RendererModel(this, 12, 0);
+    this.shape2.setRotationPoint(0.0F, 0.0F, 0.0F);
+    this.shape2.addBox(-8.0F, -1.5F, -1.5F, 16, 3, 3, 0.0F);
+    this.shape1.addChild(this.shape3);
     this.shape1.addChild(this.shape2);
-    this.shape1.addChild(this.shape2_1);
   }
 
   @Override
   public void render(GlimmerEntity entity, float f, float f1, float f2, float f3, float f4, float f5) {
     GlStateManager.pushMatrix();
-    GlStateManager.translatef(0f, -1.5f, 0f);
-    GlStateManager.scalef(2f, 2f, 2f);
+    GlStateManager.translatef(0f, 0.5f, 0f);
+    GlStateManager.scalef(0.7f, 0.7f, 0.7f);
     this.shape1.render(f5);
     GlStateManager.popMatrix();
   }

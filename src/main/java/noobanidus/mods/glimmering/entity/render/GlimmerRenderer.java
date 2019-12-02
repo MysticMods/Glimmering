@@ -47,15 +47,6 @@ public class GlimmerRenderer extends EntityRenderer<GlimmerEntity> implements IE
   }
 
   private void renderLivingAt(GlimmerEntity entityLivingBaseIn, double x, double y, double z) {
-    if (entityLivingBaseIn.getPose() == Pose.SLEEPING) {
-      Direction direction = entityLivingBaseIn.getBedDirection();
-      if (direction != null) {
-        float f = entityLivingBaseIn.getEyeHeight(Pose.STANDING) - 0.1F;
-        GlStateManager.translatef((float) x - (float) direction.getXOffset() * f, (float) y, (float) z - (float) direction.getZOffset() * f);
-        return;
-      }
-    }
-
     GlStateManager.translatef((float) x, (float) y, (float) z);
   }
 
@@ -265,7 +256,19 @@ public class GlimmerRenderer extends EntityRenderer<GlimmerEntity> implements IE
 
   @Override
   protected ResourceLocation getEntityTexture(GlimmerEntity entity) {
-    return new ResourceLocation("glimmering:textures/entity/glimmer.png");
+    int current = entity.getDataManager().get(GlimmerEntity.TYPE);
+    switch (current) {
+      default:
+        // 0 = Relay
+        // 1 = Transmit
+        // 2 = Receive
+      case 0:
+        return new ResourceLocation("glimmering:textures/entity/passthrough.png");
+      case 1:
+         return new ResourceLocation("glimmering:textures/entity/transmit.png");
+      case 2:
+        return new ResourceLocation("glimmering:textures/entity/receive.png");
+    }
   }
 
   @Override

@@ -12,6 +12,7 @@ import net.minecraftforge.common.Tags;
 import noobanidus.mods.glimmering.GLTags;
 import noobanidus.mods.glimmering.Glimmering;
 import noobanidus.mods.glimmering.init.ModBlocks;
+import noobanidus.mods.glimmering.init.ModEntities;
 import noobanidus.mods.glimmering.init.ModItems;
 
 import java.util.function.Consumer;
@@ -38,7 +39,7 @@ public class GLRecipeProvider extends DeferredRecipeProvider {
         .addCriterion("has_bricks", this.hasItem(ModBlocks.BRICKS.get()))
         .build(consumer);
 
-    ShapedRecipeBuilder.shapedRecipe(ModBlocks.RUNE.get(), 1)
+    ShapedRecipeBuilder.shapedRecipe(ModBlocks.RITUAL_RUNE.get(), 1)
         .patternLine("PXP")
         .patternLine("XDX")
         .patternLine("PXP")
@@ -50,8 +51,16 @@ public class GLRecipeProvider extends DeferredRecipeProvider {
 
     ShapelessRecipeBuilder.shapelessRecipe(ModItems.RITUAL_KNIFE.get(), 1)
         .addIngredient(Tags.Items.RODS_WOODEN)
-        .addIngredient(Tags.Items.INGOTS_GOLD)
+        .addIngredient(Tags.Items.NUGGETS_GOLD)
         .addCriterion("has_gold", this.hasItem(Tags.Items.INGOTS_GOLD))
+        .build(consumer);
+
+    ShapedRecipeBuilder.shapedRecipe(ModEntities.SPAWN_GLIMMER.get(), 1)
+        .patternLine(" R ")
+        .patternLine("RRR")
+        .patternLine(" R ")
+        .key('R', Tags.Items.DUSTS_REDSTONE)
+        .addCriterion("has_redstone", this.hasItem(Tags.Items.DUSTS_REDSTONE))
         .build(consumer);
   }
 }

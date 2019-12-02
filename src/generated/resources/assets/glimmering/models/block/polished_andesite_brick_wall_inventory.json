@@ -1,6 +1,0 @@
-{
-  "parent": "block/wall_inventory",
-  "textures": {
-    "wall": "glimmering:block/polished_andesite_bricks"
-  }
-}

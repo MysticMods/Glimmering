@@ -1,8 +1,0 @@
-{
-  "parent": "block/slab_top",
-  "textures": {
-    "side": "glimmering:block/polished_andesite_bricks",
-    "bottom": "glimmering:block/polished_andesite_bricks",
-    "top": "glimmering:block/polished_andesite_bricks"
-  }
-}

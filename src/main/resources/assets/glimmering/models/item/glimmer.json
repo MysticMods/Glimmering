@@ -2,8 +2,8 @@
 	"credit": "Made with Blockbench",
 	"parent": "block/block",
 	"textures": {
-		"0": "glimmering:block/glimmer",
-		"particle": "glimmering:block/glimmer"
+		"0": "glimmering:entity/passthrough",
+		"particle": "glimmering:entity/passthrough"
 	},
 	"elements": [
 		{

@@ -1,17 +1,12 @@
 package noobanidus.mods.glimmering.init;
 
 import net.minecraft.item.Item;
-import net.minecraft.item.Items;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.tags.ItemTags;
-import net.minecraftforge.common.Tags;
-import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.RegistryObject;
 import noobanidus.mods.glimmering.Glimmering;
 
-import static noobanidus.mods.glimmering.Glimmering.REGISTRY;
-
 import java.util.function.Supplier;
+
+import static noobanidus.mods.glimmering.Glimmering.REGISTRY;
 
 @SuppressWarnings("unused")
 public class ModItems {

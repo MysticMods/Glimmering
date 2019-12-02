@@ -4,7 +4,7 @@ import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraftforge.common.ToolType;
 import net.minecraftforge.fml.RegistryObject;
-import noobanidus.mods.glimmering.blocks.AndesiteBowl;
+import noobanidus.mods.glimmering.blocks.AndesiteBowlBlock;
 
 import java.util.function.Supplier;
 
@@ -14,9 +14,9 @@ import static noobanidus.mods.glimmering.Glimmering.REGISTRY;
 public class ModBlocks {
   private static Supplier<Block.Properties> STONE_PROPS = () -> Block.Properties.create(Material.ROCK).hardnessAndResistance(3f).sound(SoundType.STONE).harvestTool(ToolType.PICKAXE);
 
-  public static RegistryObject<AndesiteBowl> ANDESITE_BOWL = REGISTRY.registerBlock("andesite_bowl", REGISTRY.block(AndesiteBowl::new, STONE_PROPS), ModItems.PROPS);
+  public static RegistryObject<AndesiteBowlBlock> ANDESITE_BOWL = REGISTRY.registerBlock("andesite_bowl", REGISTRY.block(AndesiteBowlBlock::new, STONE_PROPS), ModItems.PROPS);
 
-  public static RegistryObject<Block> RUNE = REGISTRY.registerBlock("ritual_rune", REGISTRY.block(Block::new, STONE_PROPS), ModItems.PROPS);
+  public static RegistryObject<Block> RITUAL_RUNE = REGISTRY.registerBlock("ritual_rune", REGISTRY.block(Block::new, STONE_PROPS), ModItems.PROPS);
 
   public static RegistryObject<Block> BRICKS = REGISTRY.registerBlock("polished_andesite_bricks", REGISTRY.block(Block::new, STONE_PROPS), ModItems.PROPS);
   public static RegistryObject<StairsBlock> BRICK_STAIRS = REGISTRY.registerBlock("polished_andesite_brick_stairs", REGISTRY.stair(BRICKS), ModItems.PROPS);

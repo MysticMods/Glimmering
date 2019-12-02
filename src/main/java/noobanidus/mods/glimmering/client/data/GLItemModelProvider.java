@@ -15,7 +15,7 @@ public class GLItemModelProvider extends DeferredItemModelProvider {
   @Override
   protected void registerModels() {
     blockItem(ModBlocks.ANDESITE_BOWL);
-    blockItem(ModBlocks.RUNE);
+    blockItem(ModBlocks.RITUAL_RUNE);
     blockWithInventoryModel(ModBlocks.BRICK_WALL);
     blockItem(ModBlocks.BRICK_SLAB);
     blockItem(ModBlocks.BRICK_STAIRS);

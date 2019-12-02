@@ -1,7 +1,0 @@
-{
-  "parent": "block/cube_top",
-  "textures": {
-    "side": "block/polished_andesite",
-    "top": "glimmering:block/andesite_rune"
-  }
-}

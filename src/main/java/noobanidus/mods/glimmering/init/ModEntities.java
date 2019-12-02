@@ -8,6 +8,7 @@ import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.IForgeRegistry;
 import noobanidus.mods.glimmering.Glimmering;
 import noobanidus.mods.glimmering.entity.GlimmerEntity;
+import noobanidus.mods.glimmering.items.GlimmerSpawnItem;
 
 import java.util.function.Supplier;
 
@@ -19,7 +20,7 @@ public class ModEntities {
 
   public static Supplier<EntityType<GlimmerEntity>> GLIMMER = () -> GLIMMER_TYPE;
 
-  public static RegistryObject<SpawnEggItem> SPAWN_GLIMMER = Glimmering.REGISTRY.registerItem(GLIMMER_ID, () -> new SpawnEggItem(GLIMMER_TYPE, 0x418594, 0x211D15, ModRegistries.SIG.get()));
+  public static RegistryObject<SpawnEggItem> SPAWN_GLIMMER = Glimmering.REGISTRY.registerItem(GLIMMER_ID, () -> new GlimmerSpawnItem(GLIMMER_TYPE, 0x418594, 0x211D15, ModRegistries.SIG.get()));
 
   public static void load() {
   }

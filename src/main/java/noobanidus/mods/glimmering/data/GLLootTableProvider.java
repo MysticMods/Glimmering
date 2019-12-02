@@ -44,7 +44,7 @@ public class GLLootTableProvider extends LootTableProvider {
   public static class Blocks extends DeferredBlockLootTableProvider {
     @Override
     protected void addTables() {
-      self(ModBlocks.RUNE);
+      self(ModBlocks.RITUAL_RUNE);
       self(ModBlocks.ANDESITE_BOWL);
       self(ModBlocks.BRICK_STAIRS);
       self(ModBlocks.BRICK_SLAB);

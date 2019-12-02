@@ -5,15 +5,19 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.FMLPaths;
 import noobanidus.mods.glimmering.config.ConfigManager;
+import noobanidus.mods.glimmering.events.RightClickHandler;
 import noobanidus.mods.glimmering.init.ModBlocks;
 import noobanidus.mods.glimmering.init.ModEntities;
 import noobanidus.mods.glimmering.init.ModItems;
+import noobanidus.mods.glimmering.init.ModTiles;
 import noobanidus.mods.glimmering.setup.ClientSetup;
 import noobanidus.mods.glimmering.setup.ModSetup;
 import org.apache.logging.log4j.LogManager;
@@ -45,8 +49,11 @@ public class Glimmering {
     ModItems.load();
     ModBlocks.load();
     ModEntities.load();
+    ModTiles.load();
 
     modBus.addGenericListener(EntityType.class, ModEntities::registerEntities);
+
+    MinecraftForge.EVENT_BUS.addListener(EventPriority.HIGHEST, true, RightClickHandler::onRightClick);
 
     ConfigManager.loadConfig(ConfigManager.COMMON_CONFIG, FMLPaths.CONFIGDIR.get().resolve(MODID + "-common.toml"));
     REGISTRY.registerEventBus(modBus);

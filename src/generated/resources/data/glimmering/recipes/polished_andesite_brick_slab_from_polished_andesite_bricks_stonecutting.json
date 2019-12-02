@@ -1,8 +1,0 @@
-{
-  "type": "minecraft:stonecutting",
-  "ingredient": {
-    "item": "glimmering:polished_andesite_bricks"
-  },
-  "result": "glimmering:polished_andesite_brick_slab",
-  "count": 2
-}
