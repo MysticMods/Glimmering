@@ -52,6 +52,6 @@ A magical Forge energy transporation system.
 [[dependencies.glimmering]]
     modId="mysticallib"
     mandatory=true
-    versionRange="[1.9,)"
+    versionRange="[1.10,)"
     ordering="NONE"
     side="BOTH"
