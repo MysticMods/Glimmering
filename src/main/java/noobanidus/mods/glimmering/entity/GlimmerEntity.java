@@ -7,6 +7,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
@@ -260,7 +261,7 @@ public class GlimmerEntity extends LivingEntity {
   protected void collideWithEntity(Entity entityIn) {
   }
 
-  public int push (int amount) {
+  public int push(int amount) {
     return energyOperation(amount, false);
   }
 
@@ -325,6 +326,20 @@ public class GlimmerEntity extends LivingEntity {
         return new TranslationTextComponent("glimmering.node.type.1");
       case 2:
         return new TranslationTextComponent("glimmering.node.type.2");
+    }
+  }
+
+  @Override
+  public void writeAdditional(CompoundNBT compound) {
+    super.writeAdditional(compound);
+    compound.putInt("glimmer_type", getDataManager().get(TYPE));
+  }
+
+  @Override
+  public void readAdditional(CompoundNBT compound) {
+    super.readAdditional(compound);
+    if (compound.contains("glimmer_type")) {
+      getDataManager().set(TYPE, compound.getInt("glimmer_type"));
     }
   }
 }

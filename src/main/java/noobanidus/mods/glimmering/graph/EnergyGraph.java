@@ -31,6 +31,8 @@ public class EnergyGraph {
 
   private static Set<UUID> eligibleNodes(UUID start, Set<UUID> energyNodes, Set<UUID> consideredNodes) {
     consideredNodes.add(start);
+    if (!graph.nodes().contains(start)) return energyNodes;
+
     for (UUID u : graph.adjacentNodes(start)) {
       if (consideredNodes.contains(u)) {
         continue;
