@@ -18,7 +18,7 @@ version = "${minecraft_version}-${mod_version}"
 //    version = "${minecraft_version}-${mod_version}-" + System.getenv('BUILD_NUMBER')
 //}
 group = 'noobanidus.mods' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
-archivesBaseName = 'glimmer'
+archivesBaseName = 'glimmering'
 
 sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8' // Need this here so eclipse task generates correctly.
 

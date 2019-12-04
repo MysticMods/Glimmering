@@ -33,8 +33,9 @@ public class GLLangProvider extends DeferredLanguageProvider {
     add("glimmering.node.type.1", "Glimmer Transmitter");
     add("glimmering.node.type.2", "Glimmer Receiver");
     add("glimmering.message.type_change", "This Glimmer is now a %s.");
-    add("glimmering.tooltip.line0", "Magical energy transfer node. Hit with %s to change mode.");
-    add("glimmering.tooltip.line1", "Sneak while attacking to dismantle node.");
+    add("glimmering.tooltip.line0", "A touch of glimmering magic.");
+    add("glimmering.tooltip.line1", "Magical energy transfer node. Hit with %s to change mode.");
+    add("glimmering.tooltip.line2", "Sneak while hitting with %s to dismantle the Glimmer.");
 
     // TODO: Containers
   }

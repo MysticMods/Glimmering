@@ -138,7 +138,7 @@ public class GlimmerEntity extends LivingEntity {
         }
         getDataManager().set(TYPE, current);
         if (!player.world.isRemote) {
-          player.sendMessage(new TranslationTextComponent("glimmering.message.type_change", new TranslationTextComponent("glimmering.node.type." + current)).setStyle(new Style().setColor(TextFormatting.GOLD).setBold(true)));
+          player.sendMessage(new TranslationTextComponent("glimmering.message.type_change", new TranslationTextComponent("glimmering.node.type." + current)).setStyle(new Style().setColor(TextFormatting.GOLD)));
         }
         return true;
       }
