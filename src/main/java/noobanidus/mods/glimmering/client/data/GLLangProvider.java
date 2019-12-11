@@ -14,10 +14,6 @@ public class GLLangProvider extends LanguageProvider {
 
   @Override
   protected void addTranslations() {
-    add(Glimmering.ITEM_GROUP, "Glimmering");
-    addItemGroup(Glimmering.ITEM_GROUP, "Glimmering");
-
-
     add("glimmering.node.type.0", "Glimmer Relay");
     add("glimmering.node.type.1", "Glimmer Transmitter");
     add("glimmering.node.type.2", "Glimmer Receiver");
@@ -25,6 +21,5 @@ public class GLLangProvider extends LanguageProvider {
     add("glimmering.tooltip.line0", "A touch of glimmering magic.");
     add("glimmering.tooltip.line1", "Magical energy transfer node. Hit with %s to change mode.");
     add("glimmering.tooltip.line2", "Sneak while hitting with %s to dismantle the Glimmer.");
-
   }
 }
