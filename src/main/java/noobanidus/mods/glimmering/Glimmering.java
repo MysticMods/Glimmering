@@ -1,6 +1,6 @@
 package noobanidus.mods.glimmering;
 
-import epicsquid.mysticallib.registry.ModRegistry;
+import com.tterrag.registrate.Registrate;
 import net.minecraft.entity.EntityType;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
@@ -16,8 +16,6 @@ import noobanidus.mods.glimmering.config.ConfigManager;
 import noobanidus.mods.glimmering.events.RightClickHandler;
 import noobanidus.mods.glimmering.init.ModBlocks;
 import noobanidus.mods.glimmering.init.ModEntities;
-import noobanidus.mods.glimmering.init.ModItems;
-import noobanidus.mods.glimmering.init.ModTiles;
 import noobanidus.mods.glimmering.setup.ClientSetup;
 import noobanidus.mods.glimmering.setup.ModSetup;
 import org.apache.logging.log4j.LogManager;
@@ -31,11 +29,14 @@ public class Glimmering {
   public static final ItemGroup ITEM_GROUP = new ItemGroup("glimmering") {
     @Override
     public ItemStack createIcon() {
-      return new ItemStack(ModEntities.SPAWN_GLIMMER.get());
+      return ItemStack.EMPTY;
+      /*      return new ItemStack(ModEntities.SPAWN_GLIMMER.get());*/
     }
   };
 
-  public static final ModRegistry REGISTRY = new ModRegistry(MODID);
+  /*  public static final ModRegistry REGISTRY = new ModRegistry(MODID);*/
+
+  public static Registrate REGISTRATE;
 
   public static ModSetup setup = new ModSetup();
 
@@ -46,16 +47,18 @@ public class Glimmering {
     modBus.addListener(setup::gatherData);
     DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> modBus.addListener(ClientSetup::init));
 
-    ModItems.load();
+    REGISTRATE = Registrate.create(MODID);
+
+   /* ModItems.load();*/
     ModBlocks.load();
     ModEntities.load();
-    ModTiles.load();
+/*    ModTiles.load();*/
 
     modBus.addGenericListener(EntityType.class, ModEntities::registerEntities);
 
     MinecraftForge.EVENT_BUS.addListener(EventPriority.HIGHEST, true, RightClickHandler::onRightClick);
 
     ConfigManager.loadConfig(ConfigManager.COMMON_CONFIG, FMLPaths.CONFIGDIR.get().resolve(MODID + "-common.toml"));
-    REGISTRY.registerEventBus(modBus);
+    /*    REGISTRY.registerEventBus(modBus);*/
   }
 }

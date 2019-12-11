@@ -58,6 +58,7 @@ public class EnergyGraph {
       if (required == 0) {
         return;
       }
+
       int gathered = 0;
 
       UUID glimmer = entity.getUniqueID();
@@ -65,7 +66,7 @@ public class EnergyGraph {
 
       if (!energyNodes.isEmpty()) {
         ServerWorld world = (ServerWorld) entity.getEntityWorld();
-        List<GlimmerEntity> entities = world.getEntities(ModEntities.GLIMMER.get(), (p) -> energyNodes.contains(p.getUniqueID())).stream().map(o -> (GlimmerEntity) o).collect(Collectors.toList());
+        List<GlimmerEntity> entities = energyNodes.stream().map(world::getEntityByUuid).filter(o -> o instanceof GlimmerEntity).map(o -> (GlimmerEntity) o).collect(Collectors.toList());
         for (GlimmerEntity e : entities) {
           gathered += e.pull(required - gathered);
         }

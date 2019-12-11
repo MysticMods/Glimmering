@@ -1,4 +1,4 @@
-package noobanidus.mods.glimmering.data;
+/*package noobanidus.mods.glimmering.data;
 
 import epicsquid.mysticallib.data.DeferredRecipeProvider;
 import net.minecraft.block.Blocks;
@@ -63,4 +63,4 @@ public class GLRecipeProvider extends DeferredRecipeProvider {
         .addCriterion("has_redstone", this.hasItem(Tags.Items.DUSTS_REDSTONE))
         .build(consumer);
   }
-}
+}*/

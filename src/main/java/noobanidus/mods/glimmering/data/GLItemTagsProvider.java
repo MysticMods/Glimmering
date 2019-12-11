@@ -1,22 +1,23 @@
 package noobanidus.mods.glimmering.data;
 
-import epicsquid.mysticallib.data.DeferredItemTagsProvider;
 import net.minecraft.data.DataGenerator;
+import net.minecraft.data.ItemTagsProvider;
 import net.minecraft.item.Items;
 
-import static noobanidus.mods.glimmering.GLTags.Items.*;
+import static noobanidus.mods.glimmering.GLTags.Items.ELIGIBLE_DUSTS;
 
-public class GLItemTagsProvider extends DeferredItemTagsProvider {
+public class GLItemTagsProvider extends ItemTagsProvider {
   public GLItemTagsProvider(DataGenerator generatorIn) {
-    super(generatorIn, "Glimmering Item Tags Provider");
+    super(generatorIn);
+  }
+
+  @Override
+  public String getName() {
+    return "Glimmering Item Tags provider";
   }
 
   @Override
   protected void registerTags() {
-    addItemsToTag(ELIGIBLE_DUSTS, () -> Items.REDSTONE, () -> Items.LAPIS_LAZULI, () -> Items.BLAZE_POWDER, () -> Items.GLOWSTONE_DUST, () -> Items.PRISMARINE_CRYSTALS, () -> Items.GUNPOWDER, () -> Items.SUGAR);
-
-    copy(Blocks.SLABS, SLABS);
-    copy(Blocks.WALLS, WALLS);
-    copy(Blocks.STAIRS, STAIRS);
+    this.getBuilder(ELIGIBLE_DUSTS).add(Items.REDSTONE, Items.LAPIS_LAZULI, Items.BLAZE_POWDER, Items.GLOWSTONE_DUST, Items.GUNPOWDER, Items.SUGAR);
   }
 }

@@ -2,7 +2,6 @@ package noobanidus.mods.glimmering.init;
 
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
-import net.minecraft.item.SpawnEggItem;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.IForgeRegistry;
@@ -12,6 +11,8 @@ import noobanidus.mods.glimmering.items.GlimmerSpawnItem;
 
 import java.util.function.Supplier;
 
+import static noobanidus.mods.glimmering.Glimmering.REGISTRATE;
+
 @SuppressWarnings({"WeakerAccess", "ConstantConditions", "unchecked"})
 public class ModEntities {
   private static final String GLIMMER_ID = "glimmer";
@@ -20,7 +21,7 @@ public class ModEntities {
 
   public static Supplier<EntityType<GlimmerEntity>> GLIMMER = () -> GLIMMER_TYPE;
 
-  public static RegistryObject<SpawnEggItem> SPAWN_GLIMMER = Glimmering.REGISTRY.registerItem(GLIMMER_ID, () -> new GlimmerSpawnItem(GLIMMER_TYPE, 0x418594, 0x211D15, ModRegistries.SIG.get()));
+  public static RegistryObject<GlimmerSpawnItem> SPAWN_GLIMMER = REGISTRATE.item(GLIMMER_ID, GlimmerSpawnItem::new).properties(ModRegistries.SIG).register();
 
   public static void load() {
   }

@@ -1,33 +1,22 @@
 package noobanidus.mods.glimmering.client.data;
 
-import epicsquid.mysticallib.client.data.DeferredLanguageProvider;
 import net.minecraft.data.DataGenerator;
+import net.minecraftforge.common.data.LanguageProvider;
 import noobanidus.mods.glimmering.Glimmering;
 import noobanidus.mods.glimmering.init.ModBlocks;
 import noobanidus.mods.glimmering.init.ModEntities;
 import noobanidus.mods.glimmering.init.ModItems;
 
-public class GLLangProvider extends DeferredLanguageProvider {
+public class GLLangProvider extends LanguageProvider {
   public GLLangProvider(DataGenerator gen) {
-    super(gen, Glimmering.MODID);
+    super(gen, Glimmering.MODID, "en_us");
   }
 
   @Override
   protected void addTranslations() {
+    add(Glimmering.ITEM_GROUP, "Glimmering");
     addItemGroup(Glimmering.ITEM_GROUP, "Glimmering");
 
-    addBlock(ModBlocks.ANDESITE_BOWL);
-    addBlock(ModBlocks.RITUAL_RUNE);
-
-    addBlock(ModBlocks.BRICK_WALL);
-    addBlock(ModBlocks.BRICK_SLAB);
-    addBlock(ModBlocks.BRICK_STAIRS);
-    addBlock(ModBlocks.BRICKS);
-
-    addItem(ModItems.RITUAL_KNIFE);
-    addItem(ModEntities.SPAWN_GLIMMER);
-
-    addEntityType(ModEntities.GLIMMER);
 
     add("glimmering.node.type.0", "Glimmer Relay");
     add("glimmering.node.type.1", "Glimmer Transmitter");
@@ -37,6 +26,5 @@ public class GLLangProvider extends DeferredLanguageProvider {
     add("glimmering.tooltip.line1", "Magical energy transfer node. Hit with %s to change mode.");
     add("glimmering.tooltip.line2", "Sneak while hitting with %s to dismantle the Glimmer.");
 
-    // TODO: Containers
   }
 }

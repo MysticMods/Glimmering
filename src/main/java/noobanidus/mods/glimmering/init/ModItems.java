@@ -5,14 +5,15 @@ import net.minecraftforge.fml.RegistryObject;
 import noobanidus.mods.glimmering.Glimmering;
 
 import java.util.function.Supplier;
+import java.util.function.UnaryOperator;
 
-import static noobanidus.mods.glimmering.Glimmering.REGISTRY;
+import static noobanidus.mods.glimmering.Glimmering.REGISTRATE;
 
 @SuppressWarnings("unused")
 public class ModItems {
-  public static Supplier<Item.Properties> PROPS = () -> new Item.Properties().group(Glimmering.ITEM_GROUP);
+  public static UnaryOperator<Item.Properties> PROPS = (o) -> o.group(Glimmering.ITEM_GROUP);
 
-  public static RegistryObject<Item> RITUAL_KNIFE = REGISTRY.registerItem("ritual_knife", REGISTRY.item(Item::new, PROPS));
+  public static RegistryObject<Item> RITUAL_KNIFE = REGISTRATE.item("ritual_knife", Item::new).properties(PROPS).register();
 
   public static void load() {
   }

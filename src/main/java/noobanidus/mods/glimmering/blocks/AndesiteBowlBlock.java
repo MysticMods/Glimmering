@@ -1,7 +1,5 @@
 package noobanidus.mods.glimmering.blocks;
 
-import epicsquid.mysticallib.types.IInvWrapper;
-import epicsquid.mysticallib.util.VoxelUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
@@ -15,14 +13,11 @@ import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
-import net.minecraft.world.storage.loot.LootContext;
 import net.minecraftforge.items.CapabilityItemHandler;
-import net.minecraftforge.items.wrapper.InvWrapper;
 import noobanidus.mods.glimmering.tiles.AndesiteBowlTile;
-import noobanidus.mods.glimmering.tiles.RitualRuneTile;
+import noobanidus.mods.glimmering.util.VoxelUtil;
 
 import javax.annotation.Nullable;
-import java.util.List;
 
 @SuppressWarnings("deprecation")
 public class AndesiteBowlBlock extends Block {
