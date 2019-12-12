@@ -141,30 +141,30 @@ public class GlimmerEntity extends LivingEntity {
   public boolean attackEntityFrom(DamageSource source, float amount) {
     if (source.getTrueSource() != null && source.getTrueSource() instanceof PlayerEntity) {
       PlayerEntity player = (PlayerEntity) source.getTrueSource();
-      if (player.isSneaking()) {
-        ItemStack stack = player.getHeldItemMainhand();
-        if (stack.getItem() == ModItems.RITUAL_KNIFE.get()) {
+      ItemStack stack = player.getHeldItemMainhand();
+      if (stack.getItem() == ModItems.RITUAL_KNIFE.get()) {
+        if (player.isSneaking()) {
           this.entityDropItem(new ItemStack(ModEntities.SPAWN_GLIMMER.get()));
           EnergyGraph.clearEntity(this);
           this.remove();
           return true;
-        }
-      } else {
-        // Toggle stuff
-        // 0 = Relay
-        // 1 = Transmit
-        // 2 = Receive
-        int current = getDataManager().get(TYPE);
-        if (current >= 2) {
-          current = 0;
         } else {
-          current++;
+          // Toggle stuff
+          // 0 = Relay
+          // 1 = Transmit
+          // 2 = Receive
+          int current = getDataManager().get(TYPE);
+          if (current >= 2) {
+            current = 0;
+          } else {
+            current++;
+          }
+          getDataManager().set(TYPE, current);
+          if (!player.world.isRemote) {
+            player.sendMessage(new TranslationTextComponent("glimmering.message.type_change", new TranslationTextComponent("glimmering.node.type." + current)).setStyle(new Style().setColor(TextFormatting.GOLD)));
+          }
+          return true;
         }
-        getDataManager().set(TYPE, current);
-        if (!player.world.isRemote) {
-          player.sendMessage(new TranslationTextComponent("glimmering.message.type_change", new TranslationTextComponent("glimmering.node.type." + current)).setStyle(new Style().setColor(TextFormatting.GOLD)));
-        }
-        return true;
       }
     }
     return false;
