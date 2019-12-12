@@ -78,6 +78,10 @@ public class GlimmerRenderer extends EntityRenderer<GlimmerEntity> implements IE
       GlStateManager.pushMatrix();
       GlStateManager.scalef(0.65f, 0.65f, 0.65f);
       GlStateManager.translatef(0, 0.85f, 0);
+
+      GlStateManager.translated(0D, Math.sin(ageInTicks / 20D) / 19.5, 0D);
+      GlStateManager.rotatef(-ageInTicks * 0.7f, 0F, 1F, 0F);
+
       this.entityModel.render(entitylivingbaseIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor);
       GlStateManager.popMatrix();
       if (flag1) {

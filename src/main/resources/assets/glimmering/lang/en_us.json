@@ -1,5 +1,11 @@
 {
   "itemGroup.glimmering": "Glimmering",
   "entity.glimmering.glimmer": "Glimmer",
-  "item.glimmering.glimmer": "Glimmer"
+  "glimmering.node.type.0": "Glimmer Relay",
+  "glimmering.node.type.1": "Glimmer Transmitter",
+  "glimmering.node.type.2": "Glimmer Receiver",
+  "glimmering.message.type_change": "This Glimmer is now a %s.",
+  "glimmering.tooltip.line0": "A touch of glimmering magic.",
+  "glimmering.tooltip.line1": "Magical energy transfer node. Hit with %s to change mode.",
+  "glimmering.tooltip.line2": "Sneak while hitting with %s to dismantle the Glimmer."
 }

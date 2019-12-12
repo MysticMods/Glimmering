@@ -11,6 +11,7 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.particles.ParticleTypes;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.Direction;
@@ -127,6 +128,16 @@ public class GlimmerEntity extends LivingEntity {
     }
 
     world.getProfiler().endSection();
+  }
+
+  @Override
+  public void livingTick() {
+    if (this.world.isRemote) {
+      // AMBIENT_ENTITY_EFFECT
+      this.world.addParticle(ParticleTypes.AMBIENT_ENTITY_EFFECT, this.posX + (this.rand.nextDouble() - 0.5D) * (double) this.getWidth(), this.posY + this.rand.nextDouble() * (double) this.getHeight(), this.posZ + (this.rand.nextDouble() - 0.5D) * (double) this.getWidth(), (this.rand.nextDouble() - 0.5D) * 0.5D, -this.rand.nextDouble() * 0.5D, (this.rand.nextDouble() - 0.5D) * 0.5D);
+    }
+
+    super.livingTick();
   }
 
   private void updateGraph() {
