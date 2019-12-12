@@ -4,37 +4,46 @@ import com.google.common.graph.MutableValueGraph;
 import com.google.common.graph.ValueGraphBuilder;
 import net.minecraft.entity.Entity;
 import net.minecraft.world.server.ServerWorld;
-import noobanidus.mods.glimmering.Glimmering;
 import noobanidus.mods.glimmering.entity.GlimmerEntity;
-import noobanidus.mods.glimmering.init.ModEntities;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @SuppressWarnings("UnstableApiUsage")
 public class EnergyGraph {
-  public static MutableValueGraph<UUID, Integer> graph = ValueGraphBuilder.undirected().build();
+  private static MutableValueGraph<UUID, Integer> graph = ValueGraphBuilder.undirected().build();
 
   public static void clearEntity(GlimmerEntity entity) {
     graph.removeNode(entity.getUniqueID());
   }
 
-  public static void addEntity(GlimmerEntity glimmerEntity, List<Entity> entities) {
+  public static void addEntity(GlimmerEntity glimmerEntity, List<UUID> entities) {
     int type = glimmerEntity.getDataManager().get(GlimmerEntity.TYPE);
-    for (Entity e : entities) {
-      graph.putEdgeValue(glimmerEntity.getUniqueID(), e.getUniqueID(), type);
+    UUID start = glimmerEntity.getUniqueID();
+    for (UUID e : entities) {
+      graph.putEdgeValue(start, e, type);
     }
   }
 
-  private static Set<UUID> eligibleNodes(UUID start, Set<UUID> energyNodes, Set<UUID> consideredNodes) {
-    consideredNodes.add(start);
-    if (!graph.nodes().contains(start)) return energyNodes;
+  private static List<UUID> linkedTransmitters (GlimmerEntity start) {
+    start.getEntityWorld().getProfiler().startSection("Find Linked Transmitters");
+    List<UUID> result = linkedTransmitters(start.getUniqueID());
+    start.getEntityWorld().getProfiler().endSection();
+    return result;
+  }
 
+  private static List<UUID> linkedTransmitters (UUID start) {
+    return linkedTransmitters(start, new ArrayList<>(), new HashSet<>());
+  }
+
+  // I think this is a bread-first search. It's pretty dough-y.
+  private static List<UUID> linkedTransmitters(UUID start, List<UUID> transmitterNodes, Set<UUID> processedNodes) {
+    processedNodes.add(start);
+    if (!graph.nodes().contains(start)) return transmitterNodes;
+
+    List<UUID> toProcess = new ArrayList<>();
     for (UUID u : graph.adjacentNodes(start)) {
-      if (consideredNodes.contains(u)) {
+      if (processedNodes.contains(u)) {
         continue;
       }
       int value = graph.edgeValue(start, u);
@@ -42,39 +51,53 @@ public class EnergyGraph {
       // 1 = Transmit
       // 2 = Receive
       if (value == 0) {
-        eligibleNodes(u, energyNodes, consideredNodes);
+        toProcess.add(u);
       } else if (value == 1) {
-        energyNodes.add(u);
+        transmitterNodes.add(u);
       }
     }
 
-    return energyNodes;
+    // Convert to breadth instead of depth-first searching
+    for (UUID u : toProcess) {
+      linkedTransmitters(u, transmitterNodes, processedNodes);
+    }
+
+    return transmitterNodes;
   }
 
-  public static void findEnergyFor(GlimmerEntity entity) {
-    if (entity.isServerWorld()) {
-      int required = entity.desired();
+  public static class EntityIter implements Iterable<GlimmerEntity> {
+    private GlimmerEntity start;
+    private Iterator<UUID> uuidIterator;
+    private List<UUID> uuidInternal;
 
-      if (required == 0) {
-        return;
+    public EntityIter(GlimmerEntity entity) {
+      if (!entity.isServerWorld()) {
+        throw new IllegalStateException("Cannot create an EntityIter on non-server worlds");
       }
+      this.start = entity;
+      this.uuidInternal = linkedTransmitters(entity);
+    }
 
-      int gathered = 0;
+    @Override
+    public Iterator<GlimmerEntity> iterator() {
+      return new EntityIterator();
+    }
 
-      UUID glimmer = entity.getUniqueID();
-      Set<UUID> energyNodes = eligibleNodes(glimmer, new HashSet<>(), new HashSet<>());
-
-      if (!energyNodes.isEmpty()) {
-        ServerWorld world = (ServerWorld) entity.getEntityWorld();
-        List<GlimmerEntity> entities = energyNodes.stream().map(world::getEntityByUuid).filter(o -> o instanceof GlimmerEntity).map(o -> (GlimmerEntity) o).collect(Collectors.toList());
-        for (GlimmerEntity e : entities) {
-          gathered += e.pull(required - gathered);
+    public class EntityIterator implements Iterator<GlimmerEntity> {
+      public EntityIterator() {
+        if (uuidIterator == null) {
+          uuidIterator = uuidInternal.iterator();
         }
       }
 
-      int leftover = gathered - entity.push(gathered);
-      if (leftover > 0) {
-        //Glimmering.LOG.error(String.format("%s energy was wasted at %s,%s,%s!", leftover, entity.posX, entity.posY, entity.posZ));
+      @Override
+      public boolean hasNext() {
+        return uuidIterator.hasNext();
+      }
+
+      @Override
+      public GlimmerEntity next() {
+        return (GlimmerEntity) ((ServerWorld) start.getEntityWorld()).getEntityByUuid(uuidIterator.next());
       }
     }
   }

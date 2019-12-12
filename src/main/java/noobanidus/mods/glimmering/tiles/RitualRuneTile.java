@@ -15,7 +15,7 @@ public class RitualRuneTile extends TileEntity implements ITickableTileEntity {
 
   }
 
-  public void activate (PlayerEntity player) {
+  public void activate(PlayerEntity player) {
 
   }
 }

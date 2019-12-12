@@ -16,12 +16,12 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.Direction;
 import net.minecraft.util.HandSide;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
 import noobanidus.mods.glimmering.graph.EnergyGraph;
@@ -31,6 +31,8 @@ import noobanidus.mods.glimmering.init.ModItems;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
 public class GlimmerEntity extends LivingEntity {
   public static final double RANGE = 8.5;
@@ -94,20 +96,42 @@ public class GlimmerEntity extends LivingEntity {
   public void tick() {
     super.tick();
 
+    world.getProfiler().startSection("Tick");
     if (world.isRemote()) return;
 
     // Remove all pairs with this entity
-    if (this.ticksExisted % 20 == 0) {
+    if (this.ticksExisted % (20 * 4) == 0) {
+      world.getProfiler().startSection("Updating Graph");
       updateGraph();
+      world.getProfiler().endSection();
     }
 
-    EnergyGraph.findEnergyFor(this);
+    if (getDataManager().get(TYPE) == 2) {
+      world.getProfiler().startSection("Finding Requirements");
+      List<Requirement> requirements = required();
+      if (requirements != null) {
+        requirements.removeIf(Requirement::isMaxed);
+      }
+      world.getProfiler().endSection();
+      world.getProfiler().startSection("Fulfilling Requirements");
+      if (requirements != null && !requirements.isEmpty()) {
+        for (GlimmerEntity glimmer : new EnergyGraph.EntityIter(this)) {
+          glimmer.supply(requirements);
+          requirements.removeIf(Requirement::isMaxed);
+          if (requirements.isEmpty()) {
+            break;
+          }
+        }
+      }
+      world.getProfiler().endSection();
+    }
+
+    world.getProfiler().endSection();
   }
 
-  public void updateGraph() {
-    List<Entity> list = world.getEntitiesWithinAABB(ModEntities.GLIMMER.get(), new AxisAlignedBB(getPosition()).grow(RANGE), (e) -> true);
-    list.removeIf(o -> o.getUniqueID() == this.getUniqueID());
+  private void updateGraph() {
     EnergyGraph.clearEntity(this);
+    List<UUID> list = world.getEntitiesWithinAABB(ModEntities.GLIMMER.get(), new AxisAlignedBB(getPosition()).grow(RANGE), (e) -> !e.equals(this)).stream().map(Entity::getUniqueID).collect(Collectors.toList());
     if (!list.isEmpty()) {
       EnergyGraph.addEntity(this, list);
     }
@@ -261,59 +285,59 @@ public class GlimmerEntity extends LivingEntity {
   protected void collideWithEntity(Entity entityIn) {
   }
 
-  public int push(int amount) {
-    return energyOperation(amount, false);
+  @Override
+  public void travel(Vec3d p_213352_1_) {
+    return;
   }
 
-  public int desired() {
-    return energyOperation(0, true);
-  }
-
-  private int energyOperation(int amount, boolean simulate) {
-    if (getDataManager().get(TYPE) != 2) {
-      return 0;
-    }
+  @Nullable
+  public List<Requirement> required() {
+    world.getProfiler().startSection("Gathering Requirements");
+    List<Requirement> requirements = new ArrayList<>();
 
     for (Direction dir : Direction.values()) {
       TileEntity te = world.getTileEntity(getPosition().offset(dir));
       if (te != null) {
-        LazyOptional<IEnergyStorage> opt = te.getCapability(CapabilityEnergy.ENERGY);
-        if (opt.isPresent()) {
-          IEnergyStorage cap = opt.orElseThrow(IllegalStateException::new);
-          if (simulate) {
-            amount += cap.receiveEnergy(Integer.MAX_VALUE, true);
-          } else {
-            amount -= cap.receiveEnergy(amount, false);
-          }
-        }
+        te.getCapability(CapabilityEnergy.ENERGY).ifPresent((cap) -> {
+          requirements.add(new Requirement(cap));
+        });
       }
     }
 
-    return amount;
+    requirements.removeIf(Requirement::isMaxed);
+    world.getProfiler().endSection();
+
+    return requirements;
   }
 
-  public int pull(int amount) {
-    if (getDataManager().get(TYPE) != 1) {
-      return 0;
-    }
-
-    int gathered = 0;
-
+  public List<Requirement> supply(List<Requirement> requirements) {
+    world.getProfiler().startSection("Supplying Required Power from " + getEntityId());
     for (Direction dir : Direction.values()) {
+      if (requirements.isEmpty()) {
+        break;
+      }
+
       TileEntity te = world.getTileEntity(getPosition().offset(dir));
       if (te != null) {
-        LazyOptional<IEnergyStorage> opt = te.getCapability(CapabilityEnergy.ENERGY);
-        if (opt.isPresent()) {
-          IEnergyStorage cap = opt.orElseThrow(IllegalStateException::new);
-          gathered += cap.extractEnergy(amount - gathered, false);
-          if (gathered >= amount) {
-            break;
+        te.getCapability(CapabilityEnergy.ENERGY).ifPresent((cap) -> {
+          if (!cap.canExtract()) {
+            return;
           }
-        }
+
+          requirements.removeIf(Requirement::isMaxed);
+
+          for (Requirement req : requirements) {
+            int canExtract = cap.extractEnergy(req.getRequired(), true);
+            int accepted = req.getHandler().receiveEnergy(canExtract, false);
+            cap.extractEnergy(accepted, false);
+            req.setRequired(req.getRequired() - accepted);
+          }
+        });
       }
     }
+    world.getProfiler().endSection();
 
-    return gathered;
+    return requirements;
   }
 
   @Override
@@ -340,6 +364,40 @@ public class GlimmerEntity extends LivingEntity {
     super.readAdditional(compound);
     if (compound.contains("glimmer_type")) {
       getDataManager().set(TYPE, compound.getInt("glimmer_type"));
+    }
+  }
+
+  public static class Requirement {
+    private IEnergyStorage handler;
+    private int required;
+
+    public Requirement(IEnergyStorage handler) {
+      this.handler = handler;
+      this.required = handler.receiveEnergy(Integer.MAX_VALUE, true);
+    }
+
+    public IEnergyStorage getHandler() {
+      return handler;
+    }
+
+    public int getRequired() {
+      return required;
+    }
+
+    public void setRequired(int required) {
+      this.required = required;
+    }
+
+    public boolean isFull() {
+      if (!this.handler.canReceive()) {
+        return true;
+      }
+
+      return this.handler.getEnergyStored() >= this.handler.getMaxEnergyStored();
+    }
+
+    public boolean isMaxed() {
+      return this.isFull() || this.getRequired() <= 0;
     }
   }
 }

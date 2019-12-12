@@ -3,9 +3,6 @@ package noobanidus.mods.glimmering.client.data;
 import net.minecraft.data.DataGenerator;
 import net.minecraftforge.common.data.LanguageProvider;
 import noobanidus.mods.glimmering.Glimmering;
-import noobanidus.mods.glimmering.init.ModBlocks;
-import noobanidus.mods.glimmering.init.ModEntities;
-import noobanidus.mods.glimmering.init.ModItems;
 
 public class GLLangProvider extends LanguageProvider {
   public GLLangProvider(DataGenerator gen) {

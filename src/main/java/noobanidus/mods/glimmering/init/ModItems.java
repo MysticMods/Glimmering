@@ -4,7 +4,6 @@ import net.minecraft.item.Item;
 import net.minecraftforge.fml.RegistryObject;
 import noobanidus.mods.glimmering.Glimmering;
 
-import java.util.function.Supplier;
 import java.util.function.UnaryOperator;
 
 import static noobanidus.mods.glimmering.Glimmering.REGISTRATE;

@@ -65,8 +65,8 @@ public class ModBlocks {
         ctx.getProvider().wallInventory(ctx.getName() + "_inventory", ctx.getProvider().modLoc("block/polished_andesite_bricks"));
       })
       .item()
-        .model(ctx -> ctx.getProvider().blockWithInventoryModel(ModBlocks.BRICK_WALL))
-        .build()
+      .model(ctx -> ctx.getProvider().blockWithInventoryModel(ModBlocks.BRICK_WALL))
+      .build()
       .register();
 
   public static void load() {

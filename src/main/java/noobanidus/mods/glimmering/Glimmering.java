@@ -16,6 +16,8 @@ import noobanidus.mods.glimmering.config.ConfigManager;
 import noobanidus.mods.glimmering.events.RightClickHandler;
 import noobanidus.mods.glimmering.init.ModBlocks;
 import noobanidus.mods.glimmering.init.ModEntities;
+import noobanidus.mods.glimmering.init.ModItems;
+import noobanidus.mods.glimmering.init.ModTiles;
 import noobanidus.mods.glimmering.setup.ClientSetup;
 import noobanidus.mods.glimmering.setup.ModSetup;
 import org.apache.logging.log4j.LogManager;
@@ -49,16 +51,15 @@ public class Glimmering {
 
     REGISTRATE = Registrate.create(MODID);
 
-   /* ModItems.load();*/
+    ModItems.load();
     ModBlocks.load();
     ModEntities.load();
-/*    ModTiles.load();*/
+    ModTiles.load();
 
     modBus.addGenericListener(EntityType.class, ModEntities::registerEntities);
 
     MinecraftForge.EVENT_BUS.addListener(EventPriority.HIGHEST, true, RightClickHandler::onRightClick);
 
     ConfigManager.loadConfig(ConfigManager.COMMON_CONFIG, FMLPaths.CONFIGDIR.get().resolve(MODID + "-common.toml"));
-    /*    REGISTRY.registerEventBus(modBus);*/
   }
 }

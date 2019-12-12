@@ -11,7 +11,7 @@ public class ModTiles {
   public static RegistryObject<TileEntityType<RitualRuneTile>> RUNE = REGISTRATE.tileEntity("ritual_rune", RitualRuneTile::new).validBlock(ModBlocks.RITUAL_RUNE).register();
   public static RegistryObject<TileEntityType<AndesiteBowlTile>> ANDESITE_BOWL = REGISTRATE.tileEntity("andesite_bowl", AndesiteBowlTile::new).validBlock(ModBlocks.ANDESITE_BOWL).register();
 
-  public static void load () {
+  public static void load() {
 
   }
 }

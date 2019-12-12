@@ -74,8 +74,12 @@ public class GlimmerRenderer extends EntityRenderer<GlimmerEntity> implements IE
       if (flag1) {
         GlStateManager.setProfile(GlStateManager.Profile.TRANSPARENT_MODEL);
       }
-
+      GLX.glMultiTexCoord2f(GLX.GL_TEXTURE1, 240.0f, 240.f);
+      GlStateManager.pushMatrix();
+      GlStateManager.scalef(0.65f, 0.65f, 0.65f);
+      GlStateManager.translatef(0, 0.85f, 0);
       this.entityModel.render(entitylivingbaseIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor);
+      GlStateManager.popMatrix();
       if (flag1) {
         GlStateManager.unsetProfile(GlStateManager.Profile.TRANSPARENT_MODEL);
       }
@@ -202,12 +206,9 @@ public class GlimmerRenderer extends EntityRenderer<GlimmerEntity> implements IE
       float f4 = this.prepareScale(entity, partialTicks);
       float f5 = 0.0F;
       float f6 = 0.0F;
-      if (!entity.isPassenger() && entity.isAlive()) {
+      if (entity.isAlive()) {
         f5 = MathHelper.lerp(partialTicks, entity.prevLimbSwingAmount, entity.limbSwingAmount);
         f6 = entity.limbSwing - entity.limbSwingAmount * (1.0F - partialTicks);
-        if (entity.isChild()) {
-          f6 *= 3.0F;
-        }
 
         if (f5 > 1.0F) {
           f5 = 1.0F;
@@ -228,6 +229,8 @@ public class GlimmerRenderer extends EntityRenderer<GlimmerEntity> implements IE
 
       } else {
         boolean flag1 = this.setDoRenderBrightness(entity, partialTicks);
+        // Rendering is here!
+
         this.renderModel(entity, f6, f5, f8, f2, f7, f4);
         if (flag1) {
           this.unsetBrightness();
@@ -241,7 +244,7 @@ public class GlimmerRenderer extends EntityRenderer<GlimmerEntity> implements IE
 
       GlStateManager.disableRescaleNormal();
     } catch (Exception exception) {
-      Glimmering.LOG.error("Couldn't render entity", (Throwable) exception);
+      Glimmering.LOG.error("Couldn't render entity", exception);
     }
 
     GlStateManager.activeTexture(GLX.GL_TEXTURE1);
@@ -261,11 +264,11 @@ public class GlimmerRenderer extends EntityRenderer<GlimmerEntity> implements IE
         // 1 = Transmit
         // 2 = Receive
       case 0:
-        return new ResourceLocation("glimmering:textures/entity/passthrough.png");
+        return new ResourceLocation("glimmering:textures/entity/glimmer_gold.png");
       case 1:
-         return new ResourceLocation("glimmering:textures/entity/transmit.png");
+        return new ResourceLocation("glimmering:textures/entity/glimmer_green.png");
       case 2:
-        return new ResourceLocation("glimmering:textures/entity/receive.png");
+        return new ResourceLocation("glimmering:textures/entity/glimmer_blue.png");
     }
   }
 

@@ -1,7 +1,6 @@
 package noobanidus.mods.glimmering.items;
 
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.EntityType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.SpawnEggItem;
 import net.minecraft.util.text.*;
