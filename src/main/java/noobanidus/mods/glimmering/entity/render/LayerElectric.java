@@ -22,7 +22,7 @@ public class LayerElectric extends LayerRenderer<GlimmerEntity, GlimmerModel> {
   }
 
   public void render(GlimmerEntity glimmer, float p_212842_2_, float p_212842_3_, float p_212842_4_, float p_212842_5_, float p_212842_6_, float p_212842_7_, float p_212842_8_) {
-    if (glimmer.recentlyPowered()) {
+    if (true) { // glimmer.recentlyPowered()) {
       GlStateManager.depthMask(true);
       this.bindTexture(LIGHTNING_TEXTURE);
       GlStateManager.matrixMode(5890);

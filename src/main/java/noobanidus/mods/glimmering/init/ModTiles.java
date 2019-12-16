@@ -1,6 +1,7 @@
 package noobanidus.mods.glimmering.init;
 
 import com.tterrag.registrate.util.nullness.NonNullSupplier;
+import net.minecraft.block.Blocks;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraftforge.fml.RegistryObject;
 import noobanidus.mods.glimmering.tiles.AndesiteBowlTile;

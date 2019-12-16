@@ -59,8 +59,8 @@ public class BeamMessage {
       if (e == null || central == null) {
         continue;
       }
-      Vec3d orig = new Vec3d(central.posX, central.posY + 1, central.posZ);
-      Vec3d end = new Vec3d(e.posX, e.posY + 1, e.posZ);
+      Vec3d orig = new Vec3d(central.posX, central.posY + 0.55, central.posZ);
+      Vec3d end = new Vec3d(e.posX, e.posY + 0.55, e.posZ);
       Vec3d diff = end.subtract(orig);
       Vec3d movement = diff.normalize().mul(0.1, 0.1, 0.1);
       int iters = (int) (mag(diff) / mag(movement));

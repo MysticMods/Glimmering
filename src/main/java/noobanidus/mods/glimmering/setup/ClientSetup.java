@@ -3,6 +3,7 @@ package noobanidus.mods.glimmering.setup;
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.IReloadableResourceManager;
 import net.minecraftforge.client.event.ParticleFactoryRegisterEvent;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import noobanidus.mods.glimmering.entity.GlimmerEntity;

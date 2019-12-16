@@ -117,14 +117,17 @@ public class EnergyGraph {
 
   public static Set<Edge> getEdgesFrom (GlimmerEntity entity) {
     Vertex start = new Vertex(entity);
-    Set<Edge> result = new HashSet<>();
-    return getEdgesFrom(start, result);
+    return getEdgesFrom(start, new HashSet<>(), new HashSet<>());
   }
 
-  private static Set<Edge> getEdgesFrom (Vertex start, Set<Edge> result) {
+  private static Set<Edge> getEdgesFrom (Vertex start, Set<Edge> result, Set<Vertex> visitedNodes) {
+    visitedNodes.add(start);
+
     for (Vertex n : getAdjacent(start)) {
       result.add(new Edge(start, n));
-      getEdgesFrom(n, result);
+      if (!visitedNodes.contains(n)) {
+        getEdgesFrom(n, result, visitedNodes);
+      }
     }
     return result;
   }

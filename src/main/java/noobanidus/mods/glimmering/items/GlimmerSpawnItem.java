@@ -30,4 +30,6 @@ public class GlimmerSpawnItem extends SpawnEggItem {
     tooltip.add(new TranslationTextComponent("glimmering.tooltip.line1", ModItems.RITUAL_KNIFE.get().getName().setStyle(new Style().setColor(TextFormatting.RED).setBold(true))).setStyle(new Style().setColor(TextFormatting.GOLD)));
     tooltip.add(new TranslationTextComponent("glimmering.tooltip.line2", ModItems.RITUAL_KNIFE.get().getName().setStyle(new Style().setColor(TextFormatting.RED).setBold(true))).setStyle(new Style().setColor(TextFormatting.GOLD)));
   }
+
+
 }
