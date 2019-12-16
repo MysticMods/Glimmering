@@ -1,6 +1,8 @@
 package noobanidus.mods.glimmering;
 
 import com.tterrag.registrate.Registrate;
+import com.tterrag.registrate.providers.ProviderType;
+import com.tterrag.registrate.util.nullness.NonNullSupplier;
 import net.minecraft.entity.EntityType;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
@@ -14,10 +16,7 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.FMLPaths;
 import noobanidus.mods.glimmering.config.ConfigManager;
 import noobanidus.mods.glimmering.events.RightClickHandler;
-import noobanidus.mods.glimmering.init.ModBlocks;
-import noobanidus.mods.glimmering.init.ModEntities;
-import noobanidus.mods.glimmering.init.ModItems;
-import noobanidus.mods.glimmering.init.ModTiles;
+import noobanidus.mods.glimmering.init.*;
 import noobanidus.mods.glimmering.setup.ClientSetup;
 import noobanidus.mods.glimmering.setup.ModSetup;
 import org.apache.logging.log4j.LogManager;
@@ -32,23 +31,27 @@ public class Glimmering {
     @Override
     public ItemStack createIcon() {
       return ItemStack.EMPTY;
-      /*      return new ItemStack(ModEntities.SPAWN_GLIMMER.get());*/
     }
   };
 
-  /*  public static final ModRegistry REGISTRY = new ModRegistry(MODID);*/
 
   public static Registrate REGISTRATE;
 
-  public static ModSetup setup = new ModSetup();
+  private static ModSetup setup = new ModSetup();
 
   public Glimmering() {
     IEventBus modBus = FMLJavaModLoadingContext.get().getModEventBus();
 
     modBus.addListener(setup::init);
-    DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> modBus.addListener(ClientSetup::init));
+    DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> {
+      modBus.addListener(ClientSetup::init);
+      modBus.addListener(ClientSetup::registerParticles);
+      ModParticles.load();
+    });
 
     REGISTRATE = Registrate.create(MODID);
+    REGISTRATE.itemGroup(NonNullSupplier.of(() -> ITEM_GROUP));
+    REGISTRATE.addDataGenerator(ProviderType.LANG, ModLang.instance);
 
     ModItems.load();
     ModBlocks.load();
@@ -58,6 +61,7 @@ public class Glimmering {
     modBus.addGenericListener(EntityType.class, ModEntities::registerEntities);
 
     MinecraftForge.EVENT_BUS.addListener(EventPriority.HIGHEST, true, RightClickHandler::onRightClick);
+    ModParticles.particleRegistry.register(modBus);
 
     ConfigManager.loadConfig(ConfigManager.COMMON_CONFIG, FMLPaths.CONFIGDIR.get().resolve(MODID + "-common.toml"));
   }

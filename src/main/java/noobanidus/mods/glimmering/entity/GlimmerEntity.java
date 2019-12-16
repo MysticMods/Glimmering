@@ -1,20 +1,23 @@
 package noobanidus.mods.glimmering.entity;
 
+import com.google.common.collect.Lists;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityPredicate;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.network.PacketBuffer;
 import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.particles.ParticleTypes;
+import net.minecraft.network.datasync.IDataSerializer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.Direction;
+import net.minecraft.util.Hand;
 import net.minecraft.util.HandSide;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.Vec3d;
@@ -26,22 +29,44 @@ import net.minecraft.world.World;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
 import noobanidus.mods.glimmering.graph.EnergyGraph;
+import noobanidus.mods.glimmering.graph.EnergyGraph.NodeType;
 import noobanidus.mods.glimmering.init.ModEntities;
 import noobanidus.mods.glimmering.init.ModItems;
+import noobanidus.mods.glimmering.network.BeamMessage;
+import noobanidus.mods.glimmering.network.Networking;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-import java.util.UUID;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class GlimmerEntity extends LivingEntity {
-  public static final double RANGE = 8.5;
+  public static final double RANGE = 11.5;
+  public static final int DELAY = 3 * 20;
+  public int lastPowered = 0;
+  private boolean justLoaded = false;
 
-  public static final DataParameter<Integer> TYPE = EntityDataManager.createKey(GlimmerEntity.class, DataSerializers.VARINT);
-  // 0 = Relay
-  // 1 = Transmit
-  // 2 = Receive
+  public static IDataSerializer<NodeType> NODE_SERIALIZER = new IDataSerializer<NodeType>() {
+    @Override
+    public void write(PacketBuffer packetBuffer, NodeType nodeType) {
+      packetBuffer.writeInt(nodeType.ordinal());
+    }
+
+    @Override
+    public NodeType read(PacketBuffer packetBuffer) {
+      return NodeType.byIndex(packetBuffer.readInt());
+    }
+
+    @Override
+    public NodeType copyValue(NodeType nodeType) {
+      return nodeType;
+    }
+  };
+
+  public static final DataParameter<NodeType> TYPE = EntityDataManager.createKey(GlimmerEntity.class, NODE_SERIALIZER);
+
   private static List<ItemStack> EMPTY_INVENTORY = new ArrayList<>();
 
   public GlimmerEntity(EntityType<GlimmerEntity> type, World world) {
@@ -51,7 +76,7 @@ public class GlimmerEntity extends LivingEntity {
   @Override
   protected void registerData() {
     super.registerData();
-    getDataManager().register(TYPE, 0);
+    getDataManager().register(TYPE, NodeType.RELAY);
   }
 
   @Override
@@ -97,17 +122,24 @@ public class GlimmerEntity extends LivingEntity {
   public void tick() {
     super.tick();
 
+    if (justLoaded) {
+      world.getProfiler().startSection("Initial Load");
+      justLoaded = false;
+      updateGraph(false);
+      world.getProfiler().endSection();
+    }
+
     world.getProfiler().startSection("Tick");
     if (world.isRemote()) return;
 
     // Remove all pairs with this entity
-    if (this.ticksExisted % (20 * 4) == 0) {
+    /*if (this.ticksExisted % (20 * 4) == 0) {
       world.getProfiler().startSection("Updating Graph");
       updateGraph();
       world.getProfiler().endSection();
-    }
+    }*/
 
-    if (getDataManager().get(TYPE) == 2) {
+    if (getDataManager().get(TYPE) == NodeType.RECEIVE) {
       world.getProfiler().startSection("Finding Requirements");
       List<Requirement> requirements = required();
       if (requirements != null) {
@@ -117,7 +149,10 @@ public class GlimmerEntity extends LivingEntity {
       world.getProfiler().startSection("Fulfilling Requirements");
       if (requirements != null && !requirements.isEmpty()) {
         for (GlimmerEntity glimmer : new EnergyGraph.EntityIter(this)) {
-          glimmer.supply(requirements);
+          if (glimmer == null) {
+            continue;
+          }
+          glimmer.supply(this, requirements);
           requirements.removeIf(Requirement::isMaxed);
           if (requirements.isEmpty()) {
             break;
@@ -133,16 +168,28 @@ public class GlimmerEntity extends LivingEntity {
   @Override
   public void livingTick() {
     if (this.world.isRemote) {
-      // AMBIENT_ENTITY_EFFECT
-      this.world.addParticle(ParticleTypes.AMBIENT_ENTITY_EFFECT, this.posX + (this.rand.nextDouble() - 0.5D) * (double) this.getWidth(), this.posY + this.rand.nextDouble() * (double) this.getHeight(), this.posZ + (this.rand.nextDouble() - 0.5D) * (double) this.getWidth(), (this.rand.nextDouble() - 0.5D) * 0.5D, -this.rand.nextDouble() * 0.5D, (this.rand.nextDouble() - 0.5D) * 0.5D);
     }
 
     super.livingTick();
   }
 
-  private void updateGraph() {
+  @Override
+  public void remove(boolean p_remove_1_) {
     EnergyGraph.clearEntity(this);
-    List<UUID> list = world.getEntitiesWithinAABB(ModEntities.GLIMMER.get(), new AxisAlignedBB(getPosition()).grow(RANGE), (e) -> !e.equals(this)).stream().map(Entity::getUniqueID).collect(Collectors.toList());
+    super.remove(p_remove_1_);
+  }
+
+  @Override
+  public void onAddedToWorld() {
+    justLoaded = true;
+    super.onAddedToWorld();
+  }
+
+  public void updateGraph (boolean force) {
+    if (force) {
+      EnergyGraph.clearEntity(this);
+    }
+    List<GlimmerEntity> list = world.getEntitiesWithinAABB(ModEntities.GLIMMER.get(), new AxisAlignedBB(getPosition()).grow(RANGE), (e) -> !e.equals(this)).stream().map(e -> (GlimmerEntity) e).collect(Collectors.toList());
     if (!list.isEmpty()) {
       EnergyGraph.addEntity(this, list);
     }
@@ -156,24 +203,20 @@ public class GlimmerEntity extends LivingEntity {
       if (stack.getItem() == ModItems.RITUAL_KNIFE.get()) {
         if (player.isSneaking()) {
           this.entityDropItem(new ItemStack(ModEntities.SPAWN_GLIMMER.get()));
-          EnergyGraph.clearEntity(this);
           this.remove();
           return true;
         } else {
-          // Toggle stuff
-          // 0 = Relay
-          // 1 = Transmit
-          // 2 = Receive
-          int current = getDataManager().get(TYPE);
+          int current = getDataManager().get(TYPE).ordinal();
           if (current >= 2) {
             current = 0;
           } else {
             current++;
           }
-          getDataManager().set(TYPE, current);
+          getDataManager().set(TYPE, NodeType.byIndex(current));
           if (!player.world.isRemote) {
             player.sendMessage(new TranslationTextComponent("glimmering.message.type_change", new TranslationTextComponent("glimmering.node.type." + current)).setStyle(new Style().setColor(TextFormatting.GOLD)));
           }
+          updateGraph(true);
           return true;
         }
       }
@@ -301,6 +344,23 @@ public class GlimmerEntity extends LivingEntity {
     return;
   }
 
+  public boolean recentlyPowered() {
+    return lastPowered != 0 && ((ticksExisted - lastPowered) < DELAY);
+  }
+
+  @Override
+  public boolean processInitialInteract(PlayerEntity player, Hand hand) {
+    ItemStack held = player.getHeldItem(hand);
+    if (held.getItem() == ModItems.RITUAL_KNIFE.get() && !player.world.isRemote()) {
+      BeamMessage message = new BeamMessage(Lists.newArrayList(EnergyGraph.getEdgesFrom(this)));
+      Networking.sendTo(message, (ServerPlayerEntity) player);
+    } else {
+      return super.processInitialInteract(player, hand);
+    }
+
+    return false;
+  }
+
   @Nullable
   public List<Requirement> required() {
     world.getProfiler().startSection("Gathering Requirements");
@@ -321,7 +381,7 @@ public class GlimmerEntity extends LivingEntity {
     return requirements;
   }
 
-  public List<Requirement> supply(List<Requirement> requirements) {
+  public List<Requirement> supply(GlimmerEntity entity, List<Requirement> requirements) {
     world.getProfiler().startSection("Supplying Required Power from " + getEntityId());
     for (Direction dir : Direction.values()) {
       if (requirements.isEmpty()) {
@@ -342,6 +402,7 @@ public class GlimmerEntity extends LivingEntity {
             int accepted = req.getHandler().receiveEnergy(canExtract, false);
             cap.extractEnergy(accepted, false);
             req.setRequired(req.getRequired() - accepted);
+            entity.lastPowered = entity.ticksExisted;
           }
         });
       }
@@ -355,11 +416,11 @@ public class GlimmerEntity extends LivingEntity {
   public ITextComponent getName() {
     switch (getDataManager().get(TYPE)) {
       default:
-      case 0:
+      case RELAY:
         return new TranslationTextComponent("glimmering.node.type.0");
-      case 1:
+      case TRANSMIT:
         return new TranslationTextComponent("glimmering.node.type.1");
-      case 2:
+      case RECEIVE:
         return new TranslationTextComponent("glimmering.node.type.2");
     }
   }
@@ -367,14 +428,14 @@ public class GlimmerEntity extends LivingEntity {
   @Override
   public void writeAdditional(CompoundNBT compound) {
     super.writeAdditional(compound);
-    compound.putInt("glimmer_type", getDataManager().get(TYPE));
+    compound.putInt("glimmer_type", getDataManager().get(TYPE).ordinal());
   }
 
   @Override
   public void readAdditional(CompoundNBT compound) {
     super.readAdditional(compound);
     if (compound.contains("glimmer_type")) {
-      getDataManager().set(TYPE, compound.getInt("glimmer_type"));
+      getDataManager().set(TYPE, NodeType.byIndex(compound.getInt("glimmer_type")));
     }
   }
 

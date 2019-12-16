@@ -5,6 +5,13 @@
   "block.glimmering.polished_andesite_brick_wall": "Polished Andesite Brick Wall",
   "block.glimmering.polished_andesite_bricks": "Polished Andesite Bricks",
   "block.glimmering.ritual_rune": "Ritual Rune",
+  "glimmering.message.type_change": "This Glimmer is now a %s.",
+  "glimmering.node.type.0": "Glimmer Relay",
+  "glimmering.node.type.1": "Glimmer Transmitter",
+  "glimmering.node.type.2": "Glimmer Receiver",
+  "glimmering.tooltip.line0": "A touch of glimmering magic.",
+  "glimmering.tooltip.line1": "Magical energy transfer node. Hit with %s to change mode.",
+  "glimmering.tooltip.line2": "Sneak while hitting with %s to dismantle the Glimmer.",
   "item.glimmering.glimmer": "Glimmer",
-  "key": "value"
+  "item.glimmering.ritual_knife": "Ritual Knife"
 }

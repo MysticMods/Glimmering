@@ -1,5 +1,7 @@
 package noobanidus.mods.glimmering.init;
 
+import com.tterrag.registrate.util.nullness.NonNullSupplier;
+import com.tterrag.registrate.util.nullness.NonNullUnaryOperator;
 import net.minecraft.block.*;
 import net.minecraft.data.ShapedRecipeBuilder;
 import net.minecraft.data.SingleItemRecipeBuilder;
@@ -21,7 +23,7 @@ import static noobanidus.mods.glimmering.Glimmering.REGISTRATE;
 
 @SuppressWarnings("unused")
 public class ModBlocks {
-  private static UnaryOperator<Block.Properties> STONE_PROPS = (o) -> o.hardnessAndResistance(3f).sound(SoundType.STONE).harvestTool(ToolType.PICKAXE);
+  private static NonNullUnaryOperator<Block.Properties> STONE_PROPS = (o) -> o.hardnessAndResistance(3f).sound(SoundType.STONE).harvestTool(ToolType.PICKAXE);
 
   public static RegistryObject<Block> BRICKS = REGISTRATE.object("polished_andesite_bricks")
       .block(Block::new)
@@ -93,7 +95,7 @@ public class ModBlocks {
         ctx.getProvider().wallInventory(ctx.getName() + "_inventory", ctx.getProvider().modLoc("block/polished_andesite_bricks"));
       })
       .item()
-        .model(ctx -> ctx.getProvider().blockWithInventoryModel(ModBlocks.BRICK_WALL))
+        .model(ctx -> ctx.getProvider().blockWithInventoryModel(NonNullSupplier.of(ModBlocks.BRICK_WALL)))
         .properties((o) -> o.group(Glimmering.ITEM_GROUP))
         .build()
       .recipe(ctx -> {

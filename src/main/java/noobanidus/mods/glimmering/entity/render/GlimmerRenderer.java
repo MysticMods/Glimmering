@@ -17,6 +17,7 @@ import noobanidus.mods.glimmering.Glimmering;
 import noobanidus.mods.glimmering.entity.GlimmerEntity;
 import noobanidus.mods.glimmering.entity.model.GlimmerModel;
 import noobanidus.mods.glimmering.entity.model.ModelHolder;
+import noobanidus.mods.glimmering.graph.EnergyGraph;
 
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
@@ -42,6 +43,7 @@ public class GlimmerRenderer extends EntityRenderer<GlimmerEntity> implements IE
   public GlimmerRenderer(EntityRendererManager manager, GlimmerModel model) {
     super(manager);
     this.entityModel = model;
+    this.layerRenderers.add(new LayerElectric(this));
   }
 
   private void renderLivingAt(GlimmerEntity entityLivingBaseIn, double x, double y, double z) {
@@ -75,15 +77,7 @@ public class GlimmerRenderer extends EntityRenderer<GlimmerEntity> implements IE
         GlStateManager.setProfile(GlStateManager.Profile.TRANSPARENT_MODEL);
       }
       GLX.glMultiTexCoord2f(GLX.GL_TEXTURE1, 240.0f, 240.f);
-      GlStateManager.pushMatrix();
-      GlStateManager.scalef(0.65f, 0.65f, 0.65f);
-      GlStateManager.translatef(0, 0.85f, 0);
-
-      GlStateManager.translated(0D, Math.sin(ageInTicks / 20D) / 19.5, 0D);
-      GlStateManager.rotatef(-ageInTicks * 0.7f, 0F, 1F, 0F);
-
       this.entityModel.render(entitylivingbaseIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor);
-      GlStateManager.popMatrix();
       if (flag1) {
         GlStateManager.unsetProfile(GlStateManager.Profile.TRANSPARENT_MODEL);
       }
@@ -222,6 +216,11 @@ public class GlimmerRenderer extends EntityRenderer<GlimmerEntity> implements IE
       GlStateManager.enableAlphaTest();
       this.entityModel.setLivingAnimations(entity, f6, f5, partialTicks);
       this.entityModel.setRotationAngles(entity, f6, f5, f8, f2, f7, f4);
+      GlStateManager.pushMatrix();
+      GlStateManager.scalef(0.65f, 0.65f, 0.65f);
+      GlStateManager.translated(0D, Math.sin(f8 / 20D) / 19.5, 0D);
+      GlStateManager.rotatef(-f8 * 0.7f, 0F, 1F, 0F);
+
       if (this.renderOutlines) {
         GlStateManager.enableColorMaterial();
         GlStateManager.setupSolidRenderingTextureCombine(this.getTeamColor(entity));
@@ -230,7 +229,6 @@ public class GlimmerRenderer extends EntityRenderer<GlimmerEntity> implements IE
 
         GlStateManager.tearDownSolidRenderingTextureCombine();
         GlStateManager.disableColorMaterial();
-
       } else {
         boolean flag1 = this.setDoRenderBrightness(entity, partialTicks);
         // Rendering is here!
@@ -245,6 +243,7 @@ public class GlimmerRenderer extends EntityRenderer<GlimmerEntity> implements IE
           this.renderLayers(entity, f6, f5, partialTicks, f8, f2, f7, f4);
         }
       }
+      GlStateManager.popMatrix();
 
       GlStateManager.disableRescaleNormal();
     } catch (Exception exception) {
@@ -261,17 +260,17 @@ public class GlimmerRenderer extends EntityRenderer<GlimmerEntity> implements IE
 
   @Override
   protected ResourceLocation getEntityTexture(GlimmerEntity entity) {
-    int current = entity.getDataManager().get(GlimmerEntity.TYPE);
+    EnergyGraph.NodeType current = entity.getDataManager().get(GlimmerEntity.TYPE);
     switch (current) {
       default:
         // 0 = Relay
         // 1 = Transmit
         // 2 = Receive
-      case 0:
+      case RELAY:
         return new ResourceLocation("glimmering:textures/entity/glimmer_gold.png");
-      case 1:
+      case TRANSMIT:
         return new ResourceLocation("glimmering:textures/entity/glimmer_green.png");
-      case 2:
+      case RECEIVE:
         return new ResourceLocation("glimmering:textures/entity/glimmer_blue.png");
     }
   }

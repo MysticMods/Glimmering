@@ -21,7 +21,7 @@ public class ModEntities {
 
   public static Supplier<EntityType<GlimmerEntity>> GLIMMER = () -> GLIMMER_TYPE;
 
-  public static RegistryObject<GlimmerSpawnItem> SPAWN_GLIMMER = REGISTRATE.item(GLIMMER_ID, GlimmerSpawnItem::new).properties(ModRegistries.SIG).register();
+  public static RegistryObject<GlimmerSpawnItem> SPAWN_GLIMMER = REGISTRATE.item(GLIMMER_ID, GlimmerSpawnItem::new).properties(ModRegistries.NOP).register();
 
   public static void load() {
   }
