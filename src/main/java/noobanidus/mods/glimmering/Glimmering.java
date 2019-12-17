@@ -30,7 +30,7 @@ public class Glimmering {
   public static final ItemGroup ITEM_GROUP = new ItemGroup("glimmering") {
     @Override
     public ItemStack createIcon() {
-      return ItemStack.EMPTY;
+      return new ItemStack(ModEntities.SPAWN_GLIMMER.get());
     }
   };
 

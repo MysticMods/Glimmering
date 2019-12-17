@@ -24,7 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GlimmerRenderer extends EntityRenderer<GlimmerEntity> implements IEntityRenderer<GlimmerEntity, GlimmerModel> {
-  private GlimmerModel entityModel;
+  public GlimmerModel entityModel;
 
   private final List<LayerRenderer<GlimmerEntity, GlimmerModel>> layerRenderers = new ArrayList<>();
   private final FloatBuffer brightnessBuffer = GLAllocation.createDirectFloatBuffer(4);

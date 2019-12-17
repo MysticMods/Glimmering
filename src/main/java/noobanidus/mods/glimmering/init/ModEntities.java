@@ -22,7 +22,7 @@ import static noobanidus.mods.glimmering.Glimmering.REGISTRATE;
 @SuppressWarnings({"WeakerAccess", "ConstantConditions", "unchecked"})
 public class ModEntities {
   private static final String GLIMMER_ID = "glimmer";
-  private static NonNullUnaryOperator<Item.Properties> GLIMMER_RPOPS = (o) -> o.setTEISR(() -> GlimmerItemRenderer::new);
+  private static NonNullUnaryOperator<Item.Properties> GLIMMER_RPOPS = (o) -> o.setTEISR(() -> () -> GlimmerItemRenderer.instance);
 
   private static EntityType<GlimmerEntity> GLIMMER_TYPE = (EntityType<GlimmerEntity>) EntityType.Builder.create(GlimmerEntity::new, EntityClassification.CREATURE).size(0.75f, 0.75f).setTrackingRange(64).setShouldReceiveVelocityUpdates(false).setUpdateInterval(3).build(GLIMMER_ID).setRegistryName(Glimmering.MODID, GLIMMER_ID);
 

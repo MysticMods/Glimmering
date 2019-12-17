@@ -1,5 +1,6 @@
 package noobanidus.mods.glimmering.entity.render;
 
+import com.mojang.blaze3d.platform.GLX;
 import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.TextureManager;
@@ -12,9 +13,9 @@ import noobanidus.mods.glimmering.entity.model.GlimmerModel;
 
 @OnlyIn(Dist.CLIENT)
 public class GlimmerItemRenderer extends ItemStackTileEntityRenderer {
-  public static GlimmerItemRenderer instance = new GlimmerItemRenderer();
+  public static final GlimmerItemRenderer instance = new GlimmerItemRenderer();
 
-  private static GlimmerModel model = new GlimmerModel();
+  private final GlimmerModel model = new GlimmerModel();
 
   public GlimmerItemRenderer() {
   }
@@ -25,9 +26,10 @@ public class GlimmerItemRenderer extends ItemStackTileEntityRenderer {
     TextureManager tm = mc.getTextureManager();
     tm.bindTexture(new ResourceLocation("glimmering:textures/entity/glimmer_gold.png"));
     GlStateManager.pushMatrix();
-    GlStateManager.scalef(0.09F, -0.09F, -0.09F);
-    GlStateManager.translatef(11.5f, 6.5f, -1f);
-    model.render(null, 0, 0, 0, 0, 0, 0);
+/*    GlStateManager.translatef(2.15f, -1.5f, -1f);
+    GlStateManager.scalef(0.0045F, -0.0045f, -0.0045F);*/
+    GLX.glMultiTexCoord2f(GLX.GL_TEXTURE1, 240.0f, 240.f);
+    model.render(null, 0, 0, 0, 0, 0, 1);
     GlStateManager.popMatrix();
   }
 }
