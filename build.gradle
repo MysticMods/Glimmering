@@ -23,7 +23,7 @@ apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'maven-publish'
 apply plugin: 'eclipse'
 
-version = "MC${minecraft_version}-${mod_version}"
+version = "${minecraft_version}-${mod_version}"
 group = "noobanidus.mods"
 archivesBaseName = "glimmering"
 
@@ -117,7 +117,14 @@ dependencies {
     shade registrate
 }
 
+
 shadowJar {
     configurations = [project.configurations.shade]
-    relocate 'com.tterrag.registrate', 'team.chisel.repack.registrate'
+    relocate 'com.tterrag.registrate', 'noobanidus.mods.repack.registrate'
 }
+
+reobf {
+    shadowJar {}
+}
+
+

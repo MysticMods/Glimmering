@@ -46,7 +46,6 @@ public class ModBlocks {
 
   public static RegistryObject<PolishedAndesiteStairs> BRICK_STAIRS = REGISTRATE.object("polished_andesite_brick_stairs")
       .block(PolishedAndesiteStairs::new)
-      .tag(BlockTags.STAIRS)
       .properties(STONE_PROPS)
       .blockstate(ctx -> ctx.getProvider().stairsBlock(ctx.getEntry(), ctx.getProvider().modLoc("block/polished_andesite_bricks")))
       .item()
@@ -68,7 +67,6 @@ public class ModBlocks {
 
   public static RegistryObject<SlabBlock> BRICK_SLABS = REGISTRATE.object("polished_andesite_brick_slab")
       .block(SlabBlock::new)
-      .tag(BlockTags.SLABS)
       .properties(STONE_PROPS)
       .blockstate(ctx -> ctx.getProvider().slabBlock(ctx.getEntry(), BRICKS.get().getRegistryName(), ctx.getProvider().modLoc("block/polished_andesite_bricks")))
       .item()
@@ -88,7 +86,6 @@ public class ModBlocks {
 
   public static RegistryObject<WallBlock> BRICK_WALL = REGISTRATE.object("polished_andesite_brick_wall")
       .block(WallBlock::new)
-      .tag(BlockTags.WALLS)
       .properties(STONE_PROPS)
       .blockstate(ctx -> {
         ctx.getProvider().wallBlock(ctx.getEntry(), ctx.getProvider().modLoc("block/polished_andesite_bricks"));
