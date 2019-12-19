@@ -52,6 +52,7 @@ public class Glimmering {
     REGISTRATE = Registrate.create(MODID);
     REGISTRATE.itemGroup(NonNullSupplier.of(() -> ITEM_GROUP));
     REGISTRATE.addDataGenerator(ProviderType.LANG, ModLang.instance);
+    REGISTRATE.addDataGenerator(ProviderType.ITEM_TAGS, ModTags.instance);
 
     ModItems.load();
     ModBlocks.load();

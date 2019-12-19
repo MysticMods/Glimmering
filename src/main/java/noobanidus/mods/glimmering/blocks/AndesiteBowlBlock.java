@@ -45,6 +45,11 @@ public class AndesiteBowlBlock extends Block {
 
   @Override
   public boolean onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
+    TileEntity te = worldIn.getTileEntity(pos);
+    if (te instanceof AndesiteBowlTile) {
+      return ((AndesiteBowlTile) te).onBlockActivated(state, worldIn, pos, player, handIn, hit);
+    }
+
     return super.onBlockActivated(state, worldIn, pos, player, handIn, hit);
   }
 

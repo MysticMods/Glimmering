@@ -2,10 +2,10 @@
   "replace": false,
   "values": [
     "minecraft:redstone",
-    "minecraft:lapis_lazuli",
-    "minecraft:blaze_powder",
     "minecraft:glowstone_dust",
+    "minecraft:lapis_lazuli",
+    "minecraft:sugar",
     "minecraft:gunpowder",
-    "minecraft:sugar"
+    "minecraft:blaze_powder"
   ]
 }

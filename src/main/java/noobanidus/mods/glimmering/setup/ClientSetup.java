@@ -11,6 +11,8 @@ import noobanidus.mods.glimmering.entity.model.ModelHolder;
 import noobanidus.mods.glimmering.entity.render.GlimmerRenderer;
 import noobanidus.mods.glimmering.init.ModParticles;
 import noobanidus.mods.glimmering.particle.BeamParticleType;
+import noobanidus.mods.glimmering.tiles.AndesiteBowlTile;
+import noobanidus.mods.glimmering.tiles.render.AndesiteBowlTileRenderer;
 
 public class ClientSetup {
 
@@ -19,6 +21,7 @@ public class ClientSetup {
     ModelHolder.init();
 
     RenderingRegistry.registerEntityRenderingHandler(GlimmerEntity.class, new GlimmerRenderer.Factory());
+    ClientRegistry.bindTileEntitySpecialRenderer(AndesiteBowlTile.class, new AndesiteBowlTileRenderer());
   }
 
   public static void registerParticles(ParticleFactoryRegisterEvent event) {

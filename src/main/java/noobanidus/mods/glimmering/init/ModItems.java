@@ -21,9 +21,7 @@ public class ModItems {
         .addIngredient(Tags.Items.RODS_WOODEN)
         .addCriterion("gold_nugget", ctx.getProvider().hasItem(Tags.Items.NUGGETS_GOLD))
         .build(ctx.getProvider());
-  }).model(ctx -> {
-    ctx.getProvider().handheld(ctx::getEntry);
-  }).register();
+  }).model(ctx -> ctx.getProvider().handheld(ctx::getEntry)).register();
 
   public static void load() {
   }
