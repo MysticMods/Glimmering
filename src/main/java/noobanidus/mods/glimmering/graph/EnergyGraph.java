@@ -98,7 +98,9 @@ public class EnergyGraph {
     removedNodes.remove(a);
     removedNodes.remove(b);
     Set<Vertex> vertA = getAdjacent(a);
+    Set<Vertex> vertB = getAdjacent(b);
     vertA.add(b);
+    vertB.add(a);
   }
 
   public static void clearEntity(GlimmerEntity entity) {
@@ -111,7 +113,8 @@ public class EnergyGraph {
     Vertex start = new Vertex(glimmerEntity);
     removedNodes.remove(start);
     for (GlimmerEntity e : entities) {
-      addEdge(start, new Vertex(e));
+      Vertex ev = new Vertex(e);
+      addEdge(start, ev);
     }
   }
 
