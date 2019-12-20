@@ -16,5 +16,6 @@ public class ModLang implements Consumer<RegistrateLangProvider> {
     ctx.add("glimmering.tooltip.line0", "A touch of glimmering magic.");
     ctx.add("glimmering.tooltip.line1", "Magical energy transfer node. Hit with %s to change mode.");
     ctx.add("glimmering.tooltip.line2", "Sneak while hitting with %s to dismantle the Glimmer.");
+    ctx.add("glimmering.message.invalid_structure", "There is something lacking about your ritual site.");
   }
 }

@@ -21,7 +21,7 @@ import javax.annotation.Nullable;
 
 @SuppressWarnings("deprecation")
 public class AndesiteBowlBlock extends Block {
-  private static VoxelShape SHAPE = VoxelUtil.multiOr(Block.makeCuboidShape(4.0, 0.0, 4.0, 12.0, 9.0, 12.0), Block.makeCuboidShape(0.0, 11.0, 0.0, 2.0, 17.0, 16.0), Block.makeCuboidShape(14.0, 11.0, 0.0, 16.0, 17.0, 16.0), Block.makeCuboidShape(0.0, 9.0, 0.0, 16.0, 11.0, 16.0), Block.makeCuboidShape(2.0, 11.0, 0.0, 14.0, 17.0, 2.0), Block.makeCuboidShape(2.0, 11.0, 14.0, 14.0, 17.0, 16.0));
+  private static VoxelShape SHAPE = VoxelUtil.multiOr(Block.makeCuboidShape(4, 0, 4,12, 8, 12), Block.makeCuboidShape(0, 10, 0,2, 16, 16), Block.makeCuboidShape(14, 10, 0,16, 16, 16), Block.makeCuboidShape(0, 8, 0,16, 10, 16), Block.makeCuboidShape(2, 10, 0,14, 16, 2), Block.makeCuboidShape(2, 10, 14,14, 16, 16));
 
   public AndesiteBowlBlock(Properties properties) {
     super(properties);

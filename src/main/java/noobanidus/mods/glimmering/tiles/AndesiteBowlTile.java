@@ -12,25 +12,18 @@ import net.minecraftforge.items.ItemStackHandler;
 import noobanidus.mods.glimmering.GLTags;
 import noobanidus.mods.glimmering.init.ModTiles;
 
-public class AndesiteBowlTile extends TileEntity {
+public class AndesiteBowlTile extends TileEntity implements IEasilyUpdated {
   public ItemStackHandler inventory = new ItemStackHandler(1) {
     @Override
     protected void onContentsChanged(int slot) {
       super.onContentsChanged(slot);
       AndesiteBowlTile.this.markDirty();
-      updatePacketViaState();
+      updateViaState();
     }
   };
 
   public AndesiteBowlTile() {
     super(ModTiles.ANDESITE_BOWL.get());
-  }
-
-  public void updatePacketViaState() {
-    if (world != null) {
-      BlockState state = world.getBlockState(getPos());
-      world.notifyBlockUpdate(getPos(), state, state, 8);
-    }
   }
 
   public boolean onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {

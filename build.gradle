@@ -45,7 +45,7 @@ minecraft {
             property 'forge.logging.console.level', 'debug'
 
             mods {
-                chisel {
+                glimmering {
                     source sourceSets.main
                 }
             }
@@ -60,7 +60,7 @@ minecraft {
             property 'forge.logging.console.level', 'debug'
 
             mods {
-                chisel {
+                glimmering {
                     source sourceSets.main
                 }
             }
@@ -77,7 +77,7 @@ minecraft {
             property 'forge.logging.console.level', 'debug'
 
             mods {
-                chisel {
+                glimmering {
                     source sourceSets.main
                 }
             }
@@ -94,7 +94,7 @@ sourceSets.main.resources {
 }
 
 repositories {
-    maven { // CTM
+    maven {
         url "http://maven.tterrag.com/"
     }
     maven { // JEI

@@ -5,7 +5,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.renderer.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
-import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
 import noobanidus.mods.glimmering.tiles.AndesiteBowlTile;
 
