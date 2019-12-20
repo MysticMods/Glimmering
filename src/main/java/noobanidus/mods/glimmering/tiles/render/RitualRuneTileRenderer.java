@@ -11,5 +11,6 @@ public class RitualRuneTileRenderer extends TileEntityRenderer<RitualRuneTile> {
     }
 
     int ticksActive = tei.getRitualTicks();
+
   }
 }

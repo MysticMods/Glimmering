@@ -126,11 +126,25 @@ public class EnergyGraph {
   private static Set<Edge> getEdgesFrom (Vertex start, Set<Edge> result, Set<Vertex> visitedNodes) {
     visitedNodes.add(start);
 
+    List<Vertex> toProcess = new ArrayList<>();
     for (Vertex n : getAdjacent(start)) {
-      result.add(new Edge(start, n));
-      if (!visitedNodes.contains(n)) {
-        getEdgesFrom(n, result, visitedNodes);
+      if (visitedNodes.contains(n)) {
+        continue;
       }
+
+      toProcess.add(n);
+
+      if (n.getType() == NodeType.RELAY) {
+        result.add(new Edge(start, n));
+      } else if (start.getType() == NodeType.TRANSMIT && n.getType() == NodeType.RECEIVE) {
+        result.add(new Edge(start, n));
+      } else if (start.getType() == NodeType.RECEIVE && n.getType() == NodeType.TRANSMIT) {
+        result.add(new Edge(start, n));
+      }
+    }
+
+    for (Vertex n : toProcess) {
+      getEdgesFrom(n, result, visitedNodes);
     }
     return result;
   }
@@ -146,7 +160,6 @@ public class EnergyGraph {
     return linkedTransmitters(start, new ArrayList<>(), new HashSet<>());
   }
 
-  // I think this is a bread-first search. It's pretty dough-y.
   private static List<Vertex> linkedTransmitters(Vertex start, List<Vertex> transmitterNodes, Set<Vertex> processedNodes) {
     processedNodes.add(start);
 
