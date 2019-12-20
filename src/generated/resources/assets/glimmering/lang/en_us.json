@@ -5,6 +5,7 @@
   "block.glimmering.polished_andesite_brick_wall": "Polished Andesite Brick Wall",
   "block.glimmering.polished_andesite_bricks": "Polished Andesite Bricks",
   "block.glimmering.ritual_rune": "Ritual Rune",
+  "glimmering.message.invalid_structure": "There is something lacking about your ritual site.",
   "glimmering.message.type_change": "This Glimmer is now a %s.",
   "glimmering.node.type.0": "Glimmer Relay",
   "glimmering.node.type.1": "Glimmer Transmitter",
