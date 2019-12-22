@@ -47,7 +47,6 @@ public class Beam {
 
   @OnlyIn(Dist.CLIENT)
   public void render(BufferBuilder bufferBuilder) {
-    GlStateManager.pushMatrix();
     float f2 = 1.0F;
     float f3 = f2 * 0.5F % 1.0F;
     Vec3d vec3d2 = stop.add(start);
@@ -55,8 +54,8 @@ public class Beam {
     vec3d2 = vec3d2.normalize();
     float f5 = (float) Math.acos(vec3d2.y);
     float f6 = (float) Math.atan2(vec3d2.z, vec3d2.x);
-    //GlStateManager.rotatef((((float) Math.PI / 2F) - f6) * (180F / (float) Math.PI), 0.0F, 1.0F, 0.0F);
-    //GlStateManager.rotatef(f5 * (180F / (float) Math.PI), 1.0F, 0.0F, 0.0F);
+    GlStateManager.rotatef((((float) Math.PI / 2F) - f6) * (180F / (float) Math.PI), 0.0F, 1.0F, 0.0F);
+    GlStateManager.rotatef(f5 * (180F / (float) Math.PI), 1.0F, 0.0F, 0.0F);
     double d1 = (double) f2 * 0.0D;
 
     double d12 = Math.cos(d1 + Math.PI) * 0.12D;
@@ -79,7 +78,6 @@ public class Beam {
     bufferBuilder.pos(d16, -d0, d17).tex(1, d22).color(255, 255, 255, 255).endVertex();
     bufferBuilder.pos(d18, -d0, d19).tex(0.0D, d22).color(255, 255, 255, 255).endVertex();
     bufferBuilder.pos(d18, 0.0D, d19).tex(0.0D, d23).color(255, 255, 255, 255).endVertex();
-    GlStateManager.popMatrix();
   }
 }
 

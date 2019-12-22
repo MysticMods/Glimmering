@@ -59,6 +59,7 @@ public class BeamManager {
     //GlStateManager.translated(-iPX, -iPY, -iPZ);
     GlStateManager.disableCull();
     GLX.glMultiTexCoord2f(GLX.GL_TEXTURE1, 240.0F, 240.0F);
+    BufferBuilder buffer = tessellator.getBuffer();
 
     for (Map.Entry<ResourceLocation, List<Beam>> entry : BEAM_MAP.entrySet()) {
       tm.bindTexture(entry.getKey());
@@ -67,10 +68,11 @@ public class BeamManager {
         if (beam.removed()) {
           return;
         }
-        BufferBuilder buffer = tessellator.getBuffer();
+        GlStateManager.pushMatrix();
         buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR);
         beam.render(buffer);
         tessellator.draw();
+        GlStateManager.popMatrix();
       });
     }
 
