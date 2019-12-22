@@ -157,7 +157,6 @@ public class Beam {
   }*/
 
   public static <T extends Beam> T read(BeamInterface<T> creator, PacketBuffer buf) {
-    short textureIndex = buf.readShort();
     T result = creator.create(
         new Vec3d(buf.readDouble(), buf.readDouble(), buf.readDouble()),
         new Vec3d(buf.readDouble(), buf.readDouble(), buf.readDouble()),
