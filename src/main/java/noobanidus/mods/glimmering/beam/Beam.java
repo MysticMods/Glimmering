@@ -156,8 +156,8 @@ public class Beam {
     this.age = buf.readInt();
   }*/
 
-  public static <T extends Beam> T read(BeamInterface<T> creator, PacketBuffer buf) {
-    T result = creator.create(
+  public static Beam read(PacketBuffer buf) {
+    Beam result = new Beam(
         new Vec3d(buf.readDouble(), buf.readDouble(), buf.readDouble()),
         new Vec3d(buf.readDouble(), buf.readDouble(), buf.readDouble()),
         buf.readInt(),
@@ -166,11 +166,6 @@ public class Beam {
     result.setAge(buf.readInt());
     result.setTextureIndex(buf.readShort());
     return result;
-  }
-
-  @FunctionalInterface
-  public interface BeamInterface<T extends Beam> {
-    T create(Vec3d start, Vec3d stop, int maxAge, int dimension);
   }
 }
 
