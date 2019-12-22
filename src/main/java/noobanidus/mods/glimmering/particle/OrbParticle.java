@@ -2,7 +2,6 @@ package noobanidus.mods.glimmering.particle;
 
 import com.mojang.blaze3d.platform.GLX;
 import com.mojang.blaze3d.platform.GlStateManager;
-import net.minecraft.block.Block;
 import net.minecraft.client.particle.IParticleRenderType;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.renderer.ActiveRenderInfo;
@@ -10,23 +9,20 @@ import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import noobanidus.mods.glimmering.Glimmering;
 import org.lwjgl.opengl.GL11;
 
 import javax.annotation.Nonnull;
 
-public class BeamParticle extends Particle {
-  public static final ResourceLocation particles = new ResourceLocation(Glimmering.MODID, "textures/misc/particles.png");
+public class OrbParticle extends Particle {
+  public static final ResourceLocation particles = new ResourceLocation(Glimmering.MODID, "textures/misc/beam1.png");
 
   protected float particleScale = 1f;
   public final int particle = 16;
 
-  public BeamParticle(World world, double x, double y, double z, float size, float red, float green, float blue, int m) {
+  public OrbParticle(World world, double x, double y, double z, float size, float red, float green, float blue, int m) {
     super(world, x, y, z, 0.0D, 0.0D, 0.0D);
     particleRed = red;
     particleGreen = green;
@@ -44,20 +40,20 @@ public class BeamParticle extends Particle {
 
   @Override
   public void renderParticle(BufferBuilder buffer, ActiveRenderInfo entityIn, float partialTicks, float rotationX, float rotationZ, float rotationYZ, float rotationXY, float rotationXZ) {
-    float var8 = particle % 8 / 8.0F;
-    float var9 = var8 + 0.0624375F * 2;
-    float var10 = particle / 8F / 8.0F;
-    float var11 = var10 + 0.0624375F * 2;
+    float var8 = 0; // particle % 8 / 8.0F;
+    float var9 = 1; // var8 + 0.0624375F * 2;
+    float var10 = 0; // particle / 8F / 8.0F;
+    float var11 = 1; // var10 + 0.0624375F * 2;
     float scale = 0.1F * particleScale;
     float posX = (float) (prevPosX + (this.posX - prevPosX) * partialTicks - interpPosX);
     float posY = (float) (prevPosY + (this.posY - prevPosY) * partialTicks - interpPosY);
     float posZ = (float) (prevPosZ + (this.posZ - prevPosZ) * partialTicks - interpPosZ);
-    float colourScale = 0.8f;
+    float colourScale = 1f;
 
-    buffer.pos(posX - rotationX * scale - rotationXY * scale, posY - rotationZ * scale, posZ - rotationYZ * scale - rotationXZ * scale).tex(var9, var11).color(particleRed * colourScale, particleGreen * colourScale, particleBlue * colourScale, 1).endVertex();
-    buffer.pos(posX - rotationX * scale + rotationXY * scale, posY + rotationZ * scale, posZ - rotationYZ * scale + rotationXZ * scale).tex(var9, var10).color(particleRed * colourScale, particleGreen * colourScale, particleBlue * colourScale, 1).endVertex();
-    buffer.pos(posX + rotationX * scale + rotationXY * scale, posY + rotationZ * scale, posZ + rotationYZ * scale + rotationXZ * scale).tex(var8, var10).color(particleRed * colourScale, particleGreen * colourScale, particleBlue * colourScale, 1).endVertex();
-    buffer.pos(posX + rotationX * scale - rotationXY * scale, posY - rotationZ * scale, posZ + rotationYZ * scale - rotationXZ * scale).tex(var8, var11).color(particleRed * colourScale, particleGreen * colourScale, particleBlue * colourScale, 1).endVertex();
+    buffer.pos(posX - rotationX * scale - rotationXY * scale, posY - rotationZ * scale, posZ - rotationYZ * scale - rotationXZ * scale).tex(var9, var11).color(particleRed * colourScale, particleGreen * colourScale, particleBlue * colourScale, 0.3f).endVertex();
+    buffer.pos(posX - rotationX * scale + rotationXY * scale, posY + rotationZ * scale, posZ - rotationYZ * scale + rotationXZ * scale).tex(var9, var10).color(particleRed * colourScale, particleGreen * colourScale, particleBlue * colourScale, 0.3f).endVertex();
+    buffer.pos(posX + rotationX * scale + rotationXY * scale, posY + rotationZ * scale, posZ + rotationYZ * scale + rotationXZ * scale).tex(var8, var10).color(particleRed * colourScale, particleGreen * colourScale, particleBlue * colourScale, 0.3f).endVertex();
+    buffer.pos(posX + rotationX * scale - rotationXY * scale, posY - rotationZ * scale, posZ + rotationYZ * scale - rotationXZ * scale).tex(var8, var11).color(particleRed * colourScale, particleGreen * colourScale, particleBlue * colourScale, 0.3f).endVertex();
   }
 
   @Override
@@ -79,7 +75,6 @@ public class BeamParticle extends Particle {
   private static void beginRenderCommon(BufferBuilder buffer, TextureManager textureManager) {
     GL11.glPushAttrib(GL11.GL_LIGHTING_BIT);
     GlStateManager.depthMask(false);
-    GlStateManager.disableDepthTest();
     GlStateManager.enableBlend();
     GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
     GlStateManager.disableLighting();
@@ -90,7 +85,6 @@ public class BeamParticle extends Particle {
   }
 
   private static void endRenderCommon() {
-    GlStateManager.enableDepthTest();
     GlStateManager.disableBlend();
     GlStateManager.depthMask(true);
     GL11.glPopAttrib();

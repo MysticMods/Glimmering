@@ -10,12 +10,12 @@ import noobanidus.mods.glimmering.init.ModParticles;
 import javax.annotation.Nonnull;
 import java.util.Locale;
 
-public class BeamParticleData implements IParticleData {
+public class OrbParticleData implements IParticleData {
   public final float size;
   public final float r, g, b;
   public final int m;
 
-  public BeamParticleData(float size, float r, float g, float b, int m) {
+  public OrbParticleData(float size, float r, float g, float b, int m) {
     this.size = size;
     this.r = r;
     this.g = g;
@@ -25,8 +25,8 @@ public class BeamParticleData implements IParticleData {
 
   @Nonnull
   @Override
-  public ParticleType<BeamParticleData> getType() {
-    return ModParticles.BEAM.get();
+  public ParticleType<OrbParticleData> getType() {
+    return ModParticles.ORB.get();
   }
 
   @Override
@@ -44,10 +44,10 @@ public class BeamParticleData implements IParticleData {
     return String.format(Locale.ROOT, "%s %.2f %.2f %.2f %.2f %d", this.getType().getRegistryName(), this.size, this.r, this.g, this.b, this.m);
   }
 
-  public static final IDeserializer<BeamParticleData> DESERIALIZER = new IDeserializer<BeamParticleData>() {
+  public static final IDeserializer<OrbParticleData> DESERIALIZER = new IDeserializer<OrbParticleData>() {
     @Nonnull
     @Override
-    public BeamParticleData deserialize(@Nonnull ParticleType<BeamParticleData> type, @Nonnull StringReader reader) throws CommandSyntaxException {
+    public OrbParticleData deserialize(@Nonnull ParticleType<OrbParticleData> type, @Nonnull StringReader reader) throws CommandSyntaxException {
       reader.expect(' ');
       float size = reader.readFloat();
       reader.expect(' ');
@@ -60,12 +60,12 @@ public class BeamParticleData implements IParticleData {
       int m = reader.readInt();
       reader.expect(' ');
 
-      return new BeamParticleData(size, r, g, b, m);
+      return new OrbParticleData(size, r, g, b, m);
     }
 
     @Override
-    public BeamParticleData read(@Nonnull ParticleType<BeamParticleData> type, PacketBuffer buf) {
-      return new BeamParticleData(buf.readFloat(), buf.readFloat(), buf.readFloat(), buf.readFloat(), buf.readInt());
+    public OrbParticleData read(@Nonnull ParticleType<OrbParticleData> type, PacketBuffer buf) {
+      return new OrbParticleData(buf.readFloat(), buf.readFloat(), buf.readFloat(), buf.readFloat(), buf.readInt());
     }
   };
 }

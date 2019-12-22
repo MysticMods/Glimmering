@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
 
-public class BeamMessage {
+public class BeamMessage extends Networking.Message<BeamMessage> {
   private List<EnergyGraph.Edge> edges;
 
   public BeamMessage(PacketBuffer buffer) {
@@ -44,12 +44,8 @@ public class BeamMessage {
     }
   }
 
-  public void handle(Supplier<NetworkEvent.Context> context) {
-    context.get().enqueueWork(() -> handle(this, context));
-  }
-
   @OnlyIn(Dist.CLIENT)
-  private static void handle(BeamMessage message, Supplier<NetworkEvent.Context> context) {
+  public void handle(BeamMessage message, Supplier<NetworkEvent.Context> context) {
     PlayerEntity target = Minecraft.getInstance().player;
     World world = target.world;
 
@@ -64,18 +60,14 @@ public class BeamMessage {
       Vec3d diff = end.subtract(orig);
       Vec3d movement = diff.normalize().mul(0.1, 0.1, 0.1);
       int iters = (int) (mag(diff) / mag(movement));
-      float huePer = 1F / iters;
-      float hueSum = (float) Math.random();
 
       Vec3d current = orig;
       for (int i = 0; i < iters; i++) {
-        float hue = i * huePer + hueSum;
-        Color color = Color.getHSBColor(hue, 1f, 1f);
-        float r = Math.min(1f, color.getRed() / 255F + 0.8f);
-        float g = Math.min(1f, color.getGreen() / 255f + 0.8f);
-        float b = Math.min(1f, color.getBlue() / 255f + 0.8f);
+        float r = 227 / 255f;
+        float g = 103 / 255f;
+        float b = 13 / 255f;
 
-        BeamParticleData data = BeamParticleData.noClip(1, r, g, b, 30);
+        BeamParticleData data = new BeamParticleData(1.4f, r, g, b, 40);
         world.addParticle(data, current.x, current.y, current.z, 0, 0, 0);
         current = current.add(movement);
       }

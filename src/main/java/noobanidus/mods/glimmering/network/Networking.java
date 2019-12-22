@@ -1,5 +1,6 @@
 package noobanidus.mods.glimmering.network;
 
+import com.google.common.graph.Network;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.ResourceLocation;
@@ -10,6 +11,7 @@ import net.minecraftforge.fml.network.NetworkRegistry;
 import net.minecraftforge.fml.network.PacketDistributor;
 import net.minecraftforge.fml.network.simple.SimpleChannel;
 import noobanidus.mods.glimmering.Glimmering;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.function.BiConsumer;
 import java.util.function.Function;
@@ -47,6 +49,8 @@ public class Networking {
     HANDLER.send(target, message);
   }
 
+
+
   public <MSG> void registerMessage(Class<MSG> messageType, BiConsumer<MSG, PacketBuffer> encoder, Function<PacketBuffer, MSG> decoder, BiConsumer<MSG, Supplier<NetworkEvent.Context>> messageConsumer) {
     HANDLER.registerMessage(index, messageType, encoder, decoder, messageConsumer);
     index++;
@@ -68,5 +72,21 @@ public class Networking {
 
   public static <MSG> void send(PacketDistributor.PacketTarget target, MSG message) {
     INSTANCE.sendInternal(target, message);
+  }
+
+  public static abstract class Message<T extends Message> {
+    public Message () {
+    }
+
+    public Message(PacketBuffer buffer) {
+    }
+
+    public abstract void encode (PacketBuffer buffer);
+
+    public void handle(Supplier<NetworkEvent.Context> context) {
+      context.get().enqueueWork(() -> handle((T) this, context));
+    }
+
+    public abstract void handle (T message, Supplier<NetworkEvent.Context> context);
   }
 }

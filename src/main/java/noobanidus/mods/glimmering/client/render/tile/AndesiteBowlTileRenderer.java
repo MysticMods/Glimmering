@@ -1,4 +1,4 @@
-package noobanidus.mods.glimmering.tiles.render;
+package noobanidus.mods.glimmering.client.render.tile;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.Minecraft;
@@ -23,7 +23,7 @@ public class AndesiteBowlTileRenderer extends TileEntityRenderer<AndesiteBowlTil
         GlStateManager.pushMatrix();
         float a = (i == 0) ? 0 : (random.nextFloat() - 0.5f) * (5 - i) * 0.055f;
         float b = (i == 0) ? 0 : (random.nextFloat() - 0.5f) * (5 - i) * 0.055f;
-        GlStateManager.translatef((float) x + 0.5f + a, (float) y + 0.8f + 0.04f * i, (float) z + 0.65f + b);
+        GlStateManager.translatef((float) x + 0.5f + a, (float) y + 0.7f + 0.04f * i, (float) z + 0.65f + b);
         GlStateManager.rotated(180, 0, 1, 0);
         GlStateManager.rotated(90, 1.0, 0, 0);
 

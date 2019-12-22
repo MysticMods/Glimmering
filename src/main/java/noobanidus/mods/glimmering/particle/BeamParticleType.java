@@ -17,7 +17,7 @@ public class BeamParticleType extends ParticleType<BeamParticleData> {
     @Nullable
     @Override
     public Particle makeParticle(BeamParticleData data, World world, double x, double y, double z, double mx, double my, double mz) {
-      return new BeamParticle(world, x, y, z, data.size, data.r, data.g, data.b, data.m, data.fake, data.noClip);
+      return new BeamParticle(world, x, y, z, data.size, data.r, data.g, data.b, data.m);
     }
   }
 }

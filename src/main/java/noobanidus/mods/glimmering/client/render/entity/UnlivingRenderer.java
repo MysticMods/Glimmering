@@ -1,4 +1,4 @@
-package noobanidus.mods.glimmering.entity.render;
+package noobanidus.mods.glimmering.client.render.entity;
 
 import com.mojang.blaze3d.platform.GLX;
 import com.mojang.blaze3d.platform.GlStateManager;
@@ -8,25 +8,21 @@ import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.entity.IEntityRenderer;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
+import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.client.renderer.texture.DynamicTexture;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.Util;
 import net.minecraft.util.math.MathHelper;
-import net.minecraftforge.fml.client.registry.IRenderFactory;
 import noobanidus.mods.glimmering.Glimmering;
-import noobanidus.mods.glimmering.entity.GlimmerEntity;
-import noobanidus.mods.glimmering.entity.model.GlimmerModel;
-import noobanidus.mods.glimmering.entity.model.ModelHolder;
-import noobanidus.mods.glimmering.graph.EnergyGraph;
 
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GlimmerRenderer extends EntityRenderer<GlimmerEntity> implements IEntityRenderer<GlimmerEntity, GlimmerModel> {
-  public GlimmerModel entityModel;
+public abstract class UnlivingRenderer<T extends LivingEntity, M extends EntityModel<T>> extends EntityRenderer<T> implements IEntityRenderer<T, M> {
+  protected M entityModel;
 
-  private final List<LayerRenderer<GlimmerEntity, GlimmerModel>> layerRenderers = new ArrayList<>();
+  protected final List<LayerRenderer<T, M>> layerRenderers = new ArrayList<>();
   private final FloatBuffer brightnessBuffer = GLAllocation.createDirectFloatBuffer(4);
   private static final DynamicTexture TEXTURE_BRIGHTNESS = Util.make(new DynamicTexture(16, 16, false), (p_203414_0_) -> {
     p_203414_0_.getTextureData().untrack();
@@ -40,32 +36,31 @@ public class GlimmerRenderer extends EntityRenderer<GlimmerEntity> implements IE
     p_203414_0_.updateDynamicTexture();
   });
 
-  public GlimmerRenderer(EntityRendererManager manager, GlimmerModel model) {
+  public UnlivingRenderer(EntityRendererManager manager, M model) {
     super(manager);
     this.entityModel = model;
-    this.layerRenderers.add(new LayerElectric(this));
   }
 
-  private void renderLivingAt(GlimmerEntity entityLivingBaseIn, double x, double y, double z) {
+  private void renderLivingAt(T entityLivingBaseIn, double x, double y, double z) {
     GlStateManager.translatef((float) x, (float) y, (float) z);
   }
 
-  private float handleRotationFloat(GlimmerEntity livingBase, float partialTicks) {
+  private float handleRotationFloat(T livingBase, float partialTicks) {
     return (float) livingBase.ticksExisted + partialTicks;
   }
 
-  private float prepareScale(GlimmerEntity entitylivingbaseIn, float partialTicks) {
+  private float prepareScale(T entitylivingbaseIn, float partialTicks) {
     GlStateManager.enableRescaleNormal();
     GlStateManager.scalef(-1.0F, -1.0F, 1.0F);
     GlStateManager.translatef(0.0F, -1.501F, 0.0F);
     return 0.0625F;
   }
 
-  private boolean isVisible(GlimmerEntity p_193115_1_) {
+  private boolean isVisible(T p_193115_1_) {
     return !p_193115_1_.isInvisible() || this.renderOutlines;
   }
 
-  private void renderModel(GlimmerEntity entitylivingbaseIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor) {
+  private void renderModel(T entitylivingbaseIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor) {
     boolean flag = this.isVisible(entitylivingbaseIn);
     boolean flag1 = !flag && !entitylivingbaseIn.isInvisibleToPlayer(Minecraft.getInstance().player);
     if (flag || flag1) {
@@ -84,7 +79,7 @@ public class GlimmerRenderer extends EntityRenderer<GlimmerEntity> implements IE
     }
   }
 
-  private boolean setBrightness(GlimmerEntity entitylivingbaseIn, float partialTicks, boolean combineTextures) {
+  private boolean setBrightness(T entitylivingbaseIn, float partialTicks, boolean combineTextures) {
     boolean flag1 = entitylivingbaseIn.hurtTime > 0 || entitylivingbaseIn.deathTime > 0;
     int i = 0;
     if (!flag1) {
@@ -173,8 +168,8 @@ public class GlimmerRenderer extends EntityRenderer<GlimmerEntity> implements IE
     GlStateManager.texEnv(8960, GLX.GL_SOURCE0_ALPHA, 5890);
   }
 
-  private void renderLayers(GlimmerEntity entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scaleIn) {
-    for (LayerRenderer<GlimmerEntity, GlimmerModel> layerrenderer : this.layerRenderers) {
+  private void renderLayers(T entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scaleIn) {
+    for (LayerRenderer<T, M> layerrenderer : this.layerRenderers) {
       boolean flag = this.setBrightness(entitylivingbaseIn, partialTicks, layerrenderer.shouldCombineTextures());
       layerrenderer.render(entitylivingbaseIn, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch, scaleIn);
       if (flag) {
@@ -183,12 +178,15 @@ public class GlimmerRenderer extends EntityRenderer<GlimmerEntity> implements IE
     }
   }
 
-  private boolean setDoRenderBrightness(GlimmerEntity entityLivingBaseIn, float partialTicks) {
+  private boolean setDoRenderBrightness(T entityLivingBaseIn, float partialTicks) {
     return this.setBrightness(entityLivingBaseIn, partialTicks, true);
   }
 
+  protected abstract void preRenderCallback(float rotation);
+  protected abstract void postRenderCallback();
+
   @Override
-  public void doRender(GlimmerEntity entity, double x, double y, double z, float entityYaw, float partialTicks) {
+  public void doRender(T entity, double x, double y, double z, float entityYaw, float partialTicks) {
     super.doRender(entity, x, y, z, entityYaw, partialTicks);
     GlStateManager.pushMatrix();
     GlStateManager.disableCull();
@@ -216,11 +214,7 @@ public class GlimmerRenderer extends EntityRenderer<GlimmerEntity> implements IE
       GlStateManager.enableAlphaTest();
       this.entityModel.setLivingAnimations(entity, f6, f5, partialTicks);
       this.entityModel.setRotationAngles(entity, f6, f5, f8, f2, f7, f4);
-      GlStateManager.pushMatrix();
-      GlStateManager.scalef(0.65f, 0.65f, 0.65f);
-      GlStateManager.translated(0D, Math.sin(f8 / 20D) / 19.5, 0D);
-      GlStateManager.translatef(0, 0.8f, 0);
-      GlStateManager.rotatef(-f8 * 0.7f, 0F, 1F, 0F);
+      preRenderCallback(f8);
 
       if (this.renderOutlines) {
         GlStateManager.enableColorMaterial();
@@ -244,7 +238,7 @@ public class GlimmerRenderer extends EntityRenderer<GlimmerEntity> implements IE
           this.renderLayers(entity, f6, f5, partialTicks, f8, f2, f7, f4);
         }
       }
-      GlStateManager.popMatrix();
+      postRenderCallback();
 
       GlStateManager.disableRescaleNormal();
     } catch (Exception exception) {
@@ -260,31 +254,7 @@ public class GlimmerRenderer extends EntityRenderer<GlimmerEntity> implements IE
   }
 
   @Override
-  protected ResourceLocation getEntityTexture(GlimmerEntity entity) {
-    EnergyGraph.NodeType current = entity.getDataManager().get(GlimmerEntity.TYPE);
-    switch (current) {
-      default:
-        // 0 = Relay
-        // 1 = Transmit
-        // 2 = Receive
-      case RELAY:
-        return new ResourceLocation("glimmering:textures/entity/glimmer_gold.png");
-      case TRANSMIT:
-        return new ResourceLocation("glimmering:textures/entity/glimmer_green.png");
-      case RECEIVE:
-        return new ResourceLocation("glimmering:textures/entity/glimmer_blue.png");
-    }
-  }
-
-  @Override
-  public GlimmerModel getEntityModel() {
+  public M getEntityModel() {
     return entityModel;
-  }
-
-  public static class Factory implements IRenderFactory<GlimmerEntity> {
-    @Override
-    public EntityRenderer<GlimmerEntity> createRenderFor(EntityRendererManager manager) {
-      return new GlimmerRenderer(manager, ModelHolder.glimmerModel);
-    }
   }
 }

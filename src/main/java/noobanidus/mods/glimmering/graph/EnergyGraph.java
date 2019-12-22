@@ -6,7 +6,6 @@ import noobanidus.mods.glimmering.entity.GlimmerEntity;
 import javax.annotation.Nullable;
 import java.util.*;
 
-@SuppressWarnings("UnstableApiUsage")
 public class EnergyGraph {
   public static class Edge {
     private final int entity1;
@@ -70,7 +69,8 @@ public class EnergyGraph {
   public enum NodeType {
     RELAY,
     TRANSMIT,
-    RECEIVE;
+    RECEIVE,
+    BATTERY;
 
     public static NodeType byIndex(int index) {
       int i = 0;
@@ -105,7 +105,14 @@ public class EnergyGraph {
 
   public static void clearEntity(GlimmerEntity entity) {
     Vertex node = new Vertex(entity);
+    Set<Vertex> adjacency = getAdjacent(node);
+    for (Vertex otherNode : adjacency) {
+      Set<Vertex> otherAdjacency = getAdjacent(otherNode);
+      otherAdjacency.remove(node);
+      adjacencies.put(otherNode, otherAdjacency);
+    }
     removedNodes.add(node);
+    removedNodes.removeIf(Objects::isNull);
     adjacencies.remove(node);
   }
 
@@ -118,12 +125,12 @@ public class EnergyGraph {
     }
   }
 
-  public static Set<Edge> getEdgesFrom (GlimmerEntity entity) {
+  public static Set<Edge> getEdgesFrom(GlimmerEntity entity) {
     Vertex start = new Vertex(entity);
     return getEdgesFrom(start, new HashSet<>(), new HashSet<>());
   }
 
-  private static Set<Edge> getEdgesFrom (Vertex start, Set<Edge> result, Set<Vertex> visitedNodes) {
+  private static Set<Edge> getEdgesFrom(Vertex start, Set<Edge> result, Set<Vertex> visitedNodes) {
     visitedNodes.add(start);
 
     List<Vertex> toProcess = new ArrayList<>();
@@ -132,13 +139,14 @@ public class EnergyGraph {
         continue;
       }
 
-      toProcess.add(n);
-
-      if (n.getType() == NodeType.RELAY) {
+      if (n.getType() == NodeType.RELAY || start.getType() == NodeType.RELAY || start.getType() == NodeType.BATTERY || n.getType() == NodeType.BATTERY) {
+        toProcess.add(n);
         result.add(new Edge(start, n));
       } else if (start.getType() == NodeType.TRANSMIT && n.getType() == NodeType.RECEIVE) {
+        //toProcess.add(n);
         result.add(new Edge(start, n));
       } else if (start.getType() == NodeType.RECEIVE && n.getType() == NodeType.TRANSMIT) {
+        //toProcess.add(n);
         result.add(new Edge(start, n));
       }
     }
@@ -168,9 +176,10 @@ public class EnergyGraph {
       if (processedNodes.contains(u)) {
         continue;
       }
+      // HANDLE BATTERIES ???
       if (u.getType() == NodeType.RELAY) {
         toProcess.add(u);
-      } else if (u.getType() == NodeType.TRANSMIT) {
+      } else if (u.getType() == NodeType.TRANSMIT || u.getType() == NodeType.BATTERY) {
         transmitterNodes.add(u);
       }
     }

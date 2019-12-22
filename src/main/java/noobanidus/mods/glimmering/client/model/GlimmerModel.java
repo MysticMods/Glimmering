@@ -1,4 +1,4 @@
-package noobanidus.mods.glimmering.entity.model;
+package noobanidus.mods.glimmering.client.model;
 
 import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.client.renderer.entity.model.RendererModel;

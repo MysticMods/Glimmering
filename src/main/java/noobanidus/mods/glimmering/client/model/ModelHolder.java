@@ -1,22 +1,19 @@
-package noobanidus.mods.glimmering.entity.model;
+package noobanidus.mods.glimmering.client.model;
 
 import net.minecraft.resources.IResourceManager;
 import net.minecraftforge.resource.IResourceType;
 import net.minecraftforge.resource.ISelectiveResourceReloadListener;
 
-import javax.annotation.Nonnull;
 import java.util.function.Predicate;
 
 public class ModelHolder implements ISelectiveResourceReloadListener {
 
   public static GlimmerModel glimmerModel;
+  public static RitualModel ritualModel;
 
   public static void init() {
     glimmerModel = new GlimmerModel();
-  }
-
-  @Override
-  public void onResourceManagerReload(@Nonnull IResourceManager resourceManager) {
+    ritualModel = new RitualModel();
   }
 
   @Override

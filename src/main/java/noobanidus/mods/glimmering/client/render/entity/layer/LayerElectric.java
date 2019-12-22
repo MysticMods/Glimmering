@@ -1,4 +1,4 @@
-package noobanidus.mods.glimmering.entity.render;
+package noobanidus.mods.glimmering.client.render.entity.layer;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.Minecraft;
@@ -10,7 +10,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import noobanidus.mods.glimmering.Glimmering;
 import noobanidus.mods.glimmering.entity.GlimmerEntity;
-import noobanidus.mods.glimmering.entity.model.GlimmerModel;
+import noobanidus.mods.glimmering.client.model.GlimmerModel;
 
 @OnlyIn(Dist.CLIENT)
 public class LayerElectric extends LayerRenderer<GlimmerEntity, GlimmerModel> {

@@ -42,7 +42,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class GlimmerEntity extends LivingEntity {
+public class GlimmerEntity extends UnlivingEntity {
   public static final double RANGE = 11.5;
   public static final int DELAY = 3 * 20;
   public int lastPowered = 0;
@@ -67,8 +67,6 @@ public class GlimmerEntity extends LivingEntity {
 
   public static final DataParameter<NodeType> TYPE = EntityDataManager.createKey(GlimmerEntity.class, NODE_SERIALIZER);
 
-  private static List<ItemStack> EMPTY_INVENTORY = new ArrayList<>();
-
   public GlimmerEntity(EntityType<GlimmerEntity> type, World world) {
     super(type, world);
   }
@@ -80,42 +78,8 @@ public class GlimmerEntity extends LivingEntity {
   }
 
   @Override
-  public Iterable<ItemStack> getArmorInventoryList() {
-    return EMPTY_INVENTORY;
-  }
-
-  @Override
-  public ItemStack getItemStackFromSlot(EquipmentSlotType slotIn) {
-    return ItemStack.EMPTY;
-  }
-
-  @Override
-  public void setItemStackToSlot(EquipmentSlotType slotIn, ItemStack stack) {
-  }
-
-  @Override
-  public HandSide getPrimaryHand() {
-    return HandSide.LEFT;
-  }
-
-  @Override
-  public boolean canAttack(EntityType<?> typeIn) {
-    return false;
-  }
-
-  @Override
-  public boolean canBreatheUnderwater() {
-    return true;
-  }
-
-  @Override
   protected boolean canDropLoot() {
     return true; // ???
-  }
-
-  @Override
-  public boolean canAttack(LivingEntity target) {
-    return false;
   }
 
   @Override
@@ -166,14 +130,6 @@ public class GlimmerEntity extends LivingEntity {
   }
 
   @Override
-  public void livingTick() {
-    if (this.world.isRemote) {
-    }
-
-    super.livingTick();
-  }
-
-  @Override
   public void remove(boolean p_remove_1_) {
     EnergyGraph.clearEntity(this);
     super.remove(p_remove_1_);
@@ -186,9 +142,6 @@ public class GlimmerEntity extends LivingEntity {
   }
 
   public void updateGraph (boolean force) {
-    if (force) {
-      EnergyGraph.clearEntity(this);
-    }
     List<GlimmerEntity> list = world.getEntitiesWithinAABB(ModEntities.GLIMMER.get(), new AxisAlignedBB(getPosition()).grow(RANGE), (e) -> !e.equals(this)).stream().map(e -> (GlimmerEntity) e).collect(Collectors.toList());
     if (!list.isEmpty()) {
       EnergyGraph.addEntity(this, list);
@@ -212,6 +165,7 @@ public class GlimmerEntity extends LivingEntity {
           } else {
             current++;
           }
+          EnergyGraph.clearEntity(this);
           getDataManager().set(TYPE, NodeType.byIndex(current));
           if (!player.world.isRemote) {
             player.sendMessage(new TranslationTextComponent("glimmering.message.type_change", new TranslationTextComponent("glimmering.node.type." + current)).setStyle(new Style().setColor(TextFormatting.GOLD)));
@@ -225,123 +179,8 @@ public class GlimmerEntity extends LivingEntity {
   }
 
   @Override
-  public void knockBack(Entity entityIn, float strength, double xRatio, double zRatio) {
-    super.knockBack(entityIn, strength, xRatio, zRatio); // ???
-  }
-
-  @Override
-  public boolean canAttack(LivingEntity livingentityIn, EntityPredicate predicateIn) {
-    return false;
-  }
-
-  @Override
-  public boolean isEntityUndead() {
-    return false;
-  }
-
-  @Nullable
-  @Override
-  public LivingEntity getRevengeTarget() {
-    return null;
-  }
-
-  @Override
-  public boolean isChild() {
-    return false;
-  }
-
-  @Override
-  public boolean isOnLadder() {
-    return false;
-  }
-
-  @Override
-  public void fall(float distance, float damageMultiplier) {
-  }
-
-  @Override
-  public boolean canEntityBeSeen(Entity entityIn) {
-    return true;
-  }
-
-  @Override
-  public void applyEntityCollision(Entity entityIn) {
-  }
-
-  @Override
-  public void addVelocity(double x, double y, double z) {
-  }
-
-  @Override
-  protected boolean isMovementBlocked() {
-    return true;
-  }
-
-  @Override
-  public boolean canBePushed() {
-    return false;
-  }
-
-  @Override
-  public void setFire(int seconds) {
-  }
-
-  @Override
-  public boolean isSilent() {
-    return true;
-  }
-
-  @Override
-  public boolean hasNoGravity() {
-    return true;
-  }
-
-  @Override
-  public boolean canSwim() {
-    return true;
-  }
-
-  @Override
-  protected boolean canTriggerWalking() {
-    return false;
-  }
-
-  @Override
-  public int getAir() {
-    return 300;
-  }
-
-  @Override
-  public boolean isImmuneToExplosions() {
-    return true;
-  }
-
-  @Override
   public void onKillCommand() {
     super.onKillCommand(); // ???
-  }
-
-  @Override
-  public boolean canBeHitWithPotion() {
-    return false;
-  }
-
-  @Override
-  public boolean isSleeping() {
-    return false;
-  }
-
-  @Override
-  protected void collideWithNearbyEntities() {
-  }
-
-  @Override
-  protected void collideWithEntity(Entity entityIn) {
-  }
-
-  @Override
-  public void travel(Vec3d p_213352_1_) {
-    return;
   }
 
   public boolean recentlyPowered() {
