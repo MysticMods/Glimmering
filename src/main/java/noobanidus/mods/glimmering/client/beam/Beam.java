@@ -47,9 +47,10 @@ public class Beam {
 
   @OnlyIn(Dist.CLIENT)
   public void render(BufferBuilder bufferBuilder) {
+    bufferBuilder.setTranslation(start.x, start.y, start.z);
     float f2 = 1.0F;
     float f3 = f2 * 0.5F % 1.0F;
-    Vec3d vec3d2 = stop.add(start);
+    Vec3d vec3d2 = start.subtract(stop);
     double d0 = vec3d2.length();
     vec3d2 = vec3d2.normalize();
     float f5 = (float) Math.acos(vec3d2.y);
@@ -78,6 +79,7 @@ public class Beam {
     bufferBuilder.pos(d16, -d0, d17).tex(1, d22).color(255, 255, 255, 255).endVertex();
     bufferBuilder.pos(d18, -d0, d19).tex(0.0D, d22).color(255, 255, 255, 255).endVertex();
     bufferBuilder.pos(d18, 0.0D, d19).tex(0.0D, d23).color(255, 255, 255, 255).endVertex();
+    bufferBuilder.setTranslation(0, 0, 0);
   }
 }
 

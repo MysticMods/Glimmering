@@ -56,7 +56,7 @@ public class BeamManager {
     double iPX = e.prevPosX + (e.posX - e.prevPosX) * partialTicks;
     double iPY = e.prevPosY + (e.posY - e.prevPosY) * partialTicks;
     double iPZ = e.prevPosZ + (e.posZ - e.prevPosZ) * partialTicks;
-    //GlStateManager.translated(-iPX, -iPY, -iPZ);
+    GlStateManager.translated(-iPX, -iPY, -iPZ);
     GlStateManager.disableCull();
     GLX.glMultiTexCoord2f(GLX.GL_TEXTURE1, 240.0F, 240.0F);
     BufferBuilder buffer = tessellator.getBuffer();
