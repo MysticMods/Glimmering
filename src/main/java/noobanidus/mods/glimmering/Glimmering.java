@@ -14,6 +14,7 @@ import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.FMLPaths;
+import noobanidus.mods.glimmering.client.beam.BeamManager;
 import noobanidus.mods.glimmering.config.ConfigManager;
 import noobanidus.mods.glimmering.events.RightClickHandler;
 import noobanidus.mods.glimmering.init.*;
@@ -46,6 +47,8 @@ public class Glimmering {
     DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> {
       modBus.addListener(ClientSetup::init);
       modBus.addListener(ClientSetup::registerParticles);
+      MinecraftForge.EVENT_BUS.addListener(BeamManager::render);
+      MinecraftForge.EVENT_BUS.addListener(BeamManager::tick);
       ModParticles.load();
     });
 

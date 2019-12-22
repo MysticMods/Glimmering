@@ -9,6 +9,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.network.NetworkEvent;
+import noobanidus.mods.glimmering.client.beam.Beam;
+import noobanidus.mods.glimmering.client.beam.BeamManager;
 import noobanidus.mods.glimmering.graph.EnergyGraph;
 import noobanidus.mods.glimmering.particle.BeamParticleData;
 
@@ -55,11 +57,13 @@ public class BeamMessage {
     for (EnergyGraph.Edge z : message.getEdges()) {
       Entity central = world.getEntityByID(z.getEntity1());
       Entity e = world.getEntityByID(z.getEntity2());
-      if (e == null || central == null) {
+      Vec3d orig = new Vec3d(central.posX, central.posY, central.posZ);
+      Vec3d end = new Vec3d(e.posX, e.posY, e.posZ);
+      Beam beam = new Beam(orig, end, 190);
+      BeamManager.addBeam(beam);
+/*      if (e == null || central == null) {
         continue;
       }
-      Vec3d orig = new Vec3d(central.posX, central.posY + 0.55, central.posZ);
-      Vec3d end = new Vec3d(e.posX, e.posY + 0.55, e.posZ);
       Vec3d diff = end.subtract(orig);
       Vec3d movement = diff.normalize().mul(0.1, 0.1, 0.1);
       int iters = (int) (mag(diff) / mag(movement));
@@ -74,6 +78,7 @@ public class BeamMessage {
         world.addParticle(data, current.x, current.y, current.z, 0, 0, 0);
         current = current.add(movement);
       }
+    }*/
     }
     context.get().setPacketHandled(true);
   }
