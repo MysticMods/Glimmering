@@ -3,7 +3,6 @@ package noobanidus.mods.glimmering.beam;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.api.distmarker.Dist;
@@ -15,14 +14,11 @@ public class Beam {
 
   private Vec3d start;
   private Vec3d stop;
-  private int dimension;
   private int age = 0;
   private int maxAge;
   private boolean removed = false;
-  protected short textureIndex = -1;
 
-  public Beam(Vec3d start, Vec3d stop, int maxAge, int dimension) {
-    this.dimension = dimension;
+  public Beam(Vec3d start, Vec3d stop, int maxAge) {
     this.start = start;
     this.stop = stop;
     this.maxAge = maxAge;
@@ -32,45 +28,12 @@ public class Beam {
     this.removed = true;
   }
 
-  public int getDimension() {
-    return dimension;
-  }
-
   public boolean removed() {
     return removed;
   }
 
-  public Vec3d getStart() {
-    return start;
-  }
-
-  public Vec3d getStop() {
-    return stop;
-  }
-
-  public int getAge() {
-    return age;
-  }
-
-  public int getMaxAge() {
-    return maxAge;
-  }
-
-  public void setAge(int age) {
-    this.age = age;
-  }
-
-  public void setTextureIndex(short textureIndex) {
-    this.textureIndex = textureIndex;
-  }
-
   public ResourceLocation getTexture() {
-    switch (textureIndex) {
-      default:
-      case -1:
-      case 0:
-        return DARK_TEXTURE;
-    }
+    return DARK_TEXTURE;
   }
 
   public void tick() {
@@ -115,57 +78,6 @@ public class Beam {
     bufferBuilder.pos(d16, -d0, d17).tex(1, d22).color(255, 255, 255, 255).endVertex();
     bufferBuilder.pos(d18, -d0, d19).tex(0.0D, d22).color(255, 255, 255, 255).endVertex();
     bufferBuilder.pos(d18, 0.0D, d19).tex(0.0D, d23).color(255, 255, 255, 255).endVertex();
-  }
-
-/*  public CompoundNBT serializeNBT() {
-    CompoundNBT result = new CompoundNBT();
-    result.put("start", GlimmerNBT.vec3dToNBT(this.start));
-    result.put("stop", GlimmerNBT.vec3dToNBT(this.stop));
-    result.putInt("age", this.age);
-    result.putInt("maxAge", this.maxAge);
-    result.putString("texture", this.texture.toString());
-    return result;
-  }
-
-  public void deserializeNBT(CompoundNBT nbt) {
-    this.start = GlimmerNBT.vec3dFromNBT(nbt.getList("start", Constants.NBT.TAG_DOUBLE));
-    this.stop = GlimmerNBT.vec3dFromNBT(nbt.getList("stop", Constants.NBT.TAG_DOUBLE));
-    this.age = nbt.getInt("age");
-    this.maxAge = nbt.getInt("maxAge");
-    this.texture = new ResourceLocation(nbt.getString("texture"));
-  }*/
-
-  public void write(PacketBuffer buf) {
-    buf.writeDouble(start.x);
-    buf.writeDouble(start.y);
-    buf.writeDouble(start.z);
-    buf.writeDouble(stop.x);
-    buf.writeDouble(stop.y);
-    buf.writeDouble(stop.z);
-    buf.writeInt(maxAge);
-    buf.writeInt(dimension);
-    buf.writeInt(age);
-    buf.writeShort(textureIndex);
-  }
-
-/*  public void read (PacketBuffer buf) {
-    this.start = new Vec3d(buf.readDouble(), buf.readDouble(), buf.readDouble());
-    this.stop = new Vec3d(buf.readDouble(), buf.readDouble(), buf.readDouble());
-    this.maxAge = buf.readInt();
-    this.dimension = buf.readInt();
-    this.age = buf.readInt();
-  }*/
-
-  public static Beam read(PacketBuffer buf) {
-    Beam result = new Beam(
-        new Vec3d(buf.readDouble(), buf.readDouble(), buf.readDouble()),
-        new Vec3d(buf.readDouble(), buf.readDouble(), buf.readDouble()),
-        buf.readInt(),
-        buf.readInt()
-    );
-    result.setAge(buf.readInt());
-    result.setTextureIndex(buf.readShort());
-    return result;
   }
 }
 

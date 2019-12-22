@@ -18,18 +18,8 @@ import java.util.*;
 public class BeamManager {
   private static Map<ResourceLocation, List<Beam>> BEAM_MAP = new HashMap<>();
 
-  /*  private static Map<ResourceLocation, Map<VisualEdge, Beam>> BEAM_EDGE_MAP = new HashMap<>();*/
-
   public void addBeam(Beam beam) {
     List<Beam> beams = BEAM_MAP.computeIfAbsent(beam.getTexture(), o -> new ArrayList<>());
-/*    Map<VisualEdge, Beam> edges = BEAM_EDGE_MAP.computeIfAbsent(beam.getTexture(), o -> new HashMap<>());
-    VisualEdge thisBeam = beam.getVisualEdge();
-    Beam existing = edges.get();
-    if (existing != null && !existing.removed()) {
-      existing.setAge(beam.getAge());
-      existing.setMaxAge(beam.getMaxAge());
-    } else {
-      edges.put(beam.getVisualEdge()*/
     beams.add(beam);
   }
 
@@ -67,10 +57,6 @@ public class BeamManager {
       buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR);
       entry.getValue().forEach(beam -> {
         // The client shouldn't bne getting stuff for invalid dimensions
-        if (beam.getDimension() != dimId) {
-          return;
-        }
-
         if (beam.removed()) {
           return;
         }

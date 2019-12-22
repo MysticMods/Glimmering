@@ -12,12 +12,11 @@ import net.minecraftforge.fml.network.NetworkEvent;
 import noobanidus.mods.glimmering.graph.EnergyGraph;
 import noobanidus.mods.glimmering.particle.BeamParticleData;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
 
-public class BeamMessage extends Networking.Message<BeamMessage> {
+public class BeamMessage {
   private List<EnergyGraph.Edge> edges;
 
   public BeamMessage(PacketBuffer buffer) {
@@ -42,6 +41,10 @@ public class BeamMessage extends Networking.Message<BeamMessage> {
       buf.writeInt(i.getEntity1());
       buf.writeInt(i.getEntity2());
     }
+  }
+
+  public void handle(Supplier<NetworkEvent.Context> context) {
+    context.get().enqueueWork(() -> handle(this, context));
   }
 
   @OnlyIn(Dist.CLIENT)
