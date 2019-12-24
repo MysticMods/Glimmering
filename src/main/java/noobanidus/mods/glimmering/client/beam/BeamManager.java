@@ -60,6 +60,7 @@ public class BeamManager {
     GlStateManager.disableCull();
     GLX.glMultiTexCoord2f(GLX.GL_TEXTURE1, 240.0F, 240.0F);
     BufferBuilder buffer = tessellator.getBuffer();
+    buffer.setTranslation(-iPX, -iPY, -iPZ);
 
     for (Map.Entry<ResourceLocation, List<Beam>> entry : BEAM_MAP.entrySet()) {
       tm.bindTexture(entry.getKey());
@@ -75,6 +76,8 @@ public class BeamManager {
         GlStateManager.popMatrix();
       });
     }
+
+    buffer.setTranslation(0, 0, 0);
 
     GlStateManager.enableCull();
     GlStateManager.popMatrix();

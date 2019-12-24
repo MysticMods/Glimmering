@@ -47,8 +47,6 @@ public class Glimmering {
     DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> {
       modBus.addListener(ClientSetup::init);
       modBus.addListener(ClientSetup::registerParticles);
-      MinecraftForge.EVENT_BUS.addListener(BeamManager::render);
-      MinecraftForge.EVENT_BUS.addListener(BeamManager::tick);
       ModParticles.load();
     });
 

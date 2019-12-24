@@ -12,8 +12,8 @@ import noobanidus.mods.glimmering.client.model.ModelHolder;
 import noobanidus.mods.glimmering.client.render.entity.GlimmerRenderer;
 import noobanidus.mods.glimmering.client.render.entity.RitualRenderer;
 import noobanidus.mods.glimmering.init.ModParticles;
-import noobanidus.mods.glimmering.particle.BeamParticleType;
-import noobanidus.mods.glimmering.particle.OrbParticleType;
+import noobanidus.mods.glimmering.particle.BeamParticle;
+import noobanidus.mods.glimmering.particle.OrbParticle;
 import noobanidus.mods.glimmering.tiles.AndesiteBowlTile;
 import noobanidus.mods.glimmering.client.render.tile.AndesiteBowlTileRenderer;
 
@@ -29,7 +29,7 @@ public class ClientSetup {
   }
 
   public static void registerParticles(ParticleFactoryRegisterEvent event) {
-    Minecraft.getInstance().particles.registerFactory(ModParticles.BEAM.get(), new BeamParticleType.Factory());
-    Minecraft.getInstance().particles.registerFactory(ModParticles.ORB.get(), new OrbParticleType.Factory());
+    Minecraft.getInstance().particles.registerFactory(ModParticles.BEAM.get(), new BeamParticle.Type.Factory());
+    Minecraft.getInstance().particles.registerFactory(ModParticles.ORB.get(), new OrbParticle.Type.Factory());
   }
 }

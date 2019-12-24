@@ -2,6 +2,9 @@ package noobanidus.mods.glimmering.particle;
 
 import com.mojang.blaze3d.platform.GLX;
 import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.brigadier.StringReader;
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import net.minecraft.client.particle.IParticleFactory;
 import net.minecraft.client.particle.IParticleRenderType;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.renderer.ActiveRenderInfo;
@@ -9,12 +12,18 @@ import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.network.PacketBuffer;
+import net.minecraft.particles.IParticleData;
+import net.minecraft.particles.ParticleType;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import noobanidus.mods.glimmering.Glimmering;
+import noobanidus.mods.glimmering.init.ModParticles;
 import org.lwjgl.opengl.GL11;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.util.Locale;
 
 public class OrbParticle extends Particle {
   public static final ResourceLocation particles = new ResourceLocation(Glimmering.MODID, "textures/misc/beam1.png");
@@ -107,4 +116,79 @@ public class OrbParticle extends Particle {
       return "glimmering:beam";
     }
   };
+
+  public static class Data implements IParticleData {
+    public final float size;
+    public final float r, g, b;
+    public final int m;
+
+    public Data(float size, float r, float g, float b, int m) {
+      this.size = size;
+      this.r = r;
+      this.g = g;
+      this.b = b;
+      this.m = m;
+    }
+
+    @Nonnull
+    @Override
+    public ParticleType<Data> getType() {
+      return ModParticles.ORB.get();
+    }
+
+    @Override
+    public void write(PacketBuffer buf) {
+      buf.writeFloat(size);
+      buf.writeFloat(r);
+      buf.writeFloat(g);
+      buf.writeFloat(b);
+      buf.writeInt(m);
+    }
+
+    @Nonnull
+    @Override
+    public String getParameters() {
+      return String.format(Locale.ROOT, "%s %.2f %.2f %.2f %.2f %d", this.getType().getRegistryName(), this.size, this.r, this.g, this.b, this.m);
+    }
+
+    public static final IDeserializer<Data> DESERIALIZER = new IDeserializer<Data>() {
+      @Nonnull
+      @Override
+      public Data deserialize(@Nonnull ParticleType<Data> type, @Nonnull StringReader reader) throws CommandSyntaxException {
+        reader.expect(' ');
+        float size = reader.readFloat();
+        reader.expect(' ');
+        float r = reader.readFloat();
+        reader.expect(' ');
+        float g = reader.readFloat();
+        reader.expect(' ');
+        float b = reader.readFloat();
+        reader.expect(' ');
+        int m = reader.readInt();
+        reader.expect(' ');
+
+        return new Data(size, r, g, b, m);
+      }
+
+      @Override
+      public Data read(@Nonnull ParticleType<Data> type, PacketBuffer buf) {
+        return new Data(buf.readFloat(), buf.readFloat(), buf.readFloat(), buf.readFloat(), buf.readInt());
+      }
+    };
+  }
+
+  public static class Type extends ParticleType<Data> {
+    public Type() {
+      super(false, Data.DESERIALIZER);
+    }
+
+    public static class Factory implements IParticleFactory<Data> {
+
+      @Nullable
+      @Override
+      public Particle makeParticle(Data data, World world, double x, double y, double z, double mx, double my, double mz) {
+        return new OrbParticle(world, x, y, z, data.size, data.r, data.g, data.b, data.m);
+      }
+    }
+  }
 }

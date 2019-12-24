@@ -47,7 +47,6 @@ public class Beam {
 
   @OnlyIn(Dist.CLIENT)
   public void render(BufferBuilder bufferBuilder) {
-    bufferBuilder.setTranslation(start.x, start.y, start.z);
     float f2 = 1.0F;
     float f3 = f2 * 0.5F % 1.0F;
     Vec3d vec3d2 = start.subtract(stop);

@@ -25,13 +25,13 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Locale;
 
-public class BeamParticle extends Particle {
-  public static final ResourceLocation particles = new ResourceLocation(Glimmering.MODID, "textures/misc/particles.png");
+public class GlintParticle extends Particle {
+  public static final ResourceLocation particles = new ResourceLocation(Glimmering.MODID, "textures/misc/glint.png");
 
   protected float particleScale = 1f;
   public final int particle = 16;
 
-  public BeamParticle(World world, double x, double y, double z, float size, float red, float green, float blue, int m) {
+  public GlintParticle(World world, double x, double y, double z, float size, float red, float green, float blue, int m) {
     super(world, x, y, z, 0.0D, 0.0D, 0.0D);
     particleRed = red;
     particleGreen = green;
@@ -135,7 +135,7 @@ public class BeamParticle extends Particle {
     @Nonnull
     @Override
     public ParticleType<Data> getType() {
-      return ModParticles.BEAM.get();
+      return ModParticles.GLINT.get();
     }
 
     @Override
@@ -189,7 +189,7 @@ public class BeamParticle extends Particle {
       @Nullable
       @Override
       public Particle makeParticle(Data data, World world, double x, double y, double z, double mx, double my, double mz) {
-        return new BeamParticle(world, x, y, z, data.size, data.r, data.g, data.b, data.m);
+        return new GlintParticle(world, x, y, z, data.size, data.r, data.g, data.b, data.m);
       }
     }
   }

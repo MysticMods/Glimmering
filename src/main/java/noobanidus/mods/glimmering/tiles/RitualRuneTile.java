@@ -22,6 +22,7 @@ import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.common.util.Constants;
+import noobanidus.mods.glimmering.blocks.RitualRuneBlock;
 import noobanidus.mods.glimmering.entity.RitualEntity;
 import noobanidus.mods.glimmering.init.ModBlocks;
 import noobanidus.mods.glimmering.init.ModEntities;
@@ -258,11 +259,12 @@ public class RitualRuneTile extends TileEntity implements ITickableTileEntity, I
   }
 
   public void finishRitual() {
-    if (world != null && world.isRemote()) {
+    if (world != null && !world.isRemote()) {
       int quantity = getQuantity();
       ItemStack result = new ItemStack(ModEntities.SPAWN_GLIMMER.get(), quantity);
       ItemEntity resultEntity = new ItemEntity(world, pos.getX() + 0.5, pos.getY() + 1.5, pos.getZ() + 0.5, result);
       world.addEntity(resultEntity);
+      world.setBlockState(pos, ModBlocks.RITUAL_RUNE.get().getDefaultState().with(RitualRuneBlock.ACTIVE, false));
       // some sort of sound
     }
 
@@ -305,8 +307,9 @@ public class RitualRuneTile extends TileEntity implements ITickableTileEntity, I
       ritual.setTile(this);
       this.ritualEntity = ritual;
       BlockPos pos = getPos();
-      ritual.setPosition(pos.getX() + 0.5, pos.getY() + 2, pos.getZ() + 0.5);
+      ritual.setPosition(pos.getX() + 0.5, pos.getY() + 2.5, pos.getZ() + 0.5);
       world.addEntity(ritual);
+      world.setBlockState(pos, ModBlocks.RITUAL_RUNE.get().getDefaultState().with(RitualRuneBlock.ACTIVE, true));
     }
 
     this.active = true;
@@ -318,6 +321,7 @@ public class RitualRuneTile extends TileEntity implements ITickableTileEntity, I
     if (world == null || world.isRemote()) {
       return;
     }
+    world.setBlockState(pos, ModBlocks.RITUAL_RUNE.get().getDefaultState().with(RitualRuneBlock.ACTIVE, false));
     this.active = false;
     this.stacks.clear();
     if (this.ritualEntity != null) {
@@ -397,6 +401,23 @@ public class RitualRuneTile extends TileEntity implements ITickableTileEntity, I
       this.south = south;
       this.east = east;
       this.west = west;
+    }
+
+    public List<Direction> directions () {
+      List<Direction> result = new ArrayList<>();
+      if (north != 0) {
+        result.add(Direction.NORTH);
+      }
+      if (south != 0) {
+        result.add(Direction.SOUTH);
+      }
+      if (east != 0) {
+        result.add(Direction.EAST);
+      }
+      if (west != 0) {
+        result.add(Direction.WEST);
+      }
+      return result;
     }
   }
 }

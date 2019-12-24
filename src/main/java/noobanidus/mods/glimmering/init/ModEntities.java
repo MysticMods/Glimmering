@@ -28,7 +28,7 @@ public class ModEntities {
 
   private static EntityType<GlimmerEntity> GLIMMER_TYPE = (EntityType<GlimmerEntity>) EntityType.Builder.create(GlimmerEntity::new, EntityClassification.CREATURE).size(0.75f, 0.75f).setTrackingRange(64).setShouldReceiveVelocityUpdates(false).setUpdateInterval(3).build(GLIMMER_ID).setRegistryName(Glimmering.MODID, GLIMMER_ID);
 
-  private static EntityType<RitualEntity> RITUAL_TYPE = (EntityType<RitualEntity>) EntityType.Builder.create(RitualEntity::new, EntityClassification.MISC).size(1, 1).setTrackingRange(18).setShouldReceiveVelocityUpdates(false).setUpdateInterval(3).build(RITUAL_ID).setRegistryName(Glimmering.MODID, RITUAL_ID);
+  private static EntityType<RitualEntity> RITUAL_TYPE = (EntityType<RitualEntity>) EntityType.Builder.create(RitualEntity::new, EntityClassification.MISC).size(1, 1).setTrackingRange(18).setShouldReceiveVelocityUpdates(false).setUpdateInterval(3).size(5, 5).build(RITUAL_ID).setRegistryName(Glimmering.MODID, RITUAL_ID);
 
   public static Supplier<EntityType<GlimmerEntity>> GLIMMER = () -> GLIMMER_TYPE;
   public static Supplier<EntityType<RitualEntity>> RITUAL = () -> RITUAL_TYPE;

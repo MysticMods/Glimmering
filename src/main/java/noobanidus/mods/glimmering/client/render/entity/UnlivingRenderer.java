@@ -45,7 +45,7 @@ public abstract class UnlivingRenderer<T extends LivingEntity, M extends EntityM
     GlStateManager.translatef((float) x, (float) y, (float) z);
   }
 
-  private float handleRotationFloat(T livingBase, float partialTicks) {
+  protected float handleRotationFloat(T livingBase, float partialTicks) {
     return (float) livingBase.ticksExisted + partialTicks;
   }
 

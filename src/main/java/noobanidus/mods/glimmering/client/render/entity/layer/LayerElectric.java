@@ -14,7 +14,7 @@ import noobanidus.mods.glimmering.client.model.GlimmerModel;
 
 @OnlyIn(Dist.CLIENT)
 public class LayerElectric extends LayerRenderer<GlimmerEntity, GlimmerModel> {
-  private static final ResourceLocation LIGHTNING_TEXTURE = new ResourceLocation(Glimmering.MODID, "textures/entity/electric.png");
+  private static final ResourceLocation LIGHTNING_TEXTURE = new ResourceLocation(Glimmering.MODID, "textures/entity/gold_electric.png");
   private final GlimmerModel glimmerModel = new GlimmerModel();
 
   public LayerElectric(IEntityRenderer<GlimmerEntity, GlimmerModel> p_i50947_1_) {
