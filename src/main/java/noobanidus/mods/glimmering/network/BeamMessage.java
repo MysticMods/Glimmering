@@ -9,6 +9,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.network.NetworkEvent;
+import noobanidus.mods.glimmering.client.beam.Beam;
+import noobanidus.mods.glimmering.client.beam.BeamManager;
 import noobanidus.mods.glimmering.client.render.BeamRenderer;
 import noobanidus.mods.glimmering.graph.EnergyGraph;
 
@@ -58,11 +60,11 @@ public class BeamMessage {
       if (e == null || central == null) {
         continue;
       }
-      Vec3d orig = new Vec3d(central.posX, central.posY + 0.5, central.posZ);
-      Vec3d end = new Vec3d(e.posX, e.posY + 0.5, e.posZ);
-      /*Beam beam = new Beam(orig, end, 300);
-      BeamManager.addBeam(beam);*/
-      BeamRenderer.addBeam(world, orig, end, 30);
+      Vec3d orig = new Vec3d(central.posX, central.posY - 1.2, central.posZ);
+      Vec3d end = new Vec3d(e.posX, e.posY - 1.2, e.posZ);
+      Beam beam = new Beam(orig, end, 100);
+      BeamManager.addBeam(beam);
+      //BeamRenderer.addBeam(world, orig, end, 30);
     }
     context.get().setPacketHandled(true);
   }

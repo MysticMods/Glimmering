@@ -12,6 +12,7 @@ public class ModLang implements Consumer<RegistrateLangProvider> {
     ctx.add("glimmering.node.type.0", "Glimmer Relay");
     ctx.add("glimmering.node.type.1", "Glimmer Transmitter");
     ctx.add("glimmering.node.type.2", "Glimmer Receiver");
+    ctx.add("glimmering.node.type.3", "Glimmer Storage");
     ctx.add("glimmering.message.type_change", "This Glimmer is now a %s.");
     ctx.add("glimmering.tooltip.line0", "A touch of glimmering magic.");
     ctx.add("glimmering.tooltip.line1", "Magical energy transfer node. Hit with %s to change mode.");

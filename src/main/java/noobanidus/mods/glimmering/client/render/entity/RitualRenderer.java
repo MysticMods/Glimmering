@@ -132,57 +132,6 @@ public class RitualRenderer extends UnlivingRenderer<RitualEntity, RitualModel> 
     GlStateManager.pushMatrix();
     GlStateManager.translated(x, y + 2, z);
 
-/*    //GlStateManager.depthMask(true);
-    //bindTexture(GOLDEN_TEXTURE);
-    //GlStateManager.matrixMode(5890);
-    //GlStateManager.loadIdentity();
-    float lvt_10_1_ = (float) entity.ticksExisted + partialTicks;
-
-    //GlStateManager.matrixMode(5888);
-    //GlStateManager.enableBlend();
-    //GlStateManager.color4f(0.5F, 0.5F, 0.5F, 1.0F);
-    GlStateManager.disableLighting();
-    //GlStateManager.blendFunc(GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ONE);
-    GameRenderer renderer = Minecraft.getInstance().gameRenderer;
-    renderer.setupFogColor(true);
-    Minecraft mc = Minecraft.getInstance();
-    World world = mc.player.world;
-
-    for (RitualRuneTile.PillarType pillar : RitualRuneTile.PillarType.values()) {
-      List<BlockPos> pillarBlocks = entity.getPillar(pillar);
-
-      // Top face
-      GlStateManager.pushMatrix();
-      GlStateManager.translatef(lvt_10_1_ * 0.01F, lvt_10_1_ * 0.01F, 0.0F);
-      GlStateManager.pushMatrix();
-      GlStateManager.scalef(1.1f, 1.1f, 1.1f);
-      //GlStateManager.translatef(0, -0.08f, 0);
-
-      List<Vec3d> topCorners = topFace(pillarBlocks.get(2));
-      buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
-      buffer.pos(topCorners.get(0).x, topCorners.get(0).y, topCorners.get(0).z).tex(0, 1).color(0, 0, 0, 255).endVertex();
-      buffer.pos(topCorners.get(1).x, topCorners.get(1).y, topCorners.get(1).z).tex(0, 1).color(0, 0, 0, 255).endVertex();
-      buffer.pos(topCorners.get(2).x, topCorners.get(2).y, topCorners.get(2).z).tex(0, 1).color(0, 0, 0, 255).endVertex();
-      buffer.pos(topCorners.get(3).x, topCorners.get(3).y, topCorners.get(3).z).tex(0, 1).color(0, 0, 0, 255).endVertex();
-      tessellator.draw();
-
-      GlintParticle.Data data = new GlintParticle.Data(0.8f, 50, 50, 50, 1, 1, 20, 0f);
-      world.addParticle(data, topCorners.get(0).x, topCorners.get(0).y, topCorners.get(0).z, 0, 1, 0);
-      world.addParticle(data, topCorners.get(1).x, topCorners.get(1).y, topCorners.get(1).z, 1, 1, 1);
-      world.addParticle(data, topCorners.get(2).x, topCorners.get(2).y, topCorners.get(2).z, 2, 1, 2);
-      world.addParticle(data, topCorners.get(3).x, topCorners.get(3).y, topCorners.get(3).z, 3, 1, 3);
-      GlStateManager.popMatrix();
-      GlStateManager.popMatrix();
-    }
-
-    renderer.setupFogColor(false);
-    GlStateManager.matrixMode(5890);
-    GlStateManager.loadIdentity();
-    GlStateManager.matrixMode(5888);
-    GlStateManager.enableLighting();
-    GlStateManager.disableBlend();
-    GlStateManager.depthMask(true);*/
-
     List<Vec3d> bowls = entity.getBowls();
     List<Vec3d> pillars = entity.getPillarTops();
 

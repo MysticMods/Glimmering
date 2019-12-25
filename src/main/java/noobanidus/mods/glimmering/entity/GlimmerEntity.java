@@ -160,7 +160,7 @@ public class GlimmerEntity extends UnlivingEntity {
           return true;
         } else {
           int current = getDataManager().get(TYPE).ordinal();
-          if (current >= 2) {
+          if (current >= 3) {
             current = 0;
           } else {
             current++;
@@ -261,6 +261,8 @@ public class GlimmerEntity extends UnlivingEntity {
         return new TranslationTextComponent("glimmering.node.type.1");
       case RECEIVE:
         return new TranslationTextComponent("glimmering.node.type.2");
+      case BATTERY:
+        return new TranslationTextComponent("glimmering.node.type.3");
     }
   }
 

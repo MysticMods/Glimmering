@@ -1,9 +1,7 @@
 
 package noobanidus.mods.glimmering.client.beam;
 
-import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.client.renderer.entity.GuardianRenderer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.api.distmarker.Dist;
@@ -11,7 +9,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import noobanidus.mods.glimmering.Glimmering;
 
 public class Beam {
-  private static ResourceLocation DARK_TEXTURE = new ResourceLocation(Glimmering.MODID, "textures/misc/beam_dark.png");
+  private static ResourceLocation DARK_TEXTURE = new ResourceLocation(Glimmering.MODID, "textures/misc/beam_gold.png");
 
   private Vec3d start;
   private Vec3d stop;
@@ -46,39 +44,35 @@ public class Beam {
   }
 
   @OnlyIn(Dist.CLIENT)
-  public void render(BufferBuilder bufferBuilder) {
+  public void render(BufferBuilder buffer) {
+    Vec3d subtracted = start.subtract(stop);
     float f2 = 1.0F;
     float f3 = f2 * 0.5F % 1.0F;
-    Vec3d vec3d2 = start.subtract(stop);
-    double d0 = vec3d2.length();
-    vec3d2 = vec3d2.normalize();
-    float f5 = (float) Math.acos(vec3d2.y);
-    float f6 = (float) Math.atan2(vec3d2.z, vec3d2.x);
-    GlStateManager.rotatef((((float) Math.PI / 2F) - f6) * (180F / (float) Math.PI), 0.0F, 1.0F, 0.0F);
-    GlStateManager.rotatef(f5 * (180F / (float) Math.PI), 1.0F, 0.0F, 0.0F);
-    double d1 = (double) f2 * 0.0D;
-
-    double d12 = Math.cos(d1 + Math.PI) * 0.12D;
-    double d13 = Math.sin(d1 + Math.PI) * 0.12D;
-    double d14 = Math.cos(d1) * 0.12D;
-    double d15 = Math.sin(d1) * 0.12D;
-    double d16 = Math.cos(d1 + (Math.PI / 2D)) * 0.12D;
-    double d17 = Math.sin(d1 + (Math.PI / 2D)) * 0.12D;
-    double d18 = Math.cos(d1 + (Math.PI * 1.5D)) * 0.12D;
-    double d19 = Math.sin(d1 + (Math.PI * 1.5D)) * 0.12D;
+    double d0 = subtracted.length() + 2;
     double d22 = (double) (f3 - 1.0F);
     double d23 = d0 * 5.05D + d22;
 
-    bufferBuilder.pos(d12, 0.0D, d13).tex(1, d23).color(255, 255, 255, 255).endVertex();
-    bufferBuilder.pos(d12, -d0, d13).tex(1, d22).color(255, 255, 255, 255).endVertex();
-    bufferBuilder.pos(d14, -d0, d15).tex(0.0D, d22).color(255, 255, 255, 255).endVertex();
-    bufferBuilder.pos(d14, 0.0D, d15).tex(0.0D, d23).color(255, 255, 255, 255).endVertex();
+    Vec3d a = new Vec3d(start.x - 0.1, start.y + 0.1, start.z);
+    Vec3d b = new Vec3d(start.x, start.y - 0.1, start.z - 0.1);
+    Vec3d c = new Vec3d(stop.x - 0.1, stop.y + 0.1, stop.z);
+    Vec3d d = new Vec3d(stop.x, stop.y - 0.1, stop.z - 0.1);
 
-    bufferBuilder.pos(d16, 0.0D, d17).tex(1, d23).color(255, 255, 255, 255).endVertex();
-    bufferBuilder.pos(d16, -d0, d17).tex(1, d22).color(255, 255, 255, 255).endVertex();
-    bufferBuilder.pos(d18, -d0, d19).tex(0.0D, d22).color(255, 255, 255, 255).endVertex();
-    bufferBuilder.pos(d18, 0.0D, d19).tex(0.0D, d23).color(255, 255, 255, 255).endVertex();
-    bufferBuilder.setTranslation(0, 0, 0);
+    buffer.pos(a.x, a.y, a.z).tex(1, d22).color(255, 255, 255, 255).endVertex();
+    buffer.pos(c.x, c.y, c.z).tex(1, d22).color(255, 255, 255, 255).endVertex();
+
+    buffer.pos(d.x, d.y, d.z).tex(0, d23).color(255, 255, 255, 255).endVertex();
+    buffer.pos(b.x, b.y, b.z).tex(0, d23).color(255, 255, 255, 255).endVertex();
+
+    Vec3d e = new Vec3d(start.x, start.y + 0.1, start.z - 0.1);
+    Vec3d f = new Vec3d(start.x - 0.1, start.y - 0.1, start.z);
+    Vec3d g = new Vec3d(stop.x, stop.y + 0.1, stop.z - 0.1);
+    Vec3d h = new Vec3d(stop.x - 0.1, stop.y - 0.1, stop.z);
+
+    buffer.pos(e.x, e.y, e.z).tex(1, d22).color(255, 255, 255, 255).endVertex();
+    buffer.pos(g.x, g.y, g.z).tex(1, d22).color(255, 255, 255, 255).endVertex();
+
+    buffer.pos(h.x, h.y, h.z).tex(0, d23).color(255, 255, 255, 255).endVertex();
+    buffer.pos(f.x, f.y, f.z).tex(0, d23).color(255, 255, 255, 255).endVertex();
   }
 }
 

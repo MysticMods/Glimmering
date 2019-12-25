@@ -4,6 +4,7 @@ import com.mojang.blaze3d.platform.GLX;
 import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
+import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
@@ -27,7 +28,7 @@ public class BeamManager {
   }
 
   public static void tick(TickEvent.ClientTickEvent event) {
-    if (event.side == LogicalSide.CLIENT) {
+    if (event.side == LogicalSide.CLIENT && event.phase == TickEvent.Phase.START) {
       for (Map.Entry<ResourceLocation, List<Beam>> entry : BEAM_MAP.entrySet()) {
         Iterator<Beam> iterator = entry.getValue().iterator();
         while (iterator.hasNext()) {
@@ -57,28 +58,37 @@ public class BeamManager {
     double iPY = e.prevPosY + (e.posY - e.prevPosY) * partialTicks;
     double iPZ = e.prevPosZ + (e.posZ - e.prevPosZ) * partialTicks;
     GlStateManager.translated(-iPX, -iPY, -iPZ);
-    GlStateManager.disableCull();
     GLX.glMultiTexCoord2f(GLX.GL_TEXTURE1, 240.0F, 240.0F);
     BufferBuilder buffer = tessellator.getBuffer();
-    buffer.setTranslation(-iPX, -iPY, -iPZ);
+    buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR);
+
+    GlStateManager.enableBlend();
+    GlStateManager.disableCull();
+    GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE);
+    GlStateManager.depthMask(false);
+    GlStateManager.disableDepthTest();
+    RenderHelper.disableStandardItemLighting();
+    GlStateManager.texParameter(3553, 10242, 10497);
+    GlStateManager.texParameter(3553, 10243, 10497);
 
     for (Map.Entry<ResourceLocation, List<Beam>> entry : BEAM_MAP.entrySet()) {
       tm.bindTexture(entry.getKey());
       entry.getValue().forEach(beam -> {
-        // The client shouldn't bne getting stuff for invalid dimensions
+        // The client shouldn't be getting stuff for invalid dimensions
         if (beam.removed()) {
           return;
         }
-        GlStateManager.pushMatrix();
-        buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR);
         beam.render(buffer);
-        tessellator.draw();
-        GlStateManager.popMatrix();
       });
     }
 
-    buffer.setTranslation(0, 0, 0);
+    tessellator.draw();
 
+    RenderHelper.enableStandardItemLighting();
+    GlStateManager.enableDepthTest();
+    GlStateManager.depthMask(true);
+    GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
+    GlStateManager.disableBlend();
     GlStateManager.enableCull();
     GlStateManager.popMatrix();
   }
