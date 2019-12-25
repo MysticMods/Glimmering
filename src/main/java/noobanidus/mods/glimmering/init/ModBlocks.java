@@ -9,11 +9,13 @@ import net.minecraft.item.Items;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.client.model.generators.ConfiguredModel;
 import net.minecraftforge.common.ToolType;
 import net.minecraftforge.fml.RegistryObject;
 import noobanidus.mods.glimmering.GLTags;
 import noobanidus.mods.glimmering.Glimmering;
 import noobanidus.mods.glimmering.blocks.AndesiteBowlBlock;
+import noobanidus.mods.glimmering.blocks.AndesiteCapstone;
 import noobanidus.mods.glimmering.blocks.PolishedAndesiteStairs;
 import noobanidus.mods.glimmering.blocks.RitualRuneBlock;
 
@@ -128,7 +130,7 @@ public class ModBlocks {
 
   public static RegistryObject<RitualRuneBlock> RITUAL_RUNE = REGISTRATE.object("ritual_rune")
       .block(RitualRuneBlock::new)
-      .blockstate(ctx -> ctx.getProvider().simpleBlock(ctx.getEntry(), ctx.getProvider().cubeTop(ctx.getName(), new ResourceLocation("block/polished_andesite"), ctx.getProvider().modLoc("block/andesite_rune"))))
+      .blockstate(ctx -> ctx.getProvider().getVariantBuilder(ctx.getEntry()).forAllStates(state -> ConfiguredModel.builder().modelFile(ctx.getProvider().cubeTop(ctx.getName() + (state.get(RitualRuneBlock.ACTIVE) ? "_active" : ""), new ResourceLocation("block/polished_andesite"), state.get(RitualRuneBlock.ACTIVE) ? ctx.getProvider().modLoc("block/andesite_rune_active") : ctx.getProvider().modLoc("block/andesite_rune"))).build()))
       .properties(STONE_PROPS)
       .item()
         .properties((o) -> o.group(Glimmering.ITEM_GROUP))
@@ -140,10 +142,27 @@ public class ModBlocks {
               .patternLine("PXP")
               .key('P', Blocks.POLISHED_ANDESITE)
               .key('X', ModBlocks.BRICKS.get())
-              .key('D', Ingredient.fromTag(GLTags.Items.ELIGIBLE_DUSTS))
+              .key('D', GLTags.Items.ELIGIBLE_DUSTS)
               .addCriterion("has_bricks", ctx.getProvider().hasItem(ModBlocks.BRICKS.get()))
               .build(ctx.getProvider())
       )
+      .register();
+
+  public static RegistryObject<AndesiteCapstone> ANDESITE_CAPSTONE = REGISTRATE.object("andesite_capstone")
+      .block(AndesiteCapstone::new)
+      .blockstate(ctx -> ctx.getProvider().getVariantBuilder(ctx.getEntry()).forAllStates(state -> ConfiguredModel.builder().modelFile(ctx.getProvider().cubeAll(ctx.getName() + (state.get(RitualRuneBlock.ACTIVE) ? "_active" : ""), state.get(RitualRuneBlock.ACTIVE) ? ctx.getProvider().modLoc("block/andesite_capstone_active") : ctx.getProvider().modLoc("block/andesite_capstone"))).build()))
+      .item().properties(o -> o.group(Glimmering.ITEM_GROUP)).build()
+      .recipe(ctx -> {
+        ShapedRecipeBuilder.shapedRecipe(ctx.getEntry(), 4)
+            .patternLine("PDP")
+            .patternLine("D D")
+            .patternLine("PDP")
+            .key('P', Blocks.POLISHED_ANDESITE)
+            .key('D', GLTags.Items.ELIGIBLE_DUSTS)
+            .addCriterion("has_andesite", ctx.getProvider().hasItem(Blocks.POLISHED_ANDESITE))
+            .addCriterion("has_glimmer_dust", ctx.getProvider().hasItem(GLTags.Items.ELIGIBLE_DUSTS))
+            .build(ctx.getProvider());
+      })
       .register();
 
   public static void load() {

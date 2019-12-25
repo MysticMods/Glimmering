@@ -8,6 +8,7 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import noobanidus.mods.glimmering.particle.GlintParticle;
 import noobanidus.mods.glimmering.tiles.RitualRuneTile;
 
 import javax.annotation.Nullable;
@@ -39,35 +40,35 @@ public class RitualEntity extends UnlivingEntity {
     return result;
   }
 
-  public Vec3d compensate (Direction dir, BlockPos bowl) {
+  public Vec3d compensate(Direction dir, BlockPos bowl) {
     return compensate(dir, new Vec3d(bowl.getX() + 0.5, bowl.getY() + 1.2, bowl.getZ() + 0.5));
   }
 
-  public Vec3d compensate (Direction dir, Vec3d vec) {
-      double tx = vec.x;
-      double ty = vec.y;
-      double tz = vec.z;
-      switch (dir.getAxisDirection()) {
-        case POSITIVE:
-          switch (dir.getAxis()) {
-            case X:
-              tx += 0.15;
-              break;
-            case Z:
-              tz += 0.15;
-              break;
-          }
-        case NEGATIVE:
-          switch (dir.getAxis()) {
-            case X:
-              tx -= 0.15;
-              break;
-            case Z:
-              tz -= 0.15;
-              break;
-          }
-      }
-      return new Vec3d(tx, ty, tz);
+  public Vec3d compensate(Direction dir, Vec3d vec) {
+    double tx = vec.x;
+    double ty = vec.y;
+    double tz = vec.z;
+    switch (dir.getAxisDirection()) {
+      case POSITIVE:
+        switch (dir.getAxis()) {
+          case X:
+            tx += 0.15;
+            break;
+          case Z:
+            tz += 0.15;
+            break;
+        }
+      case NEGATIVE:
+        switch (dir.getAxis()) {
+          case X:
+            tx -= 0.15;
+            break;
+          case Z:
+            tz -= 0.15;
+            break;
+        }
+    }
+    return new Vec3d(tx, ty, tz);
   }
 
   public List<Vec3d> getPillarTops() {
@@ -82,7 +83,7 @@ public class RitualEntity extends UnlivingEntity {
   }
 
   public List<BlockPos> getPillar(RitualRuneTile.PillarType pillar) {
-    BlockPos origin = new BlockPos(posX, posY + offset, posZ);
+    BlockPos origin = new BlockPos(posX, posY, posZ);
     BlockPos start = pillar.offset(origin);
     return Arrays.asList(start, start.up(), start.up().up());
   }
@@ -131,6 +132,23 @@ public class RitualEntity extends UnlivingEntity {
     super.tick();
     if (!this.isActive()) {
       finishRitual();
+    }
+    if (world.isRemote) {
+      float r = 227 / 255f;
+      float g = 103 / 255f;
+      float b = 13 / 255f;
+      if (ticksExisted < MAX_TICKS - 40) {
+        for (int i = 0; i < Math.log(ticksExisted) * 10 * 0.09; i++) {
+          GlintParticle.Data data = new GlintParticle.Data(0.8f, r, g, b, 0.9f + (rand.nextFloat() - 0.5f), 0.5f + (rand.nextFloat() - 0.5f), 20, 0f);
+          world.addParticle(data, posX, posY + 2.3, posZ, (rand.nextFloat() - 0.5f) * ticksExisted * 0.1, (rand.nextFloat() - 0.5f) * ticksExisted * 0.1, (rand.nextFloat() - 0.5f) * ticksExisted * 0.1);
+        }
+      }
+      if (ticksExisted == MAX_TICKS) {
+        for (int i = 0; i < 400; i++) {
+          GlintParticle.Data data = new GlintParticle.Data(0.8f, r, g, b, 0.9f + 1, 1, 30, 0f);
+          world.addParticle(data, posX, posY + 1.7, posZ, (rand.nextFloat() - 0.5) * 4, (rand.nextFloat() - 0.5) * 4, (rand.nextFloat() - 0.5) * 4);
+        }
+      }
     }
   }
 }

@@ -1,7 +1,10 @@
 {
   "variants": {
-    "": {
+    "active=false": {
       "model": "glimmering:block/ritual_rune"
+    },
+    "active=true": {
+      "model": "glimmering:block/ritual_rune_active"
     }
   }
 }

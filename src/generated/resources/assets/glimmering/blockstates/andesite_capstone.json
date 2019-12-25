@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "active=false": {
+      "model": "glimmering:block/andesite_capstone"
+    },
+    "active=true": {
+      "model": "glimmering:block/andesite_capstone_active"
+    }
+  }
+}

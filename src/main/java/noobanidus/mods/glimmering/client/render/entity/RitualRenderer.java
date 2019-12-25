@@ -14,11 +14,13 @@ import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.World;
 import net.minecraftforge.fml.client.registry.IRenderFactory;
 import noobanidus.mods.glimmering.Glimmering;
 import noobanidus.mods.glimmering.client.model.ModelHolder;
 import noobanidus.mods.glimmering.client.model.RitualModel;
 import noobanidus.mods.glimmering.entity.RitualEntity;
+import noobanidus.mods.glimmering.particle.GlintParticle;
 import noobanidus.mods.glimmering.tiles.RitualRuneTile;
 import org.lwjgl.opengl.GL11;
 
@@ -57,20 +59,20 @@ public class RitualRenderer extends UnlivingRenderer<RitualEntity, RitualModel> 
     if (rotation > 120) {
       this.entityModel.outer3.isHidden = false;
     }
-    if (rotation > 150) {
+    if (rotation > 140) {
       this.entityModel.outer4.isHidden = false;
     }
-    if (rotation > 180) {
+    if (rotation > 150) {
       this.entityModel.outer5.isHidden = false;
     }
-    if (rotation > 210) {
+    if (rotation > 155) {
       this.entityModel.outer6.isHidden = false;
     }
 
     GlStateManager.pushMatrix();
     GlStateManager.scalef(0.65f, 0.65f, 0.65f);
     //GlStateManager.translated(0D, Math.sin(rotation / 20D) / 19.5, 0D);
-    GlStateManager.translatef(0, 0.8f, 0);
+    GlStateManager.translatef(0, -2.5f, 0);
     GlStateManager.rotatef(-(rotation * (rotation * 1.15f * 0.04f)), 0F, 1F, 0F);
   }
 
@@ -80,10 +82,10 @@ public class RitualRenderer extends UnlivingRenderer<RitualEntity, RitualModel> 
   }
 
   public static List<Vec3d> topFace(BlockPos pos) {
-    Vec3d ne = new Vec3d(pos.getX(), pos.getY(), pos.getZ());
-    Vec3d nw = new Vec3d(pos.getX() - 1, pos.getY(), pos.getZ());
-    Vec3d se = new Vec3d(pos.getX(), pos.getY(), pos.getZ() - 1);
-    Vec3d sw = new Vec3d(pos.getX() - 1, pos.getY(), pos.getZ() - 1);
+    Vec3d ne = new Vec3d(pos.getX() + 1.01, pos.getY() + 1.01, pos.getZ());
+    Vec3d nw = new Vec3d(pos.getX(), pos.getY() + 1.01, pos.getZ());
+    Vec3d se = new Vec3d(pos.getX() + 1.01, pos.getY() + 1.01, pos.getZ() + 1.02);
+    Vec3d sw = new Vec3d(pos.getX(), pos.getY() + 1.01, pos.getZ() + 1.01);
     return Arrays.asList(ne, nw, sw, se);
   }
 
@@ -127,20 +129,25 @@ public class RitualRenderer extends UnlivingRenderer<RitualEntity, RitualModel> 
     Tessellator tessellator = Tessellator.getInstance();
     GLX.glMultiTexCoord2f(GLX.GL_TEXTURE1, 240.0F, 240.0F);
     BufferBuilder buffer = tessellator.getBuffer();
+    GlStateManager.pushMatrix();
+    GlStateManager.translated(x, y + 2, z);
 
-/*    GlStateManager.depthMask(true);
-    bindTexture(GOLDEN_TEXTURE);
-    GlStateManager.matrixMode(5890);
-    GlStateManager.loadIdentity();
+/*    //GlStateManager.depthMask(true);
+    //bindTexture(GOLDEN_TEXTURE);
+    //GlStateManager.matrixMode(5890);
+    //GlStateManager.loadIdentity();
     float lvt_10_1_ = (float) entity.ticksExisted + partialTicks;
 
-    GlStateManager.matrixMode(5888);
-    GlStateManager.enableBlend();
-    GlStateManager.color4f(0.5F, 0.5F, 0.5F, 1.0F);
+    //GlStateManager.matrixMode(5888);
+    //GlStateManager.enableBlend();
+    //GlStateManager.color4f(0.5F, 0.5F, 0.5F, 1.0F);
     GlStateManager.disableLighting();
-    GlStateManager.blendFunc(GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ONE);
+    //GlStateManager.blendFunc(GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ONE);
     GameRenderer renderer = Minecraft.getInstance().gameRenderer;
     renderer.setupFogColor(true);
+    Minecraft mc = Minecraft.getInstance();
+    World world = mc.player.world;
+
     for (RitualRuneTile.PillarType pillar : RitualRuneTile.PillarType.values()) {
       List<BlockPos> pillarBlocks = entity.getPillar(pillar);
 
@@ -149,21 +156,25 @@ public class RitualRenderer extends UnlivingRenderer<RitualEntity, RitualModel> 
       GlStateManager.translatef(lvt_10_1_ * 0.01F, lvt_10_1_ * 0.01F, 0.0F);
       GlStateManager.pushMatrix();
       GlStateManager.scalef(1.1f, 1.1f, 1.1f);
-      GlStateManager.translatef(0, -0.08f, 0);
+      //GlStateManager.translatef(0, -0.08f, 0);
 
       List<Vec3d> topCorners = topFace(pillarBlocks.get(2));
-      buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR);
-      buffer.pos(topCorners.get(0).x, topCorners.get(0).y + 0.5, topCorners.get(0).z).tex(0, 1).color(255, 255, 255, 255).endVertex();
-      buffer.pos(topCorners.get(1).x, topCorners.get(1).y + 0.5, topCorners.get(1).z).tex(0, 1).color(255, 255, 255, 255).endVertex();
-      buffer.pos(topCorners.get(2).x, topCorners.get(2).y + 0.5, topCorners.get(2).z).tex(0, 1).color(255, 255, 255, 255).endVertex();
-      buffer.pos(topCorners.get(3).x, topCorners.get(3).y + 0.5, topCorners.get(3).z).tex(0, 1).color(255, 255, 255, 255).endVertex();
+      buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
+      buffer.pos(topCorners.get(0).x, topCorners.get(0).y, topCorners.get(0).z).tex(0, 1).color(0, 0, 0, 255).endVertex();
+      buffer.pos(topCorners.get(1).x, topCorners.get(1).y, topCorners.get(1).z).tex(0, 1).color(0, 0, 0, 255).endVertex();
+      buffer.pos(topCorners.get(2).x, topCorners.get(2).y, topCorners.get(2).z).tex(0, 1).color(0, 0, 0, 255).endVertex();
+      buffer.pos(topCorners.get(3).x, topCorners.get(3).y, topCorners.get(3).z).tex(0, 1).color(0, 0, 0, 255).endVertex();
       tessellator.draw();
 
+      GlintParticle.Data data = new GlintParticle.Data(0.8f, 50, 50, 50, 1, 1, 20, 0f);
+      world.addParticle(data, topCorners.get(0).x, topCorners.get(0).y, topCorners.get(0).z, 0, 1, 0);
+      world.addParticle(data, topCorners.get(1).x, topCorners.get(1).y, topCorners.get(1).z, 1, 1, 1);
+      world.addParticle(data, topCorners.get(2).x, topCorners.get(2).y, topCorners.get(2).z, 2, 1, 2);
+      world.addParticle(data, topCorners.get(3).x, topCorners.get(3).y, topCorners.get(3).z, 3, 1, 3);
       GlStateManager.popMatrix();
       GlStateManager.popMatrix();
     }
 
-    GlStateManager.popMatrix();
     renderer.setupFogColor(false);
     GlStateManager.matrixMode(5890);
     GlStateManager.loadIdentity();
@@ -173,14 +184,8 @@ public class RitualRenderer extends UnlivingRenderer<RitualEntity, RitualModel> 
     GlStateManager.depthMask(true);*/
 
     List<Vec3d> bowls = entity.getBowls();
-    if (bowls.size() != 4) {
-      return;
-    }
-
     List<Vec3d> pillars = entity.getPillarTops();
 
-    GlStateManager.pushMatrix();
-    GlStateManager.translated(x, y, z);
     GlStateManager.enableBlend();
     GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE);
     GlStateManager.depthMask(false);

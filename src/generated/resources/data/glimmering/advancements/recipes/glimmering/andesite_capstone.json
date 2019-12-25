@@ -1,0 +1,43 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "glimmering:andesite_capstone"
+    ]
+  },
+  "criteria": {
+    "has_andesite": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "minecraft:polished_andesite"
+          }
+        ]
+      }
+    },
+    "has_glimmer_dust": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "glimmering:glimmer_dusts"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "glimmering:andesite_capstone"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_andesite",
+      "has_glimmer_dust",
+      "has_the_recipe"
+    ]
+  ]
+}

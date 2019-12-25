@@ -1,10 +1,12 @@
 {
   "block.glimmering.andesite_bowl": "Andesite Bowl",
+  "block.glimmering.andesite_capstone": "Andesite Capstone",
   "block.glimmering.polished_andesite_brick_slab": "Polished Andesite Brick Slab",
   "block.glimmering.polished_andesite_brick_stairs": "Polished Andesite Brick Stairs",
   "block.glimmering.polished_andesite_brick_wall": "Polished Andesite Brick Wall",
   "block.glimmering.polished_andesite_bricks": "Polished Andesite Bricks",
   "block.glimmering.ritual_rune": "Ritual Rune",
+  "glimmering.message.invalid_ingredients": "You lack the proper reagents to perform this ritual.",
   "glimmering.message.invalid_structure": "There is something lacking about your ritual site.",
   "glimmering.message.type_change": "This Glimmer is now a %s.",
   "glimmering.node.type.0": "Glimmer Relay",

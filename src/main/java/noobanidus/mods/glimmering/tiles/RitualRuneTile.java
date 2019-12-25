@@ -35,7 +35,7 @@ import java.util.List;
 
 public class RitualRuneTile extends TileEntity implements ITickableTileEntity, IEasilyUpdated {
   private boolean active = false;
-  private NonNullList<ItemStack> stacks = NonNullList.withSize(4, ItemStack.EMPTY);
+  private int quantity;
   private RitualEntity ritualEntity;
 
   public RitualRuneTile() {
@@ -74,7 +74,6 @@ public class RitualRuneTile extends TileEntity implements ITickableTileEntity, I
 
         if (!foundValid) {
           endRitual();
-          return;
         }
       }
     }
@@ -155,7 +154,7 @@ public class RitualRuneTile extends TileEntity implements ITickableTileEntity, I
       if (pillarState1.getBlock() != ModBlocks.BRICKS.get() || pillarState2.getBlock() != ModBlocks.BRICKS.get()) {
         return false;
       }
-      if (pillarState3.getBlock() != Blocks.POLISHED_ANDESITE) {
+      if (pillarState3.getBlock() != ModBlocks.ANDESITE_CAPSTONE.get()) {
         return false;
       }
     }
@@ -203,15 +202,6 @@ public class RitualRuneTile extends TileEntity implements ITickableTileEntity, I
     return result;
   }
 
-  public int getQuantity() {
-    float count = 0;
-    for (ItemStack stack : stacks) {
-      count += getCount(stack);
-    }
-
-    return (int) (Math.floor(count));
-  }
-
   private float getCount(ItemStack stack) {
     if (stack.getItem() == Items.GLOWSTONE_DUST) {
       return 1.5f;
@@ -244,15 +234,15 @@ public class RitualRuneTile extends TileEntity implements ITickableTileEntity, I
     } else if (!validateIngredients()) {
       player.sendMessage(new TranslationTextComponent("glimmering.message.invalid_ingredients").setStyle(new Style().setColor(TextFormatting.LIGHT_PURPLE)));
     } else {
-      stacks.clear();
+      float count = 0;
       for (BlockPos bowl : getBowls()) {
-        int count = 0;
         TileEntity te = world.getTileEntity(bowl);
         if (te instanceof AndesiteBowlTile) {
           ItemStack inSlot = ((AndesiteBowlTile) te).inventory.extractItem(0, 1, false);
-          stacks.set(count, inSlot);
+          count += getCount(inSlot);
         }
       }
+      this.quantity = (int) Math.floor(count);
 
       beginRitual();
     }
@@ -260,17 +250,20 @@ public class RitualRuneTile extends TileEntity implements ITickableTileEntity, I
 
   public void finishRitual() {
     if (world != null && !world.isRemote()) {
-      int quantity = getQuantity();
       ItemStack result = new ItemStack(ModEntities.SPAWN_GLIMMER.get(), quantity);
       ItemEntity resultEntity = new ItemEntity(world, pos.getX() + 0.5, pos.getY() + 1.5, pos.getZ() + 0.5, result);
       world.addEntity(resultEntity);
       world.setBlockState(pos, ModBlocks.RITUAL_RUNE.get().getDefaultState().with(RitualRuneBlock.ACTIVE, false));
+      for (PillarType p : PillarType.values()) {
+        BlockPos capstone = getPillar(p).get(2);
+        world.setBlockState(capstone, ModBlocks.ANDESITE_CAPSTONE.get().getDefaultState().with(RitualRuneBlock.ACTIVE, false));
+      }
       // some sort of sound
     }
 
-    this.stacks.clear();
     this.active = false;
     this.ritualEntity = null;
+    this.quantity = 0;
   }
 
   public void beginRitual() {
@@ -307,13 +300,16 @@ public class RitualRuneTile extends TileEntity implements ITickableTileEntity, I
       ritual.setTile(this);
       this.ritualEntity = ritual;
       BlockPos pos = getPos();
-      ritual.setPosition(pos.getX() + 0.5, pos.getY() + 2.5, pos.getZ() + 0.5);
+      ritual.setPosition(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5);
       world.addEntity(ritual);
       world.setBlockState(pos, ModBlocks.RITUAL_RUNE.get().getDefaultState().with(RitualRuneBlock.ACTIVE, true));
+      for (PillarType p : PillarType.values()) {
+        BlockPos capstone = getPillar(p).get(2);
+        world.setBlockState(capstone, ModBlocks.ANDESITE_CAPSTONE.get().getDefaultState().with(RitualRuneBlock.ACTIVE, true));
+      }
     }
 
     this.active = true;
-    this.stacks.clear();
     updateViaState();
   }
 
@@ -322,8 +318,12 @@ public class RitualRuneTile extends TileEntity implements ITickableTileEntity, I
       return;
     }
     world.setBlockState(pos, ModBlocks.RITUAL_RUNE.get().getDefaultState().with(RitualRuneBlock.ACTIVE, false));
+    for (PillarType p : PillarType.values()) {
+      BlockPos capstone = getPillar(p).get(2);
+      world.setBlockState(capstone, ModBlocks.ANDESITE_CAPSTONE.get().getDefaultState().with(RitualRuneBlock.ACTIVE, false));
+    }
     this.active = false;
-    this.stacks.clear();
+    this.quantity = 0;
     if (this.ritualEntity != null) {
       this.ritualEntity.remove();
       this.ritualEntity = null;
@@ -335,11 +335,8 @@ public class RitualRuneTile extends TileEntity implements ITickableTileEntity, I
   @Override
   public void read(CompoundNBT compound) {
     this.active = compound.getBoolean("active");
-    ListNBT stackList = compound.getList("stacks", Constants.NBT.TAG_COMPOUND);
-    stacks.clear();
-    for (int i = 0; i < stackList.size(); i++) {
-      ItemStack stack = ItemStack.read(stackList.getCompound(i));
-      stacks.set(i, stack);
+    if (compound.contains("quantity")) {
+      this.quantity = compound.getInt("quantity");
     }
     if (compound.contains("ritualEntity")) {
       if (world != null) {
@@ -357,11 +354,7 @@ public class RitualRuneTile extends TileEntity implements ITickableTileEntity, I
   public CompoundNBT write(CompoundNBT compound) {
     compound = super.write(compound);
     compound.putBoolean("active", this.active);
-    ListNBT stackList = new ListNBT();
-    for (ItemStack stack : stacks) {
-      stackList.add(stack.serializeNBT());
-    }
-    compound.put("stacks", stackList);
+    compound.putInt("quantity", this.quantity);
     if (this.ritualEntity != null) {
       compound.putInt("ritualEntity", this.ritualEntity.getEntityId());
     }
@@ -403,7 +396,7 @@ public class RitualRuneTile extends TileEntity implements ITickableTileEntity, I
       this.west = west;
     }
 
-    public List<Direction> directions () {
+    public List<Direction> directions() {
       List<Direction> result = new ArrayList<>();
       if (north != 0) {
         result.add(Direction.NORTH);

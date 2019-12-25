@@ -29,15 +29,16 @@ public class GlintParticle extends Particle {
   public static final ResourceLocation particles = new ResourceLocation(Glimmering.MODID, "textures/misc/glint.png");
 
   protected float particleScale = 1f;
+  protected float alpha = 1f;
+  protected float colourScale = 1f;
   public final int particle = 16;
 
-  public GlintParticle(World world, double x, double y, double z, float size, float red, float green, float blue, int m) {
-    super(world, x, y, z, 0.0D, 0.0D, 0.0D);
+  public GlintParticle(World world, double x, double y, double z, double mx, double my, double mz, float size, float red, float green, float blue, float alpha, float colourScale, int m, float gravity) {
+    super(world, x, y, z, mx, my, mz);
     particleRed = red;
     particleGreen = green;
     particleBlue = blue;
-    particleGravity = 0;
-    motionX = motionY = motionZ = 0;
+    particleGravity = gravity;
     particleScale *= size;
     maxAge = 3 * m;
     setSize(0.01F, 0.01F);
@@ -45,34 +46,30 @@ public class GlintParticle extends Particle {
     prevPosY = posY;
     prevPosZ = posZ;
     canCollide = false;
+    this.alpha = alpha;
+    this.colourScale = colourScale;
   }
 
   @Override
   public void renderParticle(BufferBuilder buffer, ActiveRenderInfo entityIn, float partialTicks, float rotationX, float rotationZ, float rotationYZ, float rotationXY, float rotationXZ) {
-    float var8 = particle % 8 / 8.0F;
-    float var9 = var8 + 0.0624375F * 2;
-    float var10 = particle / 8F / 8.0F;
-    float var11 = var10 + 0.0624375F * 2;
+    float var8 = 0; // particle % 8 / 8.0F;
+    float var9 = 1; // var8 + 0.0624375F * 2;
+    float var10 = 0; // particle / 8F / 8.0F;
+    float var11 = 1; // var10 + 0.0624375F * 2;
     float scale = 0.1F * particleScale;
     float posX = (float) (prevPosX + (this.posX - prevPosX) * partialTicks - interpPosX);
     float posY = (float) (prevPosY + (this.posY - prevPosY) * partialTicks - interpPosY);
     float posZ = (float) (prevPosZ + (this.posZ - prevPosZ) * partialTicks - interpPosZ);
-    float colourScale = 0.8f;
 
-    buffer.pos(posX - rotationX * scale - rotationXY * scale, posY - rotationZ * scale, posZ - rotationYZ * scale - rotationXZ * scale).tex(var9, var11).color(particleRed * colourScale, particleGreen * colourScale, particleBlue * colourScale, 1).endVertex();
-    buffer.pos(posX - rotationX * scale + rotationXY * scale, posY + rotationZ * scale, posZ - rotationYZ * scale + rotationXZ * scale).tex(var9, var10).color(particleRed * colourScale, particleGreen * colourScale, particleBlue * colourScale, 1).endVertex();
-    buffer.pos(posX + rotationX * scale + rotationXY * scale, posY + rotationZ * scale, posZ + rotationYZ * scale + rotationXZ * scale).tex(var8, var10).color(particleRed * colourScale, particleGreen * colourScale, particleBlue * colourScale, 1).endVertex();
-    buffer.pos(posX + rotationX * scale - rotationXY * scale, posY - rotationZ * scale, posZ + rotationYZ * scale - rotationXZ * scale).tex(var8, var11).color(particleRed * colourScale, particleGreen * colourScale, particleBlue * colourScale, 1).endVertex();
+    buffer.pos(posX - rotationX * scale - rotationXY * scale, posY - rotationZ * scale, posZ - rotationYZ * scale - rotationXZ * scale).tex(var9, var11).color(particleRed * colourScale, particleGreen * colourScale, particleBlue * colourScale, alpha).endVertex();
+    buffer.pos(posX - rotationX * scale + rotationXY * scale, posY + rotationZ * scale, posZ - rotationYZ * scale + rotationXZ * scale).tex(var9, var10).color(particleRed * colourScale, particleGreen * colourScale, particleBlue * colourScale, alpha).endVertex();
+    buffer.pos(posX + rotationX * scale + rotationXY * scale, posY + rotationZ * scale, posZ + rotationYZ * scale + rotationXZ * scale).tex(var8, var10).color(particleRed * colourScale, particleGreen * colourScale, particleBlue * colourScale, alpha).endVertex();
+    buffer.pos(posX + rotationX * scale - rotationXY * scale, posY - rotationZ * scale, posZ + rotationYZ * scale - rotationXZ * scale).tex(var8, var11).color(particleRed * colourScale, particleGreen * colourScale, particleBlue * colourScale, alpha).endVertex();
   }
 
   @Override
   public void tick() {
-    prevPosX = posX;
-    prevPosY = posY;
-    prevPosZ = posZ;
-
-    if (age++ >= maxAge)
-      setExpired();
+    super.tick();
   }
 
   @Nonnull
@@ -84,7 +81,6 @@ public class GlintParticle extends Particle {
   private static void beginRenderCommon(BufferBuilder buffer, TextureManager textureManager) {
     GL11.glPushAttrib(GL11.GL_LIGHTING_BIT);
     GlStateManager.depthMask(false);
-    GlStateManager.disableDepthTest();
     GlStateManager.enableBlend();
     GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
     GlStateManager.disableLighting();
@@ -95,7 +91,6 @@ public class GlintParticle extends Particle {
   }
 
   private static void endRenderCommon() {
-    GlStateManager.enableDepthTest();
     GlStateManager.disableBlend();
     GlStateManager.depthMask(true);
     GL11.glPopAttrib();
@@ -121,15 +116,19 @@ public class GlintParticle extends Particle {
 
   public static class Data implements IParticleData {
     public final float size;
-    public final float r, g, b;
+    public final float r, g, b, a, c;
     public final int m;
+    public final float gravity;
 
-    public Data(float size, float r, float g, float b, int m) {
+    public Data(float size, float r, float g, float b, float a, float c, int m, float gravity) {
       this.size = size;
       this.r = r;
       this.g = g;
       this.b = b;
       this.m = m;
+      this.a = a;
+      this.c = c;
+      this.gravity = gravity;
     }
 
     @Nonnull
@@ -144,13 +143,16 @@ public class GlintParticle extends Particle {
       buf.writeFloat(r);
       buf.writeFloat(g);
       buf.writeFloat(b);
+      buf.writeFloat(a);
+      buf.writeFloat(c);
       buf.writeInt(m);
+      buf.writeFloat(gravity);
     }
 
     @Nonnull
     @Override
     public String getParameters() {
-      return String.format(Locale.ROOT, "%s %.2f %.2f %.2f %.2f %d", this.getType().getRegistryName(), this.size, this.r, this.g, this.b, this.m);
+      return String.format(Locale.ROOT, "%s %.2f %.2f %.2f %.2f %.2f %.2f %d %.2f", this.getType().getRegistryName(), this.size, this.r, this.g, this.b, this.a, this.c, this.m, this.gravity);
     }
 
     public static final IDeserializer<Data> DESERIALIZER = new IDeserializer<Data>() {
@@ -166,15 +168,21 @@ public class GlintParticle extends Particle {
         reader.expect(' ');
         float b = reader.readFloat();
         reader.expect(' ');
+        float a = reader.readFloat();
+        reader.expect(' ');
+        float c = reader.readFloat();
+        reader.expect(' ');
         int m = reader.readInt();
         reader.expect(' ');
+        float gr = reader.readFloat();
+        reader.expect(' ');
 
-        return new Data(size, r, g, b, m);
+        return new Data(size, r, g, b, a, c, m, gr);
       }
 
       @Override
       public Data read(@Nonnull ParticleType<Data> type, PacketBuffer buf) {
-        return new Data(buf.readFloat(), buf.readFloat(), buf.readFloat(), buf.readFloat(), buf.readInt());
+        return new Data(buf.readFloat(), buf.readFloat(), buf.readFloat(), buf.readFloat(), buf.readFloat(), buf.readFloat(), buf.readInt(), buf.readFloat());
       }
     };
   }
@@ -185,11 +193,10 @@ public class GlintParticle extends Particle {
     }
 
     public static class Factory implements IParticleFactory<Data> {
-
       @Nullable
       @Override
       public Particle makeParticle(Data data, World world, double x, double y, double z, double mx, double my, double mz) {
-        return new GlintParticle(world, x, y, z, data.size, data.r, data.g, data.b, data.m);
+        return new GlintParticle(world, x, y, z, mx, my, mz, data.size, data.r, data.g, data.b, data.a, data.c, data.m, data.gravity);
       }
     }
   }

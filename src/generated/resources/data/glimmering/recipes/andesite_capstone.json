@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "PDP",
+    "D D",
+    "PDP"
+  ],
+  "key": {
+    "P": {
+      "item": "minecraft:polished_andesite"
+    },
+    "D": {
+      "tag": "glimmering:glimmer_dusts"
+    }
+  },
+  "result": {
+    "item": "glimmering:andesite_capstone",
+    "count": 4
+  }
+}
