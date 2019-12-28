@@ -83,7 +83,7 @@ public class GlimmerEntity extends UnlivingEntity {
     if (justLoaded) {
       world.getProfiler().startSection("Initial Load");
       justLoaded = false;
-      updateGraph(false);
+      updateGraph();
       world.getProfiler().endSection();
     }
 
@@ -121,7 +121,7 @@ public class GlimmerEntity extends UnlivingEntity {
     super.onAddedToWorld();
   }
 
-  public void updateGraph(boolean force) {
+  public void updateGraph() {
     List<GlimmerEntity> list = world.getEntitiesWithinAABB(ModEntities.GLIMMER.get(), new AxisAlignedBB(getPosition()).grow(RANGE), (e) -> !e.equals(this)).stream().map(e -> (GlimmerEntity) e).collect(Collectors.toList());
     if (!list.isEmpty()) {
       EnergyGraph.addEntity(this, list);
@@ -140,7 +140,7 @@ public class GlimmerEntity extends UnlivingEntity {
           return true;
         } else {
           int current = getDataManager().get(TYPE).ordinal();
-          if (current >= 3) {
+          if (current >= 2) {
             current = 0;
           } else {
             current++;
@@ -150,7 +150,7 @@ public class GlimmerEntity extends UnlivingEntity {
           if (!player.world.isRemote) {
             player.sendMessage(new TranslationTextComponent("glimmering.message.type_change", new TranslationTextComponent("glimmering.node.type." + current)).setStyle(new Style().setColor(TextFormatting.GOLD)));
           }
-          updateGraph(true);
+          updateGraph();
           return true;
         }
       }

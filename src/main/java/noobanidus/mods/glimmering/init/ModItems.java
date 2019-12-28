@@ -27,13 +27,13 @@ public class ModItems {
         .build(ctx.getProvider());
   }).model(ctx -> ctx.getProvider().handheld(ctx::getEntry)).register();
 
-  public static RegistryObject<Item> RECEIVER = REGISTRATE.item("receiver", Item::new).properties(PROPS).model(ctx -> {
+  public static RegistryObject<Item> RECEIVER = REGISTRATE.item("receiver", Item::new).properties(NULL_PROPS).model(ctx -> {
   }).register();
 
-  public static RegistryObject<Item> TRANSMITTER = REGISTRATE.item("transmitter", Item::new).properties(PROPS).model(ctx -> {
+  public static RegistryObject<Item> TRANSMITTER = REGISTRATE.item("transmitter", Item::new).properties(NULL_PROPS).model(ctx -> {
   }).register();
 
-  public static RegistryObject<Item> RELAY = REGISTRATE.item("relay", Item::new).properties(PROPS).model(ctx -> {
+  public static RegistryObject<Item> RELAY = REGISTRATE.item("relay", Item::new).properties(NULL_PROPS).model(ctx -> {
   }).register();
 
   public static void load() {

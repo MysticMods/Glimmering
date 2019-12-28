@@ -86,16 +86,7 @@ public class AndesiteBowlTile extends TileEntity implements IEasilyUpdated {
       return false;
     }
 
-    ItemStack inserted = inventory.insertItem(0, held, true);
-    if (!inserted.isEmpty() && inserted.getCount() != held.getCount()) {
-      return false;
-    }
-
-    ItemStack copy = held.copy();
-    inserted = inventory.insertItem(0, held, false);
-
-    copy.setCount(inserted.getCount());
-    player.setHeldItem(hand, copy);
+    player.setHeldItem(hand, inventory.insertItem(0, held, false));
     return true;
   }
 }
