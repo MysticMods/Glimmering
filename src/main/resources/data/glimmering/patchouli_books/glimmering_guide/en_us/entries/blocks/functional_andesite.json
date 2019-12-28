@@ -1,0 +1,26 @@
+{
+  "name": "Functional Andesite",
+  "icon": "glimmering:andesite_bowl",
+  "category": "blocks",
+  "pages": [
+    {
+      "type": "crafting",
+      "link_recipe": true,
+      "recipe": "glimmering:andesite_bowl",
+      "text": "Utilising $(l:blocks/decorative_andesite)decorative blocks$(), one can craft functional objects used in the creation of Glimmers through $(l:creation/rituals)Rituals$(). These include the andesite bowl, in which suitable $(l:creation/dusts)dusts$() can be placed."
+    },
+    {
+      "type": "crafting",
+      "recipe": "glimmering:andesite_capstone",
+      "link_recipe": true,
+      "text": "These special capstones are used to finalise pillars, an essential component in creating $(l:creation/rituals)Ritual Locations$()."
+    },
+    {
+      "type": "crafting",
+      "link_recipe": true,
+      "anchor": "ritual_rune",
+      "recipe": "glimmering:ritual_rune",
+      "text": "Likewise using dust and $(l:blocks/decorative_andesite)decorative andesite blocks$(), the central feature of the $(l:creation/rituals)Ritual Location$() is the Ritual RUne."
+    }
+  ]
+}

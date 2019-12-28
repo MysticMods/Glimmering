@@ -16,6 +16,7 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.FMLPaths;
 import noobanidus.mods.glimmering.client.beam.BeamManager;
 import noobanidus.mods.glimmering.config.ConfigManager;
+import noobanidus.mods.glimmering.energy.EnergyTick;
 import noobanidus.mods.glimmering.events.RightClickHandler;
 import noobanidus.mods.glimmering.init.*;
 import noobanidus.mods.glimmering.setup.ClientSetup;
@@ -34,7 +35,6 @@ public class Glimmering {
       return new ItemStack(ModEntities.SPAWN_GLIMMER.get());
     }
   };
-
 
   public static Registrate REGISTRATE;
 
@@ -65,6 +65,7 @@ public class Glimmering {
     modBus.addGenericListener(EntityType.class, ModEntities::registerEntities);
 
     MinecraftForge.EVENT_BUS.addListener(EventPriority.HIGHEST, true, RightClickHandler::onRightClick);
+    MinecraftForge.EVENT_BUS.addListener(EnergyTick::tick);
     ModParticles.particleRegistry.register(modBus);
 
     ConfigManager.loadConfig(ConfigManager.COMMON_CONFIG, FMLPaths.CONFIGDIR.get().resolve(MODID + "-common.toml"));

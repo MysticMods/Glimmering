@@ -1,4 +1,4 @@
-package noobanidus.mods.glimmering.graph;
+package noobanidus.mods.glimmering.energy;
 
 import net.minecraft.entity.Entity;
 import noobanidus.mods.glimmering.entity.GlimmerEntity;
@@ -69,8 +69,7 @@ public class EnergyGraph {
   public enum NodeType {
     RELAY,
     TRANSMIT,
-    RECEIVE,
-    BATTERY;
+    RECEIVE;
 
     public static NodeType byIndex(int index) {
       int i = 0;
@@ -139,7 +138,7 @@ public class EnergyGraph {
         continue;
       }
 
-      if (n.getType() == NodeType.RELAY || start.getType() == NodeType.RELAY || start.getType() == NodeType.BATTERY || n.getType() == NodeType.BATTERY) {
+      if (n.getType() == NodeType.RELAY || start.getType() == NodeType.RELAY) {
         toProcess.add(n);
         result.add(new Edge(start, n));
       } else if (start.getType() == NodeType.TRANSMIT && n.getType() == NodeType.RECEIVE) {
@@ -176,10 +175,9 @@ public class EnergyGraph {
       if (processedNodes.contains(u)) {
         continue;
       }
-      // HANDLE BATTERIES ???
       if (u.getType() == NodeType.RELAY) {
         toProcess.add(u);
-      } else if (u.getType() == NodeType.TRANSMIT || u.getType() == NodeType.BATTERY) {
+      } else if (u.getType() == NodeType.TRANSMIT) {
         transmitterNodes.add(u);
       }
     }

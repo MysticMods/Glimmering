@@ -11,8 +11,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.network.NetworkEvent;
 import noobanidus.mods.glimmering.client.beam.Beam;
 import noobanidus.mods.glimmering.client.beam.BeamManager;
-import noobanidus.mods.glimmering.client.render.BeamRenderer;
-import noobanidus.mods.glimmering.graph.EnergyGraph;
+import noobanidus.mods.glimmering.energy.EnergyGraph;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -22,6 +22,7 @@ import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.common.util.Constants;
+import noobanidus.mods.glimmering.GLTags;
 import noobanidus.mods.glimmering.blocks.RitualRuneBlock;
 import noobanidus.mods.glimmering.entity.RitualEntity;
 import noobanidus.mods.glimmering.init.ModBlocks;
@@ -202,19 +203,19 @@ public class RitualRuneTile extends TileEntity implements ITickableTileEntity, I
     return result;
   }
 
-  private float getCount(ItemStack stack) {
-    if (stack.getItem() == Items.GLOWSTONE_DUST) {
+  public static float getCount(ItemStack stack) {
+    if (stack.getItem().isIn(GLTags.Items.EMPOWERED_DUSTS)) {
       return 1.5f;
-    } else if (stack.getItem() == Items.REDSTONE) {
+    } else if (stack.getItem().isIn(GLTags.Items.SUPERIOR_DUSTS)) {
       return 1.25f;
-    } else if (stack.getItem() == Items.LAPIS_LAZULI) {
+    } else if (stack.getItem().isIn(GLTags.Items.COMMON_DUSTS)) {
       return 1f;
-    } else if (stack.getItem() == Items.BLAZE_POWDER) {
+    } else if (stack.getItem().isIn(GLTags.Items.MYTHICAL_DUSTS)) {
       return 1.75f;
-    } else if (stack.getItem() == Items.GUNPOWDER) {
+    } else if (stack.getItem().isIn(GLTags.Items.INFERIOR_DUSTS)) {
       return 0.75f;
-    } else if (stack.getItem() == Items.SUGAR) {
-      return 0.5f;
+    } else if (stack.getItem().isIn(GLTags.Items.INCONSEQUENTIAL_DUSTS)) {
+      return 0.25f;
     } else {
       return 0f;
     }

@@ -1,0 +1,18 @@
+{
+  "name": "Glimmering Tablet",
+  "advancement_namespaces": [
+    "glimmering"
+  ],
+  "creative_tab": "Glimmering",
+  "advancements_tab": "Glimmering",
+  "landing_text": "There is magic in stones and magic in dust, and with this magic great power can be moved.",
+  "book_texture": "glimmering:textures/gui/book.png",
+  "filler_texture": "glimmering:textures/gui/empty_page.png",
+  "model": "glimmering:tablet",
+  "version": 1,
+  "show_progress": false,
+  "macros": {
+    "$(info)": "$(thing)$(bold)$(t:Remember)[!]$()",
+    "$(warning)": "$(#f00)$(bold)$(t:Important)[!]$()"
+  }
+}

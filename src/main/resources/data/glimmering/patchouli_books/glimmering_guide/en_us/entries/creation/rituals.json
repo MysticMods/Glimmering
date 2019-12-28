@@ -1,0 +1,34 @@
+{
+  "name": "Rituals",
+  "icon": "glimmering:ritual_rune",
+  "category": "creation",
+  "pages": [
+    {
+      "type": "text",
+      "text": "Glimmers are created through a ritual, where various types of $(l:creation/dusts)eligible dusts$() are converted into power. Dusts are provided through $(l:blocks/functional_andesite)andesite bowls$(), and the ritual is begun by right-clicking the $(l:blocks/functional_andesite#ritual_rune)ritual rune$() with a $(l:creation/implements)ritual knife$().$(br2)The structure for this ritual consists of various $(l:blocks/functional_andesite)functional$() and $(l:blocks/decorative_andesite)decorative$() blocks."
+    },
+    {
+      "type": "multiblock",
+      "anchor": "multiblock",
+      "multiblock": {
+        "mapping": {
+          "0": "glimmering:ritual_rune",
+          "P": "minecraft:polished_andesite",
+          "B": "glimmering:polished_andesite_bricks",
+          "N": "glimmering:polished_andesite_brick_stairs[facing=north]",
+          "S": "glimmering:polished_andesite_brick_stairs[facing=south]",
+          "E": "glimmering:polished_andesite_brick_stairs[facing=east]",
+          "W": "glimmering:polished_andesite_brick_stairs[facing=west]",
+          "C": "glimmering:andesite_capstone",
+          "T": "glimmering:andesite_bowl"
+        },
+        "pattern": [
+          ["C     C","       ","       ","       ","       ","       ","C     C"],
+          ["B     B","       ","       ","       ","       ","       ","B     B"],
+          ["B  T  B","       ","  PEP  ","T S0N T","  PWP  ","       ","B  T  B"]
+        ]
+      },
+      "text": "$(warning) The number of glimmers created is relative to the power of the ritual."
+    }
+  ]
+}

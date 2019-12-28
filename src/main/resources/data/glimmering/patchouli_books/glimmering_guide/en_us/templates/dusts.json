@@ -1,0 +1,35 @@
+{
+  "processor": "noobanidus.mods.glimmering.integration.patchouli.DustTemplate",
+  "components": [
+    {
+      "type": "header",
+      "text": "#title",
+      "x": -1,
+      "y": 0
+    },
+    {
+      "type": "item",
+      "item": "#result",
+      "framed": false,
+      "x": 50,
+      "y": 15
+    },
+    {
+      "type": "image",
+      "image": "glimmering:textures/gui/crafting.png",
+      "x": 25,
+      "y": 10,
+      "u": 0,
+      "v": 203,
+      "width": 140,
+      "height": 55,
+      "scale": 0.5
+    },
+    {
+      "type": "text",
+      "text": "#text",
+      "x": 0,
+      "y": 40
+    }
+  ]
+}

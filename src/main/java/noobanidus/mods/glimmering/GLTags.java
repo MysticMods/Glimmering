@@ -11,6 +11,13 @@ public class GLTags {
   public static class Items extends GLTags {
     public static Tag<Item> ELIGIBLE_DUSTS = modTag("glimmer_dusts");
 
+    public static Tag<Item> MYTHICAL_DUSTS = modTag("mythical_dusts");
+    public static Tag<Item> EMPOWERED_DUSTS = modTag("empowered_dusts");
+    public static Tag<Item> SUPERIOR_DUSTS = modTag("superior_dusts");
+    public static Tag<Item> COMMON_DUSTS = modTag("common_dusts");
+    public static Tag<Item> INFERIOR_DUSTS = modTag("inferior_dusts");
+    public static Tag<Item> INCONSEQUENTIAL_DUSTS = modTag("inconsequential_dusts");
+
     static Tag<Item> tag(String modid, String name) {
       return tag(ItemTags.Wrapper::new, modid, name);
     }

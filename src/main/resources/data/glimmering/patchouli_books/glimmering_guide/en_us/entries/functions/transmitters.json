@@ -1,0 +1,13 @@
+{
+  "name": "Transmitters",
+  "icon": "glimmering:transmitter",
+  "category": "functions",
+  "sortnum": 2,
+  "pages": [
+    {
+      "type": "spotlight",
+      "item": "glimmering:transmitter",
+      "text": "These glimmers act as a connection point and will, when a receiver requires power, attempt to draw it from nearby tile entities."
+    }
+  ]
+}

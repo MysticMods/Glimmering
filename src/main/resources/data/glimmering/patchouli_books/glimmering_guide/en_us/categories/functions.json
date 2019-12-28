@@ -1,0 +1,5 @@
+{
+    "name": "Functions of Glimmers",
+    "description": "An explanation of the various functions of glimmer colours.$(br2)Glimmers can be converted by hitting with a $(l:creation/implements)ritual knife$();$(br)$(warning) they may be removed by doing the same while sneaking.",
+    "icon": "glimmering:glimmer"
+  }

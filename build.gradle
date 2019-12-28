@@ -100,6 +100,10 @@ repositories {
     maven { // JEI
         url "http://dvs1.progwml6.com/files/maven"
     }
+    maven {
+        name = "Jared"
+        url = "https://maven.blamejared.com"
+    }
 }
 
 configurations {
@@ -111,6 +115,8 @@ dependencies {
 
     compileOnly fg.deobf("mezz.jei:jei-${minecraft_version}:${jei_version}:api")
     runtimeOnly fg.deobf("mezz.jei:jei-${minecraft_version}:${jei_version}")
+    compileOnly fg.deobf("vazkii.patchouli:Patchouli:${patchouli_version}")
+    runtimeOnly fg.deobf("vazkii.patchouli:Patchouli:${patchouli_version}")
 
     def registrate = "com.tterrag.registrate:Registrate:MC${minecraft_version}-${registrate_version}"
     implementation fg.deobf(registrate)

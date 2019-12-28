@@ -34,15 +34,7 @@ public class ModEntities {
   public static Supplier<EntityType<RitualEntity>> RITUAL = () -> RITUAL_TYPE;
 
   public static RegistryObject<GlimmerSpawnItem> SPAWN_GLIMMER = REGISTRATE.item(GLIMMER_ID, GlimmerSpawnItem::new).properties(GLIMMER_RPOPS).model((ctx) -> {
-    ctx.getProvider().withExistingParent("glimmer", new ResourceLocation(Glimmering.MODID, "item/template_glimmer"));
-  }).recipe(ctx -> {
-        ShapedRecipeBuilder.shapedRecipe(ctx.getEntry(), 4)
-            .patternLine(" X ")
-            .patternLine("XXX")
-            .patternLine(" X ")
-            .key('X', Items.REDSTONE)
-            .addCriterion("has_redstone", ctx.getProvider().hasItem(Items.REDSTONE))
-            .build(ctx.getProvider());
+    ctx.getProvider().withExistingParent("glimmer", new ResourceLocation(Glimmering.MODID, "item/relay"));
   }).register();
 
   public static void load() {

@@ -1,11 +1,11 @@
 {
   "replace": false,
   "values": [
-    "minecraft:redstone",
-    "minecraft:glowstone_dust",
-    "minecraft:lapis_lazuli",
-    "minecraft:sugar",
-    "minecraft:gunpowder",
-    "minecraft:blaze_powder"
+    "#glimmering:inconsequential_dusts",
+    "#glimmering:inferior_dusts",
+    "#glimmering:common_dusts",
+    "#glimmering:superior_dusts",
+    "#glimmering:empowered_dusts",
+    "#glimmering:mythical_dusts"
   ]
 }

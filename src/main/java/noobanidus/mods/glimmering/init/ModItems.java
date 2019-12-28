@@ -1,5 +1,6 @@
 package noobanidus.mods.glimmering.init;
 
+import com.tterrag.registrate.providers.ProviderType;
 import com.tterrag.registrate.util.nullness.NonNullSupplier;
 import com.tterrag.registrate.util.nullness.NonNullUnaryOperator;
 import net.minecraft.data.ShapelessRecipeBuilder;
@@ -9,11 +10,14 @@ import net.minecraftforge.common.Tags;
 import net.minecraftforge.fml.RegistryObject;
 import noobanidus.mods.glimmering.Glimmering;
 
+import java.util.function.Supplier;
+
 import static noobanidus.mods.glimmering.Glimmering.REGISTRATE;
 
 @SuppressWarnings("unused")
 public class ModItems {
   public static NonNullUnaryOperator<Item.Properties> PROPS = (o) -> o.group(Glimmering.ITEM_GROUP);
+  public static NonNullUnaryOperator<Item.Properties> NULL_PROPS = (o) -> o.group(null);
 
   public static RegistryObject<Item> RITUAL_KNIFE = REGISTRATE.item("ritual_knife", Item::new).properties(PROPS).recipe(ctx -> {
     ShapelessRecipeBuilder.shapelessRecipe(ctx.getEntry(), 1)
@@ -22,6 +26,15 @@ public class ModItems {
         .addCriterion("gold_nugget", ctx.getProvider().hasItem(Tags.Items.NUGGETS_GOLD))
         .build(ctx.getProvider());
   }).model(ctx -> ctx.getProvider().handheld(ctx::getEntry)).register();
+
+  public static RegistryObject<Item> RECEIVER = REGISTRATE.item("receiver", Item::new).properties(PROPS).model(ctx -> {
+  }).register();
+
+  public static RegistryObject<Item> TRANSMITTER = REGISTRATE.item("transmitter", Item::new).properties(PROPS).model(ctx -> {
+  }).register();
+
+  public static RegistryObject<Item> RELAY = REGISTRATE.item("relay", Item::new).properties(PROPS).model(ctx -> {
+  }).register();
 
   public static void load() {
   }

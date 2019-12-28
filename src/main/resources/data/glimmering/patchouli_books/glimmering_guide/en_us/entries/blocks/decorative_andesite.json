@@ -1,0 +1,33 @@
+{
+  "name": "Decorative Andesite",
+  "icon": "glimmering:polished_andesite_bricks",
+  "category": "blocks",
+  "pages": [
+    {
+      "type": "crafting",
+      "link_recipe": true,
+      "recipe": "glimmering:polished_andesite_bricks",
+      "text": "With the right understanding, polished andesite can be transformed into beautiful bricks, via crafting or stonecutting; these bricks can be transformed into the usual variants.",
+      "title": "Bricks"
+    },
+    {
+      "type": "crafting",
+      "link_recipe": true,
+      "recipe": "glimmering:polished_andesite_brick_stairs",
+      "text": "These bricks can also be used to create stairs.",
+      "title": "Stairs"
+    },
+    {
+      "type": "crafting",
+      "link_recipe": true,
+      "recipe": "glimmering:polished_andesite_brick_slab",
+      "title": "Slabs"
+    },
+    {
+      "type": "crafting",
+      "link_recipe": true,
+      "recipe": "glimmering:polished_andesite_brick_wall",
+      "title": "Walls"
+    }
+  ]
+}

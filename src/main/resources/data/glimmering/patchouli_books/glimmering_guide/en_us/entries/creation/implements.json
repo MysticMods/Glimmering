@@ -1,0 +1,12 @@
+{
+  "name": "Implements",
+  "icon": "glimmering:ritual_knife",
+  "category": "creation",
+  "pages": [
+    {
+      "type": "crafting",
+      "recipe": "glimmering:ritual_knife",
+      "text": "A versatile tool used both for starting $(l:creation/rituals)Rituals$() and for manipulating $(l:functions/connections)connections$() between different types of glimmers."
+    }
+  ]
+}

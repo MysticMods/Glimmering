@@ -1,0 +1,17 @@
+{
+  "name": "Glimmer Basics",
+  "icon": "glimmering:ritual_knife",
+  "category": "functions",
+  "priority": true,
+  "sortnum": 0,
+  "pages": [
+    {
+      "type": "text",
+      "text": "Glimmers can connect with other glimmers up to a maximum range of 11 blocks.$(br2)All glimmers can connect to $(l:functions/relays)relays$(), while $(l:functions/transmitters)transmitters$() can connect to $(l:functions/receivers)receivers$().$(br2)$(warning) Receivers and transmitters cannot connect to themselves: to build a valid network, you will need to include relays as well."
+    },
+    {
+      "type": "text",
+      "text": "It's possible to visualise the connections between all nodes by right-clicking one of the nodes with a $(l:creation/implements)Ritual Knife$().$(br2)$(warning) To cycle a glimmer between modes, simply hit it while holding a $(l:creation/implements)ritual knife$().$(br2)$(warning) To remove a glimmer, sneak while hitting with the knife."
+    }
+  ]
+}

@@ -1,13 +1,9 @@
 package noobanidus.mods.glimmering.entity;
 
 import com.google.common.collect.Lists;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityPredicate;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.PacketBuffer;
@@ -16,11 +12,9 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.network.datasync.IDataSerializer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
-import net.minecraft.util.HandSide;
 import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextFormatting;
@@ -28,18 +22,18 @@ import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
-import noobanidus.mods.glimmering.graph.EnergyGraph;
-import noobanidus.mods.glimmering.graph.EnergyGraph.NodeType;
+import noobanidus.mods.glimmering.energy.EnergyGraph;
+import noobanidus.mods.glimmering.energy.EnergyGraph.NodeType;
+import noobanidus.mods.glimmering.energy.EnergyTick;
 import noobanidus.mods.glimmering.init.ModEntities;
 import noobanidus.mods.glimmering.init.ModItems;
 import noobanidus.mods.glimmering.network.BeamMessage;
 import noobanidus.mods.glimmering.network.Networking;
+import noobanidus.mods.glimmering.util.BlockPosUtil;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 public class GlimmerEntity extends UnlivingEntity {
@@ -106,24 +100,10 @@ public class GlimmerEntity extends UnlivingEntity {
     if (getDataManager().get(TYPE) == NodeType.RECEIVE) {
       world.getProfiler().startSection("Finding Requirements");
       List<Requirement> requirements = required();
-      if (requirements != null) {
-        requirements.removeIf(Requirement::isMaxed);
-      }
       world.getProfiler().endSection();
-      world.getProfiler().startSection("Fulfilling Requirements");
       if (requirements != null && !requirements.isEmpty()) {
-        for (GlimmerEntity glimmer : new EnergyGraph.EntityIter(this)) {
-          if (glimmer == null) {
-            continue;
-          }
-          glimmer.supply(this, requirements);
-          requirements.removeIf(Requirement::isMaxed);
-          if (requirements.isEmpty()) {
-            break;
-          }
-        }
+        EnergyTick.addGlimmer(this);
       }
-      world.getProfiler().endSection();
     }
 
     world.getProfiler().endSection();
@@ -141,7 +121,7 @@ public class GlimmerEntity extends UnlivingEntity {
     super.onAddedToWorld();
   }
 
-  public void updateGraph (boolean force) {
+  public void updateGraph(boolean force) {
     List<GlimmerEntity> list = world.getEntitiesWithinAABB(ModEntities.GLIMMER.get(), new AxisAlignedBB(getPosition()).grow(RANGE), (e) -> !e.equals(this)).stream().map(e -> (GlimmerEntity) e).collect(Collectors.toList());
     if (!list.isEmpty()) {
       EnergyGraph.addEntity(this, list);
@@ -205,14 +185,15 @@ public class GlimmerEntity extends UnlivingEntity {
     world.getProfiler().startSection("Gathering Requirements");
     List<Requirement> requirements = new ArrayList<>();
 
-    for (Direction dir : Direction.values()) {
-      TileEntity te = world.getTileEntity(getPosition().offset(dir));
+    AxisAlignedBB box = new AxisAlignedBB(getPosition()).grow(1);
+    BlockPosUtil.getAllInBox(box).forEach(tePos -> {
+      TileEntity te = world.getTileEntity(tePos);
       if (te != null) {
         te.getCapability(CapabilityEnergy.ENERGY).ifPresent((cap) -> {
-          requirements.add(new Requirement(cap));
+          requirements.add(new Requirement(tePos.toImmutable(), cap));
         });
       }
-    }
+    });
 
     requirements.removeIf(Requirement::isMaxed);
     world.getProfiler().endSection();
@@ -222,12 +203,14 @@ public class GlimmerEntity extends UnlivingEntity {
 
   public List<Requirement> supply(GlimmerEntity entity, List<Requirement> requirements) {
     world.getProfiler().startSection("Supplying Required Power from " + getEntityId());
-    for (Direction dir : Direction.values()) {
+    AxisAlignedBB box = new AxisAlignedBB(getPosition()).grow(1);
+
+    BlockPosUtil.getAllInBox(box).forEach(tePos -> {
       if (requirements.isEmpty()) {
-        break;
+        return;
       }
 
-      TileEntity te = world.getTileEntity(getPosition().offset(dir));
+      TileEntity te = world.getTileEntity(tePos);
       if (te != null) {
         te.getCapability(CapabilityEnergy.ENERGY).ifPresent((cap) -> {
           if (!cap.canExtract()) {
@@ -237,6 +220,9 @@ public class GlimmerEntity extends UnlivingEntity {
           requirements.removeIf(Requirement::isMaxed);
 
           for (Requirement req : requirements) {
+            if (req.getLocation().equals(tePos)) {
+              continue;
+            }
             int canExtract = cap.extractEnergy(req.getRequired(), true);
             int accepted = req.getHandler().receiveEnergy(canExtract, false);
             cap.extractEnergy(accepted, false);
@@ -245,7 +231,7 @@ public class GlimmerEntity extends UnlivingEntity {
           }
         });
       }
-    }
+    });
     world.getProfiler().endSection();
 
     return requirements;
@@ -261,8 +247,6 @@ public class GlimmerEntity extends UnlivingEntity {
         return new TranslationTextComponent("glimmering.node.type.1");
       case RECEIVE:
         return new TranslationTextComponent("glimmering.node.type.2");
-      case BATTERY:
-        return new TranslationTextComponent("glimmering.node.type.3");
     }
   }
 
@@ -283,10 +267,12 @@ public class GlimmerEntity extends UnlivingEntity {
   public static class Requirement {
     private IEnergyStorage handler;
     private int required;
+    private BlockPos location;
 
-    public Requirement(IEnergyStorage handler) {
+    public Requirement(BlockPos location, IEnergyStorage handler) {
       this.handler = handler;
       this.required = handler.receiveEnergy(Integer.MAX_VALUE, true);
+      this.location = location;
     }
 
     public IEnergyStorage getHandler() {
@@ -295,6 +281,10 @@ public class GlimmerEntity extends UnlivingEntity {
 
     public int getRequired() {
       return required;
+    }
+
+    public BlockPos getLocation() {
+      return location;
     }
 
     public void setRequired(int required) {

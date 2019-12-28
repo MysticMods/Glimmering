@@ -1,0 +1,13 @@
+{
+  "name": "Receivers",
+  "icon": "glimmering:receiver",
+  "category": "functions",
+  "sortnum": 3,
+  "pages": [
+    {
+      "type": "spotlight",
+      "item": "glimmering:receiver",
+      "text": "Glimmers in receiver mode will query nearby tile entities (the range depending on the size of the glimmer) and request power for those requiring it. "
+    }
+  ]
+}

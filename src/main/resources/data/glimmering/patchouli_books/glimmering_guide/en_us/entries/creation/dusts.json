@@ -1,0 +1,49 @@
+{
+  "name": "Dusts",
+  "icon": "minecraft:glowstone_dust",
+  "category": "creation",
+  "pages": [
+    {
+      "type": "glimmering:dusts",
+      "title": "Suitable Dusts",
+      "tag": "glimmer_dusts",
+      "text": "Each of the dusts suitable for $(l:creation/rituals)glimmer creation$() come in different qualities: Inconsequential, Inferior, Common, Superior, Empowered & Mythical.$(br2)$(warning) The ritual requires 4 of any type of dust to begin, and the number of glimmers created is equal to the total of their points (rounded down)."
+    },
+    {
+      "type": "glimmering:dusts",
+      "title": "Inconsequential Dusts",
+      "tag": "inconsequential_dusts",
+      "text": "Inconsequential dusts provide very little towards the ritual creation of glimmers.$(br2)Each dust is worth $(b)0.25 points$() towards the total amount of ritual power and the eventual number of glimmers created."
+    },
+    {
+      "type": "glimmering:dusts",
+      "title": "Inferior Dusts",
+      "tag": "inferior_dusts",
+      "text": "While the power of these dusts is inferior to that of the common quality, these will still contribute $(b)0.75 points$() towards the total amount of ritual power and the eventual number of glimmers created."
+    },
+    {
+      "type": "glimmering:dusts",
+      "title": "Common Dusts",
+      "tag": "common_dusts",
+      "text": "More powerful than the inconsequential and inferior dusts, the common dusts will gaurantee the creation of at least one glimmer, providing $(b)1 point$() towards the total amount of ritual power and the eventual number of glimmers created."
+    },
+    {
+      "type": "glimmering:dusts",
+      "title": "Superior Dusts",
+      "tag": "superior_dusts",
+      "text": "While not providing significantly more points than common dusts, superior dusts will also guarantee the creation of at least one glimmer, providing $(b)1.25 points$() towards the total amount of ritual power and the eventual number of glimmers created."
+    },
+    {
+      "type": "glimmering:dusts",
+      "title": "Empowered Dusts",
+      "tag": "empowered_dusts",
+      "text": "These dusts begin to push the amount of power a ritual can sustain to its maximum; they will guarantee the creation of one glimmer and provide $(b)1.5 points$() towards the total amount of ritual power and the eventual number of glimmers created."
+    },
+    {
+      "type": "glimmering:dusts",
+      "title": "Mythical Dusts",
+      "tag": "mythical_dusts",
+      "text": "Mythical dusts are the pinnacle ingredient for use in rituals. They guarantee the creation of at least one glimmer, and provide $(b)1.75 points$() towards the total amount of ritual power and the eventual number of glimmers created.$(br2)Using four Mythical dusts will create the maximum possible number of glimmers: seven."
+    }
+  ]
+}

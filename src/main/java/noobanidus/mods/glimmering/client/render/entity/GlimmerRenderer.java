@@ -9,7 +9,7 @@ import noobanidus.mods.glimmering.client.render.entity.layer.LayerElectric;
 import noobanidus.mods.glimmering.entity.GlimmerEntity;
 import noobanidus.mods.glimmering.client.model.GlimmerModel;
 import noobanidus.mods.glimmering.client.model.ModelHolder;
-import noobanidus.mods.glimmering.graph.EnergyGraph;
+import noobanidus.mods.glimmering.energy.EnergyGraph;
 
 public class GlimmerRenderer extends UnlivingRenderer<GlimmerEntity, GlimmerModel> {
   public GlimmerRenderer(EntityRendererManager manager, GlimmerModel model) {
@@ -45,8 +45,6 @@ public class GlimmerRenderer extends UnlivingRenderer<GlimmerEntity, GlimmerMode
         return new ResourceLocation("glimmering:textures/entity/glimmer_green.png");
       case RECEIVE:
         return new ResourceLocation("glimmering:textures/entity/glimmer_blue.png");
-      case BATTERY:
-        return new ResourceLocation("glimmering:textures/entity/glimmer_purple.png");
     }
   }
 
