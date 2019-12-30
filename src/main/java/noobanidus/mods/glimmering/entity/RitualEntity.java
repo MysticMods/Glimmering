@@ -17,7 +17,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class RitualEntity extends UnlivingEntity {
-  private static int MAX_TICKS = 20 * 21;
+  private static int MAX_TICKS = 240; // 20 * 21;
   public static double offset = -2.5;
 
   public RitualRuneTile tile = null;

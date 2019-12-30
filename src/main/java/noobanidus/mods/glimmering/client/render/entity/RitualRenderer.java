@@ -56,16 +56,16 @@ public class RitualRenderer extends UnlivingRenderer<RitualEntity, RitualModel> 
     if (rotation > 90) {
       this.entityModel.outer2.isHidden = false;
     }
-    if (rotation > 120) {
+    if (rotation > 100) {
       this.entityModel.outer3.isHidden = false;
     }
-    if (rotation > 140) {
+    if (rotation > 115) {
       this.entityModel.outer4.isHidden = false;
     }
-    if (rotation > 150) {
+    if (rotation > 120) {
       this.entityModel.outer5.isHidden = false;
     }
-    if (rotation > 155) {
+    if (rotation > 125) {
       this.entityModel.outer6.isHidden = false;
     }
 

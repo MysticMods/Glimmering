@@ -47,6 +47,7 @@ public class AndesiteBowlTile extends TileEntity implements IEasilyUpdated {
 
   @Override
   public CompoundNBT getUpdateTag() {
+    int test = 1;
     return this.write(new CompoundNBT());
   }
 

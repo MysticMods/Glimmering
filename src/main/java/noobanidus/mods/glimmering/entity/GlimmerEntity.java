@@ -35,6 +35,7 @@ import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class GlimmerEntity extends UnlivingEntity {
   public static final double RANGE = 11.5;
@@ -128,6 +129,16 @@ public class GlimmerEntity extends UnlivingEntity {
     }
   }
 
+  protected NodeType cycleType() {
+    int current = getDataManager().get(TYPE).ordinal();
+    if (current >= 2) {
+      current = 0;
+    } else {
+      current++;
+    }
+    return NodeType.byIndex(current);
+  }
+
   @Override
   public boolean attackEntityFrom(DamageSource source, float amount) {
     if (source.getTrueSource() != null && source.getTrueSource() instanceof PlayerEntity) {
@@ -139,14 +150,9 @@ public class GlimmerEntity extends UnlivingEntity {
           this.remove();
           return true;
         } else {
-          int current = getDataManager().get(TYPE).ordinal();
-          if (current >= 2) {
-            current = 0;
-          } else {
-            current++;
-          }
+          NodeType current = cycleType();
           EnergyGraph.clearEntity(this);
-          getDataManager().set(TYPE, NodeType.byIndex(current));
+          getDataManager().set(TYPE, current);
           if (!player.world.isRemote) {
             player.sendMessage(new TranslationTextComponent("glimmering.message.type_change", new TranslationTextComponent("glimmering.node.type." + current)).setStyle(new Style().setColor(TextFormatting.GOLD)));
           }
@@ -180,13 +186,16 @@ public class GlimmerEntity extends UnlivingEntity {
     return false;
   }
 
+  protected Stream<BlockPos> positions() {
+    return BlockPosUtil.getAllInBox(new AxisAlignedBB(getPosition()).grow(1));
+  }
+
   @Nullable
   public List<Requirement> required() {
     world.getProfiler().startSection("Gathering Requirements");
     List<Requirement> requirements = new ArrayList<>();
 
-    AxisAlignedBB box = new AxisAlignedBB(getPosition()).grow(1);
-    BlockPosUtil.getAllInBox(box).forEach(tePos -> {
+    positions().forEach(tePos -> {
       TileEntity te = world.getTileEntity(tePos);
       if (te != null) {
         te.getCapability(CapabilityEnergy.ENERGY).ifPresent((cap) -> {
@@ -203,9 +212,7 @@ public class GlimmerEntity extends UnlivingEntity {
 
   public List<Requirement> supply(GlimmerEntity entity, List<Requirement> requirements) {
     world.getProfiler().startSection("Supplying Required Power from " + getEntityId());
-    AxisAlignedBB box = new AxisAlignedBB(getPosition()).grow(1);
-
-    BlockPosUtil.getAllInBox(box).forEach(tePos -> {
+    positions().forEach(tePos -> {
       if (requirements.isEmpty()) {
         return;
       }

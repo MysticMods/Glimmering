@@ -60,6 +60,7 @@ public class BeamManager {
     GlStateManager.translated(-iPX, -iPY, -iPZ);
     GLX.glMultiTexCoord2f(GLX.GL_TEXTURE1, 240.0F, 240.0F);
     BufferBuilder buffer = tessellator.getBuffer();
+    BufferBuilderWrapper wrapper = new BufferBuilderWrapper(buffer);
     buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR);
 
     GlStateManager.enableBlend();
@@ -78,7 +79,7 @@ public class BeamManager {
         if (beam.removed()) {
           return;
         }
-        beam.render(buffer);
+        beam.render(wrapper);
       });
     }
 

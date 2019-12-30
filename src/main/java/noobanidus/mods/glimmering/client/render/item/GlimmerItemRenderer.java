@@ -11,6 +11,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import noobanidus.mods.glimmering.client.model.GlimmerModel;
 
+@Deprecated
 @OnlyIn(Dist.CLIENT)
 public class GlimmerItemRenderer extends ItemStackTileEntityRenderer {
   public static final GlimmerItemRenderer instance = new GlimmerItemRenderer();

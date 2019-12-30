@@ -61,7 +61,6 @@ public class Glimmering {
     ModBlocks.load();
     ModEntities.load();
     ModTiles.load();
-
     modBus.addGenericListener(EntityType.class, ModEntities::registerEntities);
 
     MinecraftForge.EVENT_BUS.addListener(EventPriority.HIGHEST, true, RightClickHandler::onRightClick);

@@ -5,10 +5,13 @@ import com.tterrag.registrate.util.nullness.NonNullSupplier;
 import com.tterrag.registrate.util.nullness.NonNullUnaryOperator;
 import net.minecraft.data.ShapelessRecipeBuilder;
 import net.minecraft.item.Item;
+import net.minecraft.item.Items;
 import net.minecraft.tags.ItemTags;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.fml.RegistryObject;
+import noobanidus.mods.glimmering.GLTags;
 import noobanidus.mods.glimmering.Glimmering;
+import noobanidus.mods.glimmering.items.TabletItem;
 
 import java.util.function.Supplier;
 
@@ -24,6 +27,16 @@ public class ModItems {
         .addIngredient(Tags.Items.NUGGETS_GOLD)
         .addIngredient(Tags.Items.RODS_WOODEN)
         .addCriterion("gold_nugget", ctx.getProvider().hasItem(Tags.Items.NUGGETS_GOLD))
+        .build(ctx.getProvider());
+  }).model(ctx -> ctx.getProvider().handheld(ctx::getEntry)).register();
+
+  public static RegistryObject<TabletItem> GLIMMERING_TABLET = REGISTRATE.item("glimmering_tablet", TabletItem::new).properties(PROPS).recipe(ctx -> {
+    ShapelessRecipeBuilder.shapelessRecipe(ctx.getEntry(), 1)
+        .addIngredient(Items.POLISHED_ANDESITE)
+        .addIngredient(Items.POLISHED_ANDESITE)
+        .addIngredient(Items.POLISHED_ANDESITE)
+        .addIngredient(GLTags.Items.ELIGIBLE_DUSTS)
+        .addCriterion("has_dusts", ctx.getProvider().hasItem(GLTags.Items.ELIGIBLE_DUSTS))
         .build(ctx.getProvider());
   }).model(ctx -> ctx.getProvider().handheld(ctx::getEntry)).register();
 

@@ -9,11 +9,15 @@ import java.util.function.Predicate;
 public class ModelHolder implements ISelectiveResourceReloadListener {
 
   public static GlimmerModel glimmerModel;
+  public static LargeGlimmerModel largeGlimmerModel;
+  public static StarModel starModel;
   public static RitualModel ritualModel;
 
   public static void init() {
     glimmerModel = new GlimmerModel();
     ritualModel = new RitualModel();
+    starModel = new StarModel();
+    largeGlimmerModel = new LargeGlimmerModel();
   }
 
   @Override

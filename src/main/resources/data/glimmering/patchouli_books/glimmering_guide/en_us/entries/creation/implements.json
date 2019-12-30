@@ -6,7 +6,7 @@
     {
       "type": "crafting",
       "recipe": "glimmering:ritual_knife",
-      "text": "A versatile tool used both for starting $(l:creation/rituals)Rituals$() and for manipulating $(l:functions/connections)connections$() between different types of glimmers."
+      "text": "A versatile tool used both for starting $(l:creation/rituals)Rituals$() and for manipulating $(l:functions/connections)all types of glimmers$()."
     }
   ]
 }

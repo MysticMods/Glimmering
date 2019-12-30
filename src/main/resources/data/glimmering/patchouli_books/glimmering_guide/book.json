@@ -11,6 +11,8 @@
   "model": "glimmering:tablet",
   "version": 1,
   "show_progress": false,
+  "custom_book_item": "glimmering:glimmering_tablet",
+  "dont_generate_book": true,
   "macros": {
     "$(info)": "$(thing)$(bold)$(t:Remember)[!]$()",
     "$(warning)": "$(#f00)$(bold)$(t:Important)[!]$()"
