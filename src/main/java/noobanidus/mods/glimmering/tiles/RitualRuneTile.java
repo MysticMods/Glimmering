@@ -311,7 +311,7 @@ public class RitualRuneTile extends TileEntity implements ITickableTileEntity, I
     }
 
     this.active = true;
-    updateViaState();
+    updateViaState(this);
   }
 
   public void endRitual() {
@@ -330,7 +330,7 @@ public class RitualRuneTile extends TileEntity implements ITickableTileEntity, I
       this.ritualEntity = null;
     }
     world.getEntitiesWithinAABB(RitualEntity.class, new AxisAlignedBB(getPos()), (o) -> true).forEach(Entity::remove);
-    updateViaState();
+    updateViaState(this);
   }
 
   @Override

@@ -23,7 +23,7 @@ public class AndesiteBowlTile extends TileEntity implements IEasilyUpdated {
     protected void onContentsChanged(int slot) {
       super.onContentsChanged(slot);
       AndesiteBowlTile.this.markDirty();
-      updateViaState();
+      updateViaState(AndesiteBowlTile.this);
     }
   };
 
