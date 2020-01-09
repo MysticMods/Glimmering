@@ -1,5 +1,6 @@
 package noobanidus.mods.glimmering.items;
 
+import com.tterrag.registrate.util.LazySpawnEggItem;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -9,15 +10,16 @@ import net.minecraft.util.text.*;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import noobanidus.mods.glimmering.entity.GlimmerEntity;
 import noobanidus.mods.glimmering.init.ModEntities;
 import noobanidus.mods.glimmering.init.ModItems;
 
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class GlimmerSpawnItem extends SpawnEggItem {
+public class GlimmerSpawnItem extends LazySpawnEggItem<GlimmerEntity> {
   public GlimmerSpawnItem(Properties builder) {
-    super(ModEntities.GLIMMER.get(), 0x418594, 0x211D15, builder);
+    super(ModEntities.GLIMMER_TYPE, 0x418594, 0x211D15, builder);
   }
 
   @Override

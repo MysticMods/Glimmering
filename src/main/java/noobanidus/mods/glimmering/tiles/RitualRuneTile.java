@@ -293,7 +293,7 @@ public class RitualRuneTile extends TileEntity implements ITickableTileEntity, I
       }
     }
     if (!foundViable) {
-      RitualEntity ritual = ModEntities.RITUAL.get().create(world);
+      RitualEntity ritual = ModEntities.RITUAL_TYPE.get().create(world);
       if (ritual == null) {
         return;
       }

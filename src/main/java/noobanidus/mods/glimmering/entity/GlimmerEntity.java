@@ -38,8 +38,8 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class GlimmerEntity extends UnlivingEntity {
-  public static final double RANGE = 11.5;
-  public static final int DELAY = 3 * 20;
+  private static final double RANGE = 11.5;
+  private static final int DELAY = 3 * 20;
   public int lastPowered = 0;
   private boolean justLoaded = false;
 
@@ -123,7 +123,7 @@ public class GlimmerEntity extends UnlivingEntity {
   }
 
   public void updateGraph() {
-    List<GlimmerEntity> list = world.getEntitiesWithinAABB(ModEntities.GLIMMER.get(), new AxisAlignedBB(getPosition()).grow(RANGE), (e) -> !e.equals(this)).stream().map(e -> (GlimmerEntity) e).collect(Collectors.toList());
+    List<GlimmerEntity> list = world.getEntitiesWithinAABB(ModEntities.GLIMMER_TYPE.get(), new AxisAlignedBB(getPosition()).grow(RANGE), (e) -> !e.equals(this)).stream().map(e -> (GlimmerEntity) e).collect(Collectors.toList());
     if (!list.isEmpty()) {
       EnergyGraph.addEntity(this, list);
     }
