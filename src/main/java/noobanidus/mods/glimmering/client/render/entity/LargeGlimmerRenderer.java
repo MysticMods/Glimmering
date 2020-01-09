@@ -5,14 +5,16 @@ import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.client.registry.IRenderFactory;
-import noobanidus.mods.glimmering.client.render.entity.layer.LayerElectric;
-import noobanidus.mods.glimmering.entity.GlimmerEntity;
 import noobanidus.mods.glimmering.client.model.GlimmerModel;
+import noobanidus.mods.glimmering.client.model.LargeGlimmerModel;
 import noobanidus.mods.glimmering.client.model.ModelHolder;
+import noobanidus.mods.glimmering.client.render.entity.layer.LayerElectric;
 import noobanidus.mods.glimmering.energy.EnergyGraph;
+import noobanidus.mods.glimmering.entity.GlimmerEntity;
+import noobanidus.mods.glimmering.entity.LargeGlimmerEntity;
 
-public class GlimmerRenderer extends UnlivingRenderer<GlimmerEntity, GlimmerModel> {
-  public GlimmerRenderer(EntityRendererManager manager, GlimmerModel model) {
+public class LargeGlimmerRenderer extends UnlivingRenderer<LargeGlimmerEntity, LargeGlimmerModel> {
+  public LargeGlimmerRenderer(EntityRendererManager manager, LargeGlimmerModel model) {
     super(manager, model);
     this.layerRenderers.add(new LayerElectric<>(this, model));
   }
@@ -32,7 +34,7 @@ public class GlimmerRenderer extends UnlivingRenderer<GlimmerEntity, GlimmerMode
   }
 
   @Override
-  protected ResourceLocation getEntityTexture(GlimmerEntity entity) {
+  protected ResourceLocation getEntityTexture(LargeGlimmerEntity entity) {
     EnergyGraph.NodeType current = entity.getDataManager().get(GlimmerEntity.TYPE);
     switch (current) {
       default:
@@ -40,18 +42,17 @@ public class GlimmerRenderer extends UnlivingRenderer<GlimmerEntity, GlimmerMode
         // 1 = Transmit
         // 2 = Receive
       case RELAY:
-        return new ResourceLocation("glimmering:textures/entity/glimmer_gold.png");
-      case TRANSMIT:
-        return new ResourceLocation("glimmering:textures/entity/glimmer_green.png");
       case RECEIVE:
         return new ResourceLocation("glimmering:textures/entity/glimmer_blue.png");
+      case TRANSMIT:
+        return new ResourceLocation("glimmering:textures/entity/glimmer_green.png");
     }
   }
 
-  public static class Factory implements IRenderFactory<GlimmerEntity> {
+  public static class Factory implements IRenderFactory<LargeGlimmerEntity> {
     @Override
-    public EntityRenderer<GlimmerEntity> createRenderFor(EntityRendererManager manager) {
-      return new GlimmerRenderer(manager, ModelHolder.glimmerModel);
+    public EntityRenderer<LargeGlimmerEntity> createRenderFor(EntityRendererManager manager) {
+      return new LargeGlimmerRenderer(manager, ModelHolder.largeGlimmerModel);
     }
   }
 }

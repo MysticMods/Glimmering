@@ -10,13 +10,13 @@ public class ModelHolder implements ISelectiveResourceReloadListener {
 
   public static GlimmerModel glimmerModel;
   public static LargeGlimmerModel largeGlimmerModel;
-  public static StarModel starModel;
+  public static GlimmerStarModel glimmerStarModel;
   public static RitualModel ritualModel;
 
   public static void init() {
     glimmerModel = new GlimmerModel();
     ritualModel = new RitualModel();
-    starModel = new StarModel();
+    glimmerStarModel = new GlimmerStarModel();
     largeGlimmerModel = new LargeGlimmerModel();
   }
 

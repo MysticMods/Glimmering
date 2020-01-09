@@ -3,7 +3,6 @@ package noobanidus.mods.glimmering;
 import com.tterrag.registrate.Registrate;
 import com.tterrag.registrate.providers.ProviderType;
 import com.tterrag.registrate.util.nullness.NonNullSupplier;
-import net.minecraft.entity.EntityType;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
@@ -32,7 +31,7 @@ public class Glimmering {
   public static final ItemGroup ITEM_GROUP = new ItemGroup("glimmering") {
     @Override
     public ItemStack createIcon() {
-      return new ItemStack(ModEntities.SPAWN_GLIMMER.get());
+      return new ItemStack(ModItems.SPAWN_GLIMMER.get());
     }
   };
 

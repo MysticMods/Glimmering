@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "glimmering:glimmer"
+    }
+  ],
+  "result": {
+    "item": "glimmering:star_glimmer",
+    "count": 4
+  }
+}

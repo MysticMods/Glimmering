@@ -7,26 +7,23 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.ListNBT;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SUpdateTileEntityPacket;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
-import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraftforge.common.util.Constants;
 import noobanidus.mods.glimmering.GLTags;
 import noobanidus.mods.glimmering.blocks.RitualRuneBlock;
 import noobanidus.mods.glimmering.entity.RitualEntity;
 import noobanidus.mods.glimmering.init.ModBlocks;
 import noobanidus.mods.glimmering.init.ModEntities;
+import noobanidus.mods.glimmering.init.ModItems;
 import noobanidus.mods.glimmering.init.ModTiles;
 
 import javax.annotation.Nullable;
@@ -251,7 +248,7 @@ public class RitualRuneTile extends TileEntity implements ITickableTileEntity, I
 
   public void finishRitual() {
     if (world != null && !world.isRemote()) {
-      ItemStack result = new ItemStack(ModEntities.SPAWN_GLIMMER.get(), quantity);
+      ItemStack result = new ItemStack(ModItems.SPAWN_GLIMMER.get(), quantity);
       ItemEntity resultEntity = new ItemEntity(world, pos.getX() + 0.5, pos.getY() + 1.5, pos.getZ() + 0.5, result);
       world.addEntity(resultEntity);
       world.setBlockState(pos, ModBlocks.RITUAL_RUNE.get().getDefaultState().with(RitualRuneBlock.ACTIVE, false));

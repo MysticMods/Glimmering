@@ -1,12 +1,12 @@
 {
   "name": "Relays",
-  "icon": "glimmering:relay",
+  "icon": "glimmering:glimmer",
   "category": "functions",
   "sortnum": 1,
   "pages": [
     {
       "type": "spotlight",
-      "item": "glimmering:relay",
+      "item": "glimmering:glimmer",
       "text": "Relays act as a connecting point between Glimmers of all types."
     }
   ]

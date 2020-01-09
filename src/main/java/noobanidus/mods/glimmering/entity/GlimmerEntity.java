@@ -1,6 +1,7 @@
 package noobanidus.mods.glimmering.entity;
 
 import com.google.common.collect.Lists;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -62,7 +63,7 @@ public class GlimmerEntity extends UnlivingEntity {
 
   public static final DataParameter<NodeType> TYPE = EntityDataManager.createKey(GlimmerEntity.class, NODE_SERIALIZER);
 
-  public GlimmerEntity(EntityType<GlimmerEntity> type, World world) {
+  public GlimmerEntity(EntityType<? extends GlimmerEntity> type, World world) {
     super(type, world);
   }
 
@@ -122,8 +123,15 @@ public class GlimmerEntity extends UnlivingEntity {
     super.onAddedToWorld();
   }
 
+  public boolean canRelay() {
+    return true;
+  }
+
   public void updateGraph() {
-    List<GlimmerEntity> list = world.getEntitiesWithinAABB(ModEntities.GLIMMER_TYPE.get(), new AxisAlignedBB(getPosition()).grow(RANGE), (e) -> !e.equals(this)).stream().map(e -> (GlimmerEntity) e).collect(Collectors.toList());
+    AxisAlignedBB axis = new AxisAlignedBB(getPosition()).grow(RANGE);
+    List<Entity> list = world.getEntitiesWithinAABB(ModEntities.GLIMMER_TYPE.get(), axis, (e) -> !e.equals(this));
+    list.addAll(world.getEntitiesWithinAABB(ModEntities.GLIMMER_STAR_TYPE.get(), axis, (e) -> !e.equals(this)));
+    list.addAll(world.getEntitiesWithinAABB(ModEntities.LARGE_GLIMMER_TYPE.get(), axis, (e) -> !e.equals(this)));
     if (!list.isEmpty()) {
       EnergyGraph.addEntity(this, list);
     }
@@ -132,11 +140,19 @@ public class GlimmerEntity extends UnlivingEntity {
   protected NodeType cycleType() {
     int current = getDataManager().get(TYPE).ordinal();
     if (current >= 2) {
-      current = 0;
+      if (canRelay()) {
+        current = 0;
+      } else {
+        current = 1;
+      }
     } else {
       current++;
     }
     return NodeType.byIndex(current);
+  }
+
+  protected void dropSelf() {
+    this.entityDropItem(new ItemStack(ModItems.SPAWN_GLIMMER.get()));
   }
 
   @Override
@@ -146,7 +162,7 @@ public class GlimmerEntity extends UnlivingEntity {
       ItemStack stack = player.getHeldItemMainhand();
       if (stack.getItem() == ModItems.RITUAL_KNIFE.get()) {
         if (player.isSneaking()) {
-          this.entityDropItem(new ItemStack(ModEntities.SPAWN_GLIMMER.get()));
+          this.dropSelf();
           this.remove();
           return true;
         } else {
@@ -154,7 +170,7 @@ public class GlimmerEntity extends UnlivingEntity {
           EnergyGraph.clearEntity(this);
           getDataManager().set(TYPE, current);
           if (!player.world.isRemote) {
-            player.sendMessage(new TranslationTextComponent("glimmering.message.type_change", new TranslationTextComponent("glimmering.node.type." + current)).setStyle(new Style().setColor(TextFormatting.GOLD)));
+            player.sendMessage(new TranslationTextComponent("glimmering.message.type_change", new TranslationTextComponent("glimmering.node.type." + current.toString().toLowerCase())).setStyle(new Style().setColor(TextFormatting.GOLD)));
           }
           updateGraph();
           return true;

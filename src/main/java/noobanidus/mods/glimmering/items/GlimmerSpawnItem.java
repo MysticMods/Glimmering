@@ -2,6 +2,8 @@ package noobanidus.mods.glimmering.items;
 
 import com.tterrag.registrate.util.LazySpawnEggItem;
 import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.SpawnEggItem;
@@ -16,10 +18,11 @@ import noobanidus.mods.glimmering.init.ModItems;
 
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.function.Supplier;
 
-public class GlimmerSpawnItem extends LazySpawnEggItem<GlimmerEntity> {
-  public GlimmerSpawnItem(Properties builder) {
-    super(ModEntities.GLIMMER_TYPE, 0x418594, 0x211D15, builder);
+public abstract class GlimmerSpawnItem<T extends Entity> extends LazySpawnEggItem<T> {
+  public GlimmerSpawnItem(Supplier<EntityType<T>> type, int primaryColor, int secondaryColor, Properties properties) {
+    super(type, primaryColor, secondaryColor, properties);
   }
 
   @Override
@@ -33,10 +36,5 @@ public class GlimmerSpawnItem extends LazySpawnEggItem<GlimmerEntity> {
     tooltip.add(new StringTextComponent(""));
     tooltip.add(new TranslationTextComponent("glimmering.tooltip.line1", ModItems.RITUAL_KNIFE.get().getName().setStyle(new Style().setColor(TextFormatting.RED).setBold(true))).setStyle(new Style().setColor(TextFormatting.GOLD)));
     tooltip.add(new TranslationTextComponent("glimmering.tooltip.line2", ModItems.RITUAL_KNIFE.get().getName().setStyle(new Style().setColor(TextFormatting.RED).setBold(true))).setStyle(new Style().setColor(TextFormatting.GOLD)));
-  }
-
-  @Override
-  public boolean doesSneakBypassUse(ItemStack stack, net.minecraft.world.IWorldReader world, BlockPos pos, PlayerEntity player) {
-    return false;
   }
 }

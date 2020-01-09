@@ -5,23 +5,24 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.entity.IEntityRenderer;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
+import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import noobanidus.mods.glimmering.Glimmering;
 import noobanidus.mods.glimmering.entity.GlimmerEntity;
-import noobanidus.mods.glimmering.client.model.GlimmerModel;
 
 @OnlyIn(Dist.CLIENT)
-public class LayerElectric extends LayerRenderer<GlimmerEntity, GlimmerModel> {
+public class LayerElectric<E extends GlimmerEntity, M extends EntityModel<E>> extends LayerRenderer<E, M> {
   private static final ResourceLocation LIGHTNING_TEXTURE = new ResourceLocation(Glimmering.MODID, "textures/entity/gold_electric.png");
-  private final GlimmerModel glimmerModel = new GlimmerModel();
+  private M glimmerModel; // = new GlimmerModel();
 
-  public LayerElectric(IEntityRenderer<GlimmerEntity, GlimmerModel> p_i50947_1_) {
-    super(p_i50947_1_);
+  public LayerElectric(IEntityRenderer<E, M> renderer, M model) {
+    super(renderer);
+    this.glimmerModel = model;
   }
 
-  public void render(GlimmerEntity glimmer, float p_212842_2_, float p_212842_3_, float p_212842_4_, float p_212842_5_, float p_212842_6_, float p_212842_7_, float p_212842_8_) {
+  public void render(E glimmer, float p_212842_2_, float p_212842_3_, float p_212842_4_, float p_212842_5_, float p_212842_6_, float p_212842_7_, float p_212842_8_) {
     if (glimmer.recentlyPowered()) {
       GlStateManager.depthMask(true);
       this.bindTexture(LIGHTNING_TEXTURE);

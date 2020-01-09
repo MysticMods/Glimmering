@@ -115,10 +115,11 @@ public class EnergyGraph {
     adjacencies.remove(node);
   }
 
-  public static void addEntity(GlimmerEntity glimmerEntity, List<GlimmerEntity> entities) {
+  public static void addEntity(GlimmerEntity glimmerEntity, List<Entity> entities) {
     Vertex start = new Vertex(glimmerEntity);
     removedNodes.remove(start);
-    for (GlimmerEntity e : entities) {
+    for (Entity inc : entities) {
+      GlimmerEntity e = (GlimmerEntity) inc;
       Vertex ev = new Vertex(e);
       addEdge(start, ev);
     }

@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "glimmering:glimmer_from_stars"
+    ]
+  },
+  "criteria": {
+    "has_stars": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "glimmering:star_glimmer"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "glimmering:glimmer_from_stars"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_stars",
+      "has_the_recipe"
+    ]
+  ]
+}

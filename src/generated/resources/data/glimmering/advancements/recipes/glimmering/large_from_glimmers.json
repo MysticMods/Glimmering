@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "glimmering:large_from_glimmers"
+    ]
+  },
+  "criteria": {
+    "has_glimmer": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "glimmering:glimmer"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "glimmering:large_from_glimmers"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_glimmer",
+      "has_the_recipe"
+    ]
+  ]
+}
