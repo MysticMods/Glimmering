@@ -1,0 +1,37 @@
+{
+  "name": "Types & Sizes",
+  "icon": "glimmering:large_glimmer",
+  "category": "functions",
+  "pages": [
+    {
+      "type": "text",
+      "text": "In addition to having multiple $(l:functions)functions$(), Glimmers come in different sizes: Stars, (regular) Glimmers and Large Glimmers.$(br2)Each of these are created from normal Glimmers, either by breaking them down or combining them together."
+    },
+    {
+      "type": "spotlight",
+      "item": "glimmering:glimmer",
+      "text": "The default Glimmer, as created through a $(l:creation/rituals)ritual$(), in $(l:functions/receivers)receiver$() or $(l:functions/transmitters)transmitter$() mode, will access blocks in a 3x3 cube around it, where it is the center."
+    },
+    {
+      "type": "spotlight",
+      "item": "glimmering:large_glimmer",
+      "text": "A Large Glimmer is created by combining 4 regular Glimmers. It will access blocks in a 5x5 cube around itself, where it is the center.$(br2)$(warning) Large Glimmers can only act as receivers or transmitters, not as relays."
+    },
+    {
+      "type": "crafting",
+      "recipe": "glimmering:large_from_glimmers",
+      "recipe2": "glimmering:glimmer_from_large",
+      "text": "Glimmers can be combined into a Large Glimmer, and the latter crafted shapelessly to obtain 4 regular Glimmers."
+    },
+    {
+      "type": "spotlight",
+      "item": "glimmering:star_glimmer",
+      "text": "A Star Glimmer is obtained by shapelessly crafting with a regular Glimmer. It will access blocks in the 6 cardinal directions (plus up and down) around itself.$(br2)$(warning) As with the Large Glimmer, Star Glimmers can only act as receivers or transmitters -- not as relays."
+    },
+    {
+      "type": "crafting",
+      "recipe": "glimmering:star_from_glimmer",
+      "recipe2": "glimmering:glimmer_from_stars"
+    }
+  ]
+}

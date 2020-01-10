@@ -36,7 +36,7 @@ public class BufferBuilderWrapper {
   }
 
   public BufferBuilderWrapper color255a () {
-    this.buffer = buffer.color(255, 255, 255, 200);
+    this.buffer = buffer.color(255, 255, 255, 255);
     return this;
   }
 

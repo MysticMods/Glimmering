@@ -1,0 +1,13 @@
+{
+  "name": "Andesite Bowls",
+  "icon": "glimmering:andesite_bowl",
+  "category": "blocks",
+  "pages": [
+    {
+      "type": "crafting",
+      "link_recipe": true,
+      "recipe": "glimmering:andesite_bowl",
+      "text": "Utilising $(l:blocks/decorative_andesite)decorative blocks$(), one can craft functional objects used in the creation of Glimmers through $(l:creation/rituals)Rituals$(). These include the andesite bowl, in which suitable $(l:creation/dusts)dusts$() can be placed."
+    }
+  ]
+}

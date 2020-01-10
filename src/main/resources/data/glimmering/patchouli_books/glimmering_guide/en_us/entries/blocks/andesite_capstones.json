@@ -1,0 +1,13 @@
+{
+  "name": "Andesite Capstones",
+  "icon": "glimmering:andesite_capstone",
+  "category": "blocks",
+  "pages": [
+    {
+      "type": "crafting",
+      "recipe": "glimmering:andesite_capstone",
+      "link_recipe": true,
+      "text": "These special capstones are used to finalise pillars, an essential component in creating $(l:creation/rituals)Ritual Locations$()."
+    }
+  ]
+}

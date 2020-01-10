@@ -1,0 +1,14 @@
+{
+  "name": "Rituan Runes",
+  "icon": "glimmering:ritual_rune",
+  "category": "blocks",
+  "pages": [
+    {
+      "type": "crafting",
+      "link_recipe": true,
+      "anchor": "ritual_rune",
+      "recipe": "glimmering:ritual_rune",
+      "text": "Likewise using dust and $(l:blocks/decorative_andesite)decorative andesite blocks$(), the central feature of the $(l:creation/rituals)Ritual Location$() is the Ritual Rune."
+    }
+  ]
+}

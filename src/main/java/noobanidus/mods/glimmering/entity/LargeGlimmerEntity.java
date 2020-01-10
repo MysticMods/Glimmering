@@ -22,7 +22,7 @@ public class LargeGlimmerEntity extends GlimmerEntity {
 
   @Override
   protected Stream<BlockPos> positions() {
-    return BlockPosUtil.getAllInBox(new AxisAlignedBB(getPosition()).grow(3));
+    return BlockPosUtil.getAllInBox(new AxisAlignedBB(getPosition()).grow(2));
   }
 
   @Override

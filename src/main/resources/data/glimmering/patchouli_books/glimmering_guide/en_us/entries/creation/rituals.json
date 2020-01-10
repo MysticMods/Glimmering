@@ -5,7 +5,7 @@
   "pages": [
     {
       "type": "text",
-      "text": "Glimmers are created through a ritual, where various types of $(l:creation/dusts)eligible dusts$() are converted into power. Dusts are provided through $(l:blocks/functional_andesite)andesite bowls$(), and the ritual is begun by right-clicking the $(l:blocks/functional_andesite#ritual_rune)ritual rune$() with a $(l:creation/implements)ritual knife$().$(br2)The structure for this ritual consists of various $(l:blocks/functional_andesite)functional$() and $(l:blocks/decorative_andesite)decorative$() blocks."
+      "text": "Glimmers are created through a ritual, where various types of $(l:creation/dusts)eligible dusts$() are converted into power. Dusts are provided through $(l:blocks/andesite_bowls)andesite bowls$(), and the ritual is begun by right-clicking the $(l:blocks/ritual_runes)ritual rune$() with a $(l:creation/implements)ritual knife$().$(br2)The structure for this ritual consists of $(l:blocks/andesite_capstones)capstones$() and other $(l:blocks/decorative_andesite)decorative$() blocks."
     },
     {
       "type": "multiblock",
