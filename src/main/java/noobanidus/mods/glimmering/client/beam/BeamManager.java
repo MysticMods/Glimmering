@@ -16,6 +16,7 @@ import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.fml.LogicalSide;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL11C;
 
 import java.util.*;
 
@@ -67,11 +68,10 @@ public class BeamManager {
     GlStateManager.disableCull();
     GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE);
     GlStateManager.depthMask(false);
-    GlStateManager.disableDepthTest();
     RenderHelper.disableStandardItemLighting();
-    GlStateManager.texParameter(3553, 10242, 10497);
-    GlStateManager.texParameter(3553, 10243, 10497);
-
+    GlStateManager.texParameter(GL11C.GL_TEXTURE_2D, GL11C.GL_TEXTURE_WRAP_S, GL11C.GL_REPEAT);
+    GlStateManager.texParameter(GL11C.GL_TEXTURE_2D, GL11C.GL_TEXTURE_WRAP_T, GL11C.GL_REPEAT);
+    GlStateManager.disableDepthTest();
     for (Map.Entry<ResourceLocation, List<Beam>> entry : BEAM_MAP.entrySet()) {
       tm.bindTexture(entry.getKey());
       entry.getValue().forEach(beam -> {
@@ -79,18 +79,32 @@ public class BeamManager {
         if (beam.removed()) {
           return;
         }
-        beam.render(wrapper);
+        beam.render(wrapper, true);
       });
     }
-
+    tessellator.draw();
+    GlStateManager.enableDepthTest();
+    buffer = tessellator.getBuffer();
+    BufferBuilderWrapper wrapper2 = new BufferBuilderWrapper(buffer);
+    buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR);
+    for (Map.Entry<ResourceLocation, List<Beam>> entry : BEAM_MAP.entrySet()) {
+      tm.bindTexture(entry.getKey());
+      entry.getValue().forEach(beam -> {
+        // The client shouldn't be getting stuff for invalid dimensions
+        if (beam.removed()) {
+          return;
+        }
+        beam.render(wrapper2, false);
+      });
+    }
     tessellator.draw();
 
     RenderHelper.enableStandardItemLighting();
-    GlStateManager.enableDepthTest();
     GlStateManager.depthMask(true);
     GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
     GlStateManager.disableBlend();
     GlStateManager.enableCull();
+    GlStateManager.color4f(1, 1, 1, 1);
     GlStateManager.popMatrix();
   }
 }

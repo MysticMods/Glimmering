@@ -44,7 +44,7 @@ public class Beam {
   }
 
   @OnlyIn(Dist.CLIENT)
-  public void render(BufferBuilderWrapper buffer) {
+  public void render(BufferBuilderWrapper buffer, boolean alpha) {
     Vec3d subtracted = start.subtract(stop);
     float f2 = 1.0F;
     float f3 = f2 * 0.5F % 1.0F;
@@ -68,11 +68,19 @@ public class Beam {
     Vec3d c = new Vec3d(stop.x - 0.15, stop.y + 0.1, stop.z);
     Vec3d d = new Vec3d(stop.x, stop.y - 0.1, stop.z - 0.15);*/
 
-    buffer.pos(a).tex(1, d22).color255().endVertex();
-    buffer.pos(b).tex(1, d22).color255().endVertex();
+    if (!alpha) {
+      buffer.pos(a).tex(1, d22).color255().endVertex();
+      buffer.pos(b).tex(1, d22).color255().endVertex();
 
-    buffer.pos(c).tex(0, d23).color255().endVertex();
-    buffer.pos(d).tex(0, d23).color255().endVertex();
+      buffer.pos(c).tex(0, d23).color255().endVertex();
+      buffer.pos(d).tex(0, d23).color255().endVertex();
+    } else {
+      buffer.pos(a).tex(1, d22).color255a().endVertex();
+      buffer.pos(b).tex(1, d22).color255a().endVertex();
+
+      buffer.pos(c).tex(0, d23).color255a().endVertex();
+      buffer.pos(d).tex(0, d23).color255a().endVertex();
+    }
 
     /*Vec3d e = new Vec3d(start.x, start.y + 0.1, start.z - 0.15);
     Vec3d f = new Vec3d(start.x - 0.15, start.y - 0.1, start.z);

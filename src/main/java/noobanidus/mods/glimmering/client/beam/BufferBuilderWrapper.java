@@ -25,13 +25,18 @@ public class BufferBuilderWrapper {
     return this;
   }
 
-  public BufferBuilderWrapper color(float red, float green, float blue, float alpha) {
+  public BufferBuilderWrapper color(int red, int green, int blue, int alpha){
     this.buffer = buffer.color(red, green, blue, alpha);
     return this;
   }
 
   public BufferBuilderWrapper color255 () {
     this.buffer = buffer.color(255, 255, 255, 255);
+    return this;
+  }
+
+  public BufferBuilderWrapper color255a () {
+    this.buffer = buffer.color(255, 255, 255, 200);
     return this;
   }
 
