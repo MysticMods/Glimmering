@@ -71,7 +71,7 @@ public class BeamManager {
     RenderHelper.disableStandardItemLighting();
     GlStateManager.texParameter(GL11C.GL_TEXTURE_2D, GL11C.GL_TEXTURE_WRAP_S, GL11C.GL_REPEAT);
     GlStateManager.texParameter(GL11C.GL_TEXTURE_2D, GL11C.GL_TEXTURE_WRAP_T, GL11C.GL_REPEAT);
-    GlStateManager.disableDepthTest();
+
     for (Map.Entry<ResourceLocation, List<Beam>> entry : BEAM_MAP.entrySet()) {
       tm.bindTexture(entry.getKey());
       entry.getValue().forEach(beam -> {
@@ -79,11 +79,11 @@ public class BeamManager {
         if (beam.removed()) {
           return;
         }
-        beam.render(wrapper, true);
+        beam.render(wrapper, false);
       });
     }
     tessellator.draw();
-    GlStateManager.enableDepthTest();
+    GlStateManager.disableDepthTest();
     buffer = tessellator.getBuffer();
     BufferBuilderWrapper wrapper2 = new BufferBuilderWrapper(buffer);
     buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR);
@@ -94,12 +94,13 @@ public class BeamManager {
         if (beam.removed()) {
           return;
         }
-        beam.render(wrapper2, false);
+        beam.render(wrapper2, true);
       });
     }
     tessellator.draw();
 
     RenderHelper.enableStandardItemLighting();
+    GlStateManager.enableDepthTest();
     GlStateManager.depthMask(true);
     GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
     GlStateManager.disableBlend();

@@ -92,11 +92,19 @@ public class Beam {
     Vec3d g = stop.subtract(cross2);
     Vec3d h = start.subtract(cross2);
 
-    buffer.pos(e).tex(1, d22).color255().endVertex();
-    buffer.pos(f).tex(1, d22).color255().endVertex();
+    if (!alpha) {
+      buffer.pos(e).tex(1, d22).color255().endVertex();
+      buffer.pos(f).tex(1, d22).color255().endVertex();
 
-    buffer.pos(g).tex(0, d23).color255().endVertex();
-    buffer.pos(h).tex(0, d23).color255().endVertex();
+      buffer.pos(g).tex(0, d23).color255().endVertex();
+      buffer.pos(h).tex(0, d23).color255().endVertex();
+    } else {
+      buffer.pos(e).tex(1, d22).color255a().endVertex();
+      buffer.pos(f).tex(1, d22).color255a().endVertex();
+
+      buffer.pos(g).tex(0, d23).color255a().endVertex();
+      buffer.pos(h).tex(0, d23).color255a().endVertex();
+    }
   }
 
   @OnlyIn(Dist.CLIENT)

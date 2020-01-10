@@ -1,4 +1,4 @@
-package noobanidus.mods.glimmering.particle;
+/*package noobanidus.mods.glimmering.particle;
 
 import com.mojang.blaze3d.platform.GLX;
 import com.mojang.blaze3d.platform.GlStateManager;
@@ -191,4 +191,4 @@ public class OrbParticle extends Particle {
       }
     }
   }
-}
+}*/
