@@ -1,0 +1,7 @@
+{
+	"credit": "Made with Blockbench",
+	"parent": "glimmering:item/relay",
+	"textures": {
+		"1": "glimmering:entity/glimmer_green"
+	}
+}
