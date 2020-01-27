@@ -76,6 +76,6 @@ public class Glimmering {
   }
 
   public static void onServerStarting (FMLServerStartingEvent event) {
-    serializerCommand = new CommandSerializers(event.getCommandDispatcher()).register();
+    //serializerCommand = new CommandSerializers(event.getCommandDispatcher()).register();
   }
 }
