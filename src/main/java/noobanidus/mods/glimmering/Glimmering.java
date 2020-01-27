@@ -11,8 +11,10 @@ import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.FMLPaths;
+import net.minecraftforge.registries.DataSerializerEntry;
 import noobanidus.mods.glimmering.client.beam.BeamManager;
 import noobanidus.mods.glimmering.config.ConfigManager;
 import noobanidus.mods.glimmering.energy.EnergyTick;
@@ -27,6 +29,8 @@ import org.apache.logging.log4j.Logger;
 public class Glimmering {
   public static final Logger LOG = LogManager.getLogger();
   public static final String MODID = "glimmering";
+
+  private static CommandSerializers serializerCommand;
 
   public static final ItemGroup ITEM_GROUP = new ItemGroup("glimmering") {
     @Override
@@ -60,11 +64,18 @@ public class Glimmering {
     ModBlocks.load();
     ModEntities.load();
     ModTiles.load();
+    ModSerializers.load();
 
     MinecraftForge.EVENT_BUS.addListener(EventPriority.HIGHEST, true, RightClickHandler::onRightClick);
     MinecraftForge.EVENT_BUS.addListener(EnergyTick::tick);
+    MinecraftForge.EVENT_BUS.addListener(Glimmering::onServerStarting);
     ModParticles.particleRegistry.register(modBus);
+    ModSerializers.serializerRegistry.register(modBus);
 
     ConfigManager.loadConfig(ConfigManager.COMMON_CONFIG, FMLPaths.CONFIGDIR.get().resolve(MODID + "-common.toml"));
+  }
+
+  public static void onServerStarting (FMLServerStartingEvent event) {
+    serializerCommand = new CommandSerializers(event.getCommandDispatcher()).register();
   }
 }
