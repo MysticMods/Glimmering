@@ -35,7 +35,7 @@ public class EnergyGraph {
     private final NodeType type;
 
     public Vertex(GlimmerEntity entity) {
-      this(entity.getEntityId(), entity.getDataManager().get(GlimmerEntity.TYPE));
+      this(entity.getEntityId(), NodeType.byIndex(entity.getDataManager().get(GlimmerEntity.TYPE)));
     }
 
     public Vertex(int entityId, NodeType type) {

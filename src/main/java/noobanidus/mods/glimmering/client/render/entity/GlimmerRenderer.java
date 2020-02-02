@@ -33,7 +33,7 @@ public class GlimmerRenderer extends UnlivingRenderer<GlimmerEntity, GlimmerMode
 
   @Override
   protected ResourceLocation getEntityTexture(GlimmerEntity entity) {
-    EnergyGraph.NodeType current = entity.getDataManager().get(GlimmerEntity.TYPE);
+    EnergyGraph.NodeType current = EnergyGraph.NodeType.byIndex(entity.getDataManager().get(GlimmerEntity.TYPE));
     switch (current) {
       default:
         // 0 = Relay

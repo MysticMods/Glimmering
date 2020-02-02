@@ -35,7 +35,7 @@ public class LargeGlimmerRenderer extends UnlivingRenderer<LargeGlimmerEntity, L
 
   @Override
   protected ResourceLocation getEntityTexture(LargeGlimmerEntity entity) {
-    EnergyGraph.NodeType current = entity.getDataManager().get(GlimmerEntity.TYPE);
+    EnergyGraph.NodeType current = EnergyGraph.NodeType.byIndex(entity.getDataManager().get(GlimmerEntity.TYPE));
     switch (current) {
       default:
         // 0 = Relay

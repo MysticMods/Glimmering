@@ -64,13 +64,11 @@ public class Glimmering {
     ModBlocks.load();
     ModEntities.load();
     ModTiles.load();
-    ModSerializers.load();
 
     MinecraftForge.EVENT_BUS.addListener(EventPriority.HIGHEST, true, RightClickHandler::onRightClick);
     MinecraftForge.EVENT_BUS.addListener(EnergyTick::tick);
     MinecraftForge.EVENT_BUS.addListener(Glimmering::onServerStarting);
     ModParticles.particleRegistry.register(modBus);
-    ModSerializers.serializerRegistry.register(modBus);
 
     ConfigManager.loadConfig(ConfigManager.COMMON_CONFIG, FMLPaths.CONFIGDIR.get().resolve(MODID + "-common.toml"));
   }

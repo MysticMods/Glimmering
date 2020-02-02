@@ -9,6 +9,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.network.datasync.IDataSerializer;
 import net.minecraft.tileentity.TileEntity;
@@ -44,24 +45,7 @@ public class GlimmerEntity extends UnlivingEntity {
   public int lastPowered = 0;
   private boolean justLoaded = false;
 
-  public static IDataSerializer<NodeType> NODE_SERIALIZER = new IDataSerializer<NodeType>() {
-    @Override
-    public void write(PacketBuffer packetBuffer, NodeType nodeType) {
-      packetBuffer.writeInt(nodeType.ordinal());
-    }
-
-    @Override
-    public NodeType read(PacketBuffer packetBuffer) {
-      return NodeType.byIndex(packetBuffer.readInt());
-    }
-
-    @Override
-    public NodeType copyValue(NodeType nodeType) {
-      return nodeType;
-    }
-  };
-
-  public static final DataParameter<NodeType> TYPE = EntityDataManager.createKey(GlimmerEntity.class, NODE_SERIALIZER);
+  public static final DataParameter<Integer> TYPE = EntityDataManager.createKey(GlimmerEntity.class, DataSerializers.VARINT);
 
   public GlimmerEntity(EntityType<? extends GlimmerEntity> type, World world) {
     super(type, world);
@@ -70,7 +54,7 @@ public class GlimmerEntity extends UnlivingEntity {
   @Override
   protected void registerData() {
     super.registerData();
-    getDataManager().register(TYPE, NodeType.RELAY);
+    getDataManager().register(TYPE, NodeType.RELAY.ordinal());
   }
 
   @Override
@@ -99,7 +83,7 @@ public class GlimmerEntity extends UnlivingEntity {
       world.getProfiler().endSection();
     }*/
 
-    if (getDataManager().get(TYPE) == NodeType.RECEIVE) {
+    if (getDataManager().get(TYPE) == NodeType.RECEIVE.ordinal()) {
       world.getProfiler().startSection("Finding Requirements");
       List<Requirement> requirements = required();
       world.getProfiler().endSection();
@@ -138,7 +122,7 @@ public class GlimmerEntity extends UnlivingEntity {
   }
 
   protected NodeType cycleType() {
-    int current = getDataManager().get(TYPE).ordinal();
+    int current = getDataManager().get(TYPE);
     if (current >= 2) {
       if (canRelay()) {
         current = 0;
@@ -168,7 +152,7 @@ public class GlimmerEntity extends UnlivingEntity {
         } else {
           NodeType current = cycleType();
           EnergyGraph.clearEntity(this);
-          getDataManager().set(TYPE, current);
+          getDataManager().set(TYPE, current.ordinal());
           if (!player.world.isRemote) {
             player.sendMessage(new TranslationTextComponent("glimmering.message.type_change", new TranslationTextComponent("glimmering.node.type." + current.toString().toLowerCase())).setStyle(new Style().setColor(TextFormatting.GOLD)));
           }
@@ -262,7 +246,7 @@ public class GlimmerEntity extends UnlivingEntity {
 
   @Override
   public ITextComponent getName() {
-    switch (getDataManager().get(TYPE)) {
+    switch (NodeType.byIndex(getDataManager().get(TYPE))) {
       default:
       case RELAY:
         return new TranslationTextComponent("glimmering.node.type.0");
@@ -276,14 +260,14 @@ public class GlimmerEntity extends UnlivingEntity {
   @Override
   public void writeAdditional(CompoundNBT compound) {
     super.writeAdditional(compound);
-    compound.putInt("glimmer_type", getDataManager().get(TYPE).ordinal());
+    compound.putInt("glimmer_type", getDataManager().get(TYPE));
   }
 
   @Override
   public void readAdditional(CompoundNBT compound) {
     super.readAdditional(compound);
     if (compound.contains("glimmer_type")) {
-      getDataManager().set(TYPE, NodeType.byIndex(compound.getInt("glimmer_type")));
+      getDataManager().set(TYPE, compound.getInt("glimmer_type"));
     }
   }
 

@@ -12,7 +12,7 @@ public class EnergyTick {
   private static List<GlimmerEntity> standardRequests = new ArrayList<>();
 
   public static void addGlimmer(GlimmerEntity entity) {
-    EnergyGraph.NodeType type = entity.getDataManager().get(GlimmerEntity.TYPE);
+    EnergyGraph.NodeType type = EnergyGraph.NodeType.byIndex(entity.getDataManager().get(GlimmerEntity.TYPE));
     if (type == EnergyGraph.NodeType.RECEIVE) {
       standardRequests.add(entity);
     }
