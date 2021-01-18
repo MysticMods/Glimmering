@@ -1,0 +1,39 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "B#",
+    "#B"
+  ],
+  "key": {
+    "#": {
+      "item": "minecraft:polished_andesite"
+    },
+    "B": {
+      "item": "minecraft:andesite"
+    }
+  },
+  "result": {
+    "item": "quark:andesite_bricks",
+    "count": 4
+  },
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "quark"
+    },
+    {
+      "type": "forge:and",
+      "values": [
+        {
+          "type": "quark:flag",
+          "flag": "stone_bricks"
+        },
+        {
+          "type": "quark:flag",
+          "flag": "andesite"
+        }
+      ]
+    }
+  ],
+  "mirror": true
+} 

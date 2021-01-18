@@ -2,26 +2,21 @@ package noobanidus.mods.glimmering.client.render.entity;
 
 import com.mojang.blaze3d.platform.GLX;
 import com.mojang.blaze3d.platform.GlStateManager;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
-import net.minecraft.client.renderer.entity.model.RendererModel;
+import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.World;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraftforge.fml.client.registry.IRenderFactory;
 import noobanidus.mods.glimmering.Glimmering;
 import noobanidus.mods.glimmering.client.model.ModelHolder;
 import noobanidus.mods.glimmering.client.model.RitualModel;
 import noobanidus.mods.glimmering.entity.RitualEntity;
-import noobanidus.mods.glimmering.particle.GlintParticle;
-import noobanidus.mods.glimmering.tiles.RitualRuneTile;
 import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
@@ -31,7 +26,7 @@ import java.util.List;
 public class RitualRenderer extends UnlivingRenderer<RitualEntity, RitualModel> {
   private static ResourceLocation DARK_TEXTURE = new ResourceLocation(Glimmering.MODID, "textures/misc/beam_gold.png");
   private static ResourceLocation GOLDEN_TEXTURE = new ResourceLocation(Glimmering.MODID, "textures/entity/gold_electric.png");
-  private final List<RendererModel> outers;
+  private final List<ModelRenderer> outers;
 
   public RitualRenderer(EntityRendererManager manager, RitualModel model) {
     super(manager, model);
@@ -39,7 +34,7 @@ public class RitualRenderer extends UnlivingRenderer<RitualEntity, RitualModel> 
   }
 
   private void reset() {
-    for (RendererModel model : outers) {
+    for (ModelRenderer model : outers) {
       model.isHidden = true;
       model.offsetX = 0;
       model.offsetZ = 0;
@@ -81,43 +76,43 @@ public class RitualRenderer extends UnlivingRenderer<RitualEntity, RitualModel> 
     GlStateManager.popMatrix();
   }
 
-  public static List<Vec3d> topFace(BlockPos pos) {
-    Vec3d ne = new Vec3d(pos.getX() + 1.01, pos.getY() + 1.01, pos.getZ());
-    Vec3d nw = new Vec3d(pos.getX(), pos.getY() + 1.01, pos.getZ());
-    Vec3d se = new Vec3d(pos.getX() + 1.01, pos.getY() + 1.01, pos.getZ() + 1.02);
-    Vec3d sw = new Vec3d(pos.getX(), pos.getY() + 1.01, pos.getZ() + 1.01);
+  public static List<Vector3d> topFace(BlockPos pos) {
+    Vector3d ne = new Vector3d(pos.getX() + 1.01, pos.getY() + 1.01, pos.getZ());
+    Vector3d nw = new Vector3d(pos.getX(), pos.getY() + 1.01, pos.getZ());
+    Vector3d se = new Vector3d(pos.getX() + 1.01, pos.getY() + 1.01, pos.getZ() + 1.02);
+    Vector3d sw = new Vector3d(pos.getX(), pos.getY() + 1.01, pos.getZ() + 1.01);
     return Arrays.asList(ne, nw, sw, se);
   }
 
-  public static List<Vec3d> northFace(BlockPos pos) {
-    Vec3d tne = new Vec3d(pos.getX(), pos.getY(), pos.getZ());
-    Vec3d tnw = new Vec3d(pos.getX() - 1, pos.getY(), pos.getZ());
-    Vec3d bne = new Vec3d(pos.getX(), pos.getY() - 1, pos.getZ());
-    Vec3d bnw = new Vec3d(pos.getX() - 1, pos.getY() - 1, pos.getZ());
+  public static List<Vector3d> northFace(BlockPos pos) {
+    Vector3d tne = new Vector3d(pos.getX(), pos.getY(), pos.getZ());
+    Vector3d tnw = new Vector3d(pos.getX() - 1, pos.getY(), pos.getZ());
+    Vector3d bne = new Vector3d(pos.getX(), pos.getY() - 1, pos.getZ());
+    Vector3d bnw = new Vector3d(pos.getX() - 1, pos.getY() - 1, pos.getZ());
     return Arrays.asList(tne, tnw, bnw, bne);
   }
 
-  public static List<Vec3d> eastFace(BlockPos pos) {
-    Vec3d tne = new Vec3d(pos.getX(), pos.getY(), pos.getZ());
-    Vec3d tse = new Vec3d(pos.getX(), pos.getY(), pos.getZ() - 1);
-    Vec3d bne = new Vec3d(pos.getX(), pos.getY() - 1, pos.getZ());
-    Vec3d bse = new Vec3d(pos.getX(), pos.getY() - 1, pos.getZ() - 1);
+  public static List<Vector3d> eastFace(BlockPos pos) {
+    Vector3d tne = new Vector3d(pos.getX(), pos.getY(), pos.getZ());
+    Vector3d tse = new Vector3d(pos.getX(), pos.getY(), pos.getZ() - 1);
+    Vector3d bne = new Vector3d(pos.getX(), pos.getY() - 1, pos.getZ());
+    Vector3d bse = new Vector3d(pos.getX(), pos.getY() - 1, pos.getZ() - 1);
     return Arrays.asList(tne, tse, bse, bne);
   }
 
-  public static List<Vec3d> westFace(BlockPos pos) {
-    Vec3d tnw = new Vec3d(pos.getX() - 1, pos.getY(), pos.getZ());
-    Vec3d tsw = new Vec3d(pos.getX() - 1, pos.getY(), pos.getZ() - 1);
-    Vec3d bnw = new Vec3d(pos.getX() - 1, pos.getY() - 1, pos.getZ());
-    Vec3d bsw = new Vec3d(pos.getX() - 1, pos.getY() - 1, pos.getZ() - 1);
+  public static List<Vector3d> westFace(BlockPos pos) {
+    Vector3d tnw = new Vector3d(pos.getX() - 1, pos.getY(), pos.getZ());
+    Vector3d tsw = new Vector3d(pos.getX() - 1, pos.getY(), pos.getZ() - 1);
+    Vector3d bnw = new Vector3d(pos.getX() - 1, pos.getY() - 1, pos.getZ());
+    Vector3d bsw = new Vector3d(pos.getX() - 1, pos.getY() - 1, pos.getZ() - 1);
     return Arrays.asList(tnw, tsw, bsw, bnw);
   }
 
-  public static List<Vec3d> southFace(BlockPos pos) {
-    Vec3d tse = new Vec3d(pos.getX(), pos.getY(), pos.getZ() - 1);
-    Vec3d tsw = new Vec3d(pos.getX() - 1, pos.getY(), pos.getZ() - 1);
-    Vec3d bse = new Vec3d(pos.getX(), pos.getY() - 1, pos.getZ() - 1);
-    Vec3d bsw = new Vec3d(pos.getX() - 1, pos.getY() - 1, pos.getZ() - 1);
+  public static List<Vector3d> southFace(BlockPos pos) {
+    Vector3d tse = new Vector3d(pos.getX(), pos.getY(), pos.getZ() - 1);
+    Vector3d tsw = new Vector3d(pos.getX() - 1, pos.getY(), pos.getZ() - 1);
+    Vector3d bse = new Vector3d(pos.getX(), pos.getY() - 1, pos.getZ() - 1);
+    Vector3d bsw = new Vector3d(pos.getX() - 1, pos.getY() - 1, pos.getZ() - 1);
     return Arrays.asList(tse, tsw, bsw, bse);
   }
 
@@ -132,8 +127,8 @@ public class RitualRenderer extends UnlivingRenderer<RitualEntity, RitualModel> 
     GlStateManager.pushMatrix();
     GlStateManager.translated(x, y + 2, z);
 
-    List<Vec3d> bowls = entity.getBowls();
-    List<Vec3d> pillars = entity.getPillarTops();
+    List<Vector3d> bowls = entity.getBowls();
+    List<Vector3d> pillars = entity.getPillarTops();
 
     GlStateManager.enableBlend();
     GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE);
@@ -147,9 +142,9 @@ public class RitualRenderer extends UnlivingRenderer<RitualEntity, RitualModel> 
     float f3 = f2 * 0.5F % 1.0F;
     bindTexture(DARK_TEXTURE);
 
-    Vec3d pos = new Vec3d(entity.posX, entity.posY + 1, entity.posZ);
+    Vector3d pos = new Vector3d(entity.posX, entity.posY + 1, entity.posZ);
 
-    List<Vec3d> toDraw = new ArrayList<>();
+    List<Vector3d> toDraw = new ArrayList<>();
 
     if (age > 5) {
       toDraw.add(bowls.get(0));
@@ -176,12 +171,12 @@ public class RitualRenderer extends UnlivingRenderer<RitualEntity, RitualModel> 
       toDraw.add(pillars.get(3));
     }
 
-    for (Vec3d bowl : toDraw) {
+    for (Vector3d bowl : toDraw) {
       GlStateManager.pushMatrix();
       buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR);
-      Vec3d subtracted = pos.subtract(bowl);
+      Vector3d subtracted = pos.subtract(bowl);
       double d0 = subtracted.length();
-      Vec3d normalized = subtracted.normalize();
+      Vector3d normalized = subtracted.normalize();
       float f5 = (float) Math.acos(normalized.y);
       float f6 = (float) Math.atan2(normalized.z, normalized.x);
       GlStateManager.translated(0, 0.5, 0);

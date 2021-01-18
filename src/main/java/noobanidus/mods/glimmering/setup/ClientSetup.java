@@ -15,7 +15,9 @@ import noobanidus.mods.glimmering.entity.RitualEntity;
 import noobanidus.mods.glimmering.client.model.ModelHolder;
 import noobanidus.mods.glimmering.client.render.entity.GlimmerRenderer;
 import noobanidus.mods.glimmering.client.render.entity.RitualRenderer;
+import noobanidus.mods.glimmering.init.ModEntities;
 import noobanidus.mods.glimmering.init.ModParticles;
+import noobanidus.mods.glimmering.init.ModTiles;
 import noobanidus.mods.glimmering.particle.BeamParticle;
 import noobanidus.mods.glimmering.particle.GlintParticle;
 import noobanidus.mods.glimmering.tiles.AndesiteBowlTile;
@@ -27,11 +29,11 @@ public class ClientSetup {
     ((IReloadableResourceManager) Minecraft.getInstance().getResourceManager()).addReloadListener(new ModelHolder());
     ModelHolder.init();
 
-    RenderingRegistry.registerEntityRenderingHandler(LargeGlimmerEntity.class, new LargeGlimmerRenderer.Factory());
-    RenderingRegistry.registerEntityRenderingHandler(GlimmerStarEntity.class, new GlimmerStarRenderer.Factory());
-    RenderingRegistry.registerEntityRenderingHandler(GlimmerEntity.class, new GlimmerRenderer.Factory());
-    RenderingRegistry.registerEntityRenderingHandler(RitualEntity.class, new RitualRenderer.Factory());
-    ClientRegistry.bindTileEntitySpecialRenderer(AndesiteBowlTile.class, new AndesiteBowlTileRenderer());
+    RenderingRegistry.registerEntityRenderingHandler(ModEntities.LARGE_GLIMMER_TYPE.get(), new LargeGlimmerRenderer.Factory());
+    RenderingRegistry.registerEntityRenderingHandler(ModEntities.GLIMMER_STAR_TYPE.get(), new GlimmerStarRenderer.Factory());
+    RenderingRegistry.registerEntityRenderingHandler(ModEntities.GLIMMER_TYPE.get(), new GlimmerRenderer.Factory());
+    RenderingRegistry.registerEntityRenderingHandler(ModEntities.RITUAL_TYPE.get(), new RitualRenderer.Factory());
+    ClientRegistry.bindTileEntityRenderer(ModTiles.ANDESITE_BOWL.get(), new AndesiteBowlTileRenderer());
   }
 
   public static void registerParticles(ParticleFactoryRegisterEvent event) {

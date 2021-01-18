@@ -1,7 +1,7 @@
 package noobanidus.mods.glimmering.client.beam;
 
 import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
 
 public class BufferBuilderWrapper {
   private BufferBuilder buffer;
@@ -10,7 +10,7 @@ public class BufferBuilderWrapper {
     this.buffer = buffer;
   }
 
-  public BufferBuilderWrapper pos (Vec3d vec) {
+  public BufferBuilderWrapper pos(Vector3d vec) {
     this.buffer = buffer.pos(vec.x, vec.y, vec.z);
     return this;
   }
@@ -20,27 +20,27 @@ public class BufferBuilderWrapper {
     return this;
   }
 
-  public BufferBuilderWrapper tex (double a, double b) {
+  public BufferBuilderWrapper tex(double a, double b) {
     this.buffer = buffer.tex(a, b);
     return this;
   }
 
-  public BufferBuilderWrapper color(int red, int green, int blue, int alpha){
+  public BufferBuilderWrapper color(int red, int green, int blue, int alpha) {
     this.buffer = buffer.color(red, green, blue, alpha);
     return this;
   }
 
-  public BufferBuilderWrapper color255 () {
+  public BufferBuilderWrapper color255() {
     this.buffer = buffer.color(255, 255, 255, 255);
     return this;
   }
 
-  public BufferBuilderWrapper color255a () {
+  public BufferBuilderWrapper color255a() {
     this.buffer = buffer.color(255, 255, 255, 50);
     return this;
   }
 
-  public void endVertex () {
+  public void endVertex() {
     this.buffer.endVertex();
   }
 }

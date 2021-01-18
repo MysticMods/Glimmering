@@ -4,7 +4,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -59,8 +59,8 @@ public class BeamMessage {
       if (e == null || central == null) {
         continue;
       }
-      Vec3d orig = new Vec3d(central.posX, central.posY - 1.2, central.posZ);
-      Vec3d end = new Vec3d(e.posX, e.posY - 1.2, e.posZ);
+      Vector3d orig = new Vector3d(central.getPosX(), central.getPosY() - 1.2, central.getPosZ());
+      Vector3d end = new Vector3d(e.getPosX(), e.getPosY() - 1.2, e.getPosZ());
       Beam beam = new Beam(orig, end, 100);
       BeamManager.addBeam(beam);
       //BeamRenderer.addBeam(world, orig, end, 30);

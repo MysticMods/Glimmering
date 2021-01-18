@@ -7,7 +7,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.HandSide;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
@@ -55,10 +55,7 @@ public abstract class UnlivingEntity extends LivingEntity {
     return false;
   }
 
-  @Override
-  public void knockBack(Entity entityIn, float strength, double xRatio, double zRatio) {
-    super.knockBack(entityIn, strength, xRatio, zRatio); // ???
-  }
+  // TODO: Knockback
 
   @Override
   public boolean canAttack(LivingEntity livingentityIn, EntityPredicate predicateIn) {
@@ -86,9 +83,7 @@ public abstract class UnlivingEntity extends LivingEntity {
     return false;
   }
 
-  @Override
-  public void fall(float distance, float damageMultiplier) {
-  }
+  // TODO: Fall
 
   @Override
   public boolean canEntityBeSeen(Entity entityIn) {
@@ -166,7 +161,6 @@ public abstract class UnlivingEntity extends LivingEntity {
   }
 
   @Override
-  public void travel(Vec3d p_213352_1_) {
-    return;
+  public void travel(Vector3d p_213352_1_) {
   }
 }

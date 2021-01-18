@@ -1,23 +1,22 @@
 package noobanidus.mods.glimmering.client.model;
 
 import net.minecraft.client.renderer.entity.model.EntityModel;
-import net.minecraft.client.renderer.entity.model.RendererModel;
-import net.minecraft.client.renderer.model.ModelBox;
+import net.minecraft.client.renderer.model.ModelRenderer;
 import noobanidus.mods.glimmering.entity.LargeGlimmerEntity;
 
 public class LargeGlimmerModel extends EntityModel<LargeGlimmerEntity> {
-  private final RendererModel central;
-  private final RendererModel outer;
+  private final ModelRenderer central;
+  private final ModelRenderer outer;
 
   public LargeGlimmerModel() {
     textureWidth = 64;
     textureHeight = 64;
 
-    central = new RendererModel(this);
+    central = new ModelRenderer(this);
     central.setRotationPoint(0.0F, 24.0F, 0.0F);
-    central.cubeList.add(new ModelBox(central, 6, 6, -1.5F, -20.0F, -2.7143F, 3, 17, 4, 0.0F, false));
+    central.cubeList.add(new ModelRenderer.ModelBox(central, 6, 6, -1.5F, -20.0F, -2.7143F, 3, 17, 4, 0.0F, false));
 
-    outer = new RendererModel(this);
+    outer = new ModelRenderer(this);
     outer.setRotationPoint(1.5F, 0.0F, -1.7143F);
     central.addChild(outer);
     outer.cubeList.add(new ModelBox(outer, 23, 9, 0.0F, -16.0F, 1.0F, 3, 10, 3, 0.0F, false));

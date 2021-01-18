@@ -5,6 +5,7 @@ import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.tags.Tag;
 import noobanidus.mods.glimmering.GLTags;
 import vazkii.patchouli.api.IComponentProcessor;
+import vazkii.patchouli.api.IVariable;
 import vazkii.patchouli.api.IVariableProvider;
 import vazkii.patchouli.common.util.ItemStackUtil;
 
@@ -12,9 +13,9 @@ public class DustTemplate implements IComponentProcessor {
   private Tag<Item> dustTag;
 
   @Override
-  public void setup(IVariableProvider<String> iVariableProvider) {
-    String tagName = iVariableProvider.get("tag");
-    switch (tagName) {
+  public void setup(IVariableProvider iVariableProvider) {
+    IVariable tag = iVariableProvider.get("tag");
+    switch (tag.asString()) {
       default:
       case "glimmer_dusts":
         dustTag = GLTags.Items.ELIGIBLE_DUSTS;
@@ -41,9 +42,9 @@ public class DustTemplate implements IComponentProcessor {
   }
 
   @Override
-  public String process(String s) {
+  public IVariable process(String s) {
     if (s.startsWith("result")) {
-      return ItemStackUtil.serializeIngredient(Ingredient.fromTag(dustTag));
+      return IVariable.from(Ingredient.fromTag(dustTag));
     }
     return null;
   }
