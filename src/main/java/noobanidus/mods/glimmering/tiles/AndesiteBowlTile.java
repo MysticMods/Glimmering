@@ -7,13 +7,15 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SUpdateTileEntityPacket;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityType;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.world.World;
 import net.minecraftforge.items.ItemStackHandler;
 import noobanidus.mods.glimmering.GLTags;
-import noobanidus.mods.glimmering.init.ModTiles;
+import noobanidus.mods.glimmering.init.ModBlocks;
 
 import javax.annotation.Nullable;
 
@@ -27,13 +29,13 @@ public class AndesiteBowlTile extends TileEntity implements IEasilyUpdated {
     }
   };
 
-  public AndesiteBowlTile() {
-    super(ModTiles.ANDESITE_BOWL.get());
+  public AndesiteBowlTile(TileEntityType<? extends AndesiteBowlTile> tile) {
+    super(tile);
   }
 
   @Override
-  public void read(CompoundNBT compound) {
-    super.read(compound);
+  public void read(BlockState state, CompoundNBT compound) {
+    super.read(state, compound);
     inventory.deserializeNBT(compound.getCompound("inventory"));
   }
 
@@ -58,35 +60,35 @@ public class AndesiteBowlTile extends TileEntity implements IEasilyUpdated {
 
   @Override
   public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt) {
-    read(pkt.getNbtCompound());
+    read(ModBlocks.ANDESITE_BOWL.get().getDefaultState(), pkt.getNbtCompound());
   }
 
-  public boolean onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
+  public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
     if (world.isRemote()) {
-      return false;
+      return ActionResultType.FAIL;
     }
 
     if (hand != Hand.MAIN_HAND) {
-      return false;
+      return ActionResultType.FAIL;
     }
 
     ItemStack held = player.getHeldItem(hand);
     if (held.isEmpty()) {
       ItemStack inSlot = inventory.getStackInSlot(0);
       if (inSlot.isEmpty()) {
-        return false;
+        return ActionResultType.FAIL;
       }
 
       inSlot = inventory.extractItem(0, inSlot.getCount(), false);
       player.setHeldItem(hand, inSlot);
-      return true;
+      return ActionResultType.SUCCESS;
     }
 
     if (!held.getItem().isIn(GLTags.Items.ELIGIBLE_DUSTS)) {
-      return false;
+      return ActionResultType.FAIL;
     }
 
     player.setHeldItem(hand, inventory.insertItem(0, held, false));
-    return true;
+    return ActionResultType.SUCCESS;
   }
 }

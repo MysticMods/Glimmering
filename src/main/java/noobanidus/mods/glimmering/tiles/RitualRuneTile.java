@@ -12,9 +12,12 @@ import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SUpdateTileEntityPacket;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
+import net.minecraft.util.Util;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.Color;
 import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
@@ -24,7 +27,6 @@ import noobanidus.mods.glimmering.entity.RitualEntity;
 import noobanidus.mods.glimmering.init.ModBlocks;
 import noobanidus.mods.glimmering.init.ModEntities;
 import noobanidus.mods.glimmering.init.ModItems;
-import noobanidus.mods.glimmering.init.ModTiles;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -36,8 +38,8 @@ public class RitualRuneTile extends TileEntity implements ITickableTileEntity, I
   private int quantity;
   private RitualEntity ritualEntity;
 
-  public RitualRuneTile() {
-    super(ModTiles.RUNE.get());
+  public RitualRuneTile(TileEntityType<? extends RitualRuneTile> tile) {
+    super(tile);
   }
 
   @Override
@@ -228,9 +230,9 @@ public class RitualRuneTile extends TileEntity implements ITickableTileEntity, I
     }
 
     if (!validateStructure()) {
-      player.sendMessage(new TranslationTextComponent("glimmering.message.invalid_structure").setStyle(new Style().setColor(TextFormatting.LIGHT_PURPLE)));
+      player.sendMessage(new TranslationTextComponent("glimmering.message.invalid_structure").setStyle(Style.EMPTY.setColor(Color.fromTextFormatting(TextFormatting.LIGHT_PURPLE))), Util.DUMMY_UUID);
     } else if (!validateIngredients()) {
-      player.sendMessage(new TranslationTextComponent("glimmering.message.invalid_ingredients").setStyle(new Style().setColor(TextFormatting.LIGHT_PURPLE)));
+      player.sendMessage(new TranslationTextComponent("glimmering.message.invalid_ingredients").setStyle(Style.EMPTY.setColor(Color.fromTextFormatting(TextFormatting.LIGHT_PURPLE))), Util.DUMMY_UUID);
     } else {
       float count = 0;
       for (BlockPos bowl : getBowls()) {
@@ -331,7 +333,7 @@ public class RitualRuneTile extends TileEntity implements ITickableTileEntity, I
   }
 
   @Override
-  public void read(CompoundNBT compound) {
+  public void read(BlockState state, CompoundNBT compound) {
     this.active = compound.getBoolean("active");
     if (compound.contains("quantity")) {
       this.quantity = compound.getInt("quantity");
@@ -345,7 +347,7 @@ public class RitualRuneTile extends TileEntity implements ITickableTileEntity, I
         }
       }
     }
-    super.read(compound);
+    super.read(state, compound);
   }
 
   @Override
@@ -372,7 +374,7 @@ public class RitualRuneTile extends TileEntity implements ITickableTileEntity, I
 
   @Override
   public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt) {
-    read(pkt.getNbtCompound());
+    read(ModBlocks.RITUAL_RUNE.get().getDefaultState(), pkt.getNbtCompound());
   }
 
   public enum PillarType {

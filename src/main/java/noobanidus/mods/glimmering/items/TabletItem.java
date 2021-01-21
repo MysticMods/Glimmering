@@ -12,6 +12,7 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import vazkii.patchouli.api.PatchouliAPI;
 import vazkii.patchouli.common.base.PatchouliSounds;
 import vazkii.patchouli.common.book.Book;
 import vazkii.patchouli.common.book.BookRegistry;
@@ -35,24 +36,23 @@ public class TabletItem extends Item {
     super.addInformation(stack, worldIn, tooltip, flagIn);
     Book book = getBook();
     if (book != null && book.contents != null) {
-      tooltip.add((new StringTextComponent(book.contents.getSubtitle())).applyTextStyle(TextFormatting.GRAY));
+      tooltip.add(book.getSubtitle().mergeStyle(TextFormatting.GRAY));
     }
-
   }
 
   public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand handIn) {
     ItemStack stack = playerIn.getHeldItem(handIn);
     Book book = getBook();
     if (book == null) {
-      return new ActionResult(ActionResultType.FAIL, stack);
+      return new ActionResult<>(ActionResultType.FAIL, stack);
     } else {
       if (playerIn instanceof ServerPlayerEntity) {
-        NetworkHandler.sendToPlayer(new MessageOpenBookGui(book.resourceLoc.toString()), (ServerPlayerEntity) playerIn);
+        PatchouliAPI.instance.openBookGUI((ServerPlayerEntity)playerIn, book.id);
         SoundEvent sfx = PatchouliSounds.getSound(book.openSound, PatchouliSounds.book_open);
-        worldIn.playSound(null, playerIn.posX, playerIn.posY, playerIn.posZ, sfx, SoundCategory.PLAYERS, 1.0F, (float) (0.7D + Math.random() * 0.4D));
+        playerIn.playSound(sfx, 1.0F, (float)(0.7D + Math.random() * 0.4D));
       }
 
-      return new ActionResult(ActionResultType.SUCCESS, stack);
+      return new ActionResult<>(ActionResultType.SUCCESS, stack);
     }
   }
 }

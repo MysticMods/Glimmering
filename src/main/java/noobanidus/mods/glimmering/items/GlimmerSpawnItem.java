@@ -1,6 +1,7 @@
 package noobanidus.mods.glimmering.items;
 
 import com.tterrag.registrate.util.LazySpawnEggItem;
+import com.tterrag.registrate.util.nullness.NonNullSupplier;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.FlowingFluidBlock;
 import net.minecraft.client.util.ITooltipFlag;
@@ -18,6 +19,7 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.math.*;
 import net.minecraft.util.text.*;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import noobanidus.mods.glimmering.init.ModItems;
@@ -25,10 +27,9 @@ import noobanidus.mods.glimmering.init.ModItems;
 import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Objects;
-import java.util.function.Supplier;
 
 public abstract class GlimmerSpawnItem<T extends Entity> extends LazySpawnEggItem<T> {
-  public GlimmerSpawnItem(Supplier<EntityType<T>> type, int primaryColor, int secondaryColor, Properties properties) {
+  public GlimmerSpawnItem(NonNullSupplier<EntityType<T>> type, int primaryColor, int secondaryColor, Properties properties) {
     super(type, primaryColor, secondaryColor, properties);
   }
 
@@ -57,7 +58,7 @@ public abstract class GlimmerSpawnItem<T extends Entity> extends LazySpawnEggIte
       }
 
       EntityType<?> entitytype = this.getType(itemstack.getTag());
-      if (entitytype.spawn(world, itemstack, context.getPlayer(), blockpos1, SpawnReason.SPAWN_EGG, true, !Objects.equals(blockpos, blockpos1) && direction == Direction.UP) != null) {
+      if (entitytype.spawn((ServerWorld) world, itemstack, context.getPlayer(), blockpos1, SpawnReason.SPAWN_EGG, true, !Objects.equals(blockpos, blockpos1) && direction == Direction.UP) != null) {
         itemstack.shrink(1);
       }
 
@@ -86,7 +87,7 @@ public abstract class GlimmerSpawnItem<T extends Entity> extends LazySpawnEggIte
           }
 
           EntityType<?> entitytype = this.getType(itemstack.getTag());
-          if (entitytype.spawn(worldIn, itemstack, playerIn, blockpos, SpawnReason.SPAWN_EGG, false, false) == null) {
+          if (entitytype.spawn((ServerWorld) worldIn, itemstack, playerIn, blockpos, SpawnReason.SPAWN_EGG, false, false) == null) {
             return new ActionResult<>(ActionResultType.PASS, itemstack);
           } else {
             if (!playerIn.abilities.isCreativeMode) {
@@ -110,9 +111,9 @@ public abstract class GlimmerSpawnItem<T extends Entity> extends LazySpawnEggIte
     if (worldIn == null) {
       return;
     }
-    tooltip.add(new TranslationTextComponent("glimmering.tooltip.line0").setStyle(new Style().setColor(TextFormatting.AQUA).setItalic(true)));
+    tooltip.add(new TranslationTextComponent("glimmering.tooltip.line0").setStyle(Style.EMPTY.setColor(Color.fromTextFormatting(TextFormatting.AQUA)).setItalic(true)));
     tooltip.add(new StringTextComponent(""));
-    tooltip.add(new TranslationTextComponent("glimmering.tooltip.line1", ModItems.RITUAL_KNIFE.get().getName().setStyle(new Style().setColor(TextFormatting.RED).setBold(true))).setStyle(new Style().setColor(TextFormatting.GOLD)));
-    tooltip.add(new TranslationTextComponent("glimmering.tooltip.line2", ModItems.RITUAL_KNIFE.get().getName().setStyle(new Style().setColor(TextFormatting.RED).setBold(true))).setStyle(new Style().setColor(TextFormatting.GOLD)));
+    tooltip.add(new TranslationTextComponent("glimmering.tooltip.line1", ((IFormattableTextComponent) ModItems.RITUAL_KNIFE.get().getName()).setStyle(Style.EMPTY.setColor(Color.fromTextFormatting(TextFormatting.RED)).setBold(true))).setStyle(Style.EMPTY.setColor(Color.fromTextFormatting(TextFormatting.GOLD))));
+    tooltip.add(new TranslationTextComponent("glimmering.tooltip.line2", ((IFormattableTextComponent) ModItems.RITUAL_KNIFE.get().getName()).setStyle(Style.EMPTY.setColor(Color.fromTextFormatting(TextFormatting.RED)).setBold(true))).setStyle(Style.EMPTY.setColor(Color.fromTextFormatting(TextFormatting.GOLD))));
   }
 }
